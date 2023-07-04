@@ -8,7 +8,7 @@ researchers and practitioners.
 
 ## In this repository
 This repository contains 
-- (model/tRBS.A **Jupiter notebook** to work with the model in an interactive way
+- _(model/tRBS.ipynb)_ A **Jupyter notebook** to work with the model in an interactive way
 - The **core functions** of the RBS model
 
 ## Local set-up (TBD)
@@ -20,3 +20,9 @@ git clone https://github.com/responsible-business-decision-making/tRBS_model.git
 ```
 
 **Step 2:**
+
+
+**Step x:** open the Jupyter notebook.
+```
+jupyter notebook --notebook-dir=\model
+```

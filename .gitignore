@@ -3,6 +3,7 @@
 
 # ignore Configuration files
 .idea/
+.ipynb_checkpoints/
 
 # ignore virtual environments (common names)
 venv
