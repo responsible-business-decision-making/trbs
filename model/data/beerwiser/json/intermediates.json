@@ -1,0 +1,81 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"intermediate",
+                "type":"string"
+            },
+            {
+                "name":"unit",
+                "type":"string"
+            },
+            {
+                "name":"minimum",
+                "type":"number"
+            },
+            {
+                "name":"maximum",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "intermediate":"Accidents reduction %",
+            "unit":"%",
+            "minimum":null,
+            "maximum":null
+        },
+        {
+            "index":1,
+            "intermediate":"Water use reduction % when effective",
+            "unit":"%",
+            "minimum":null,
+            "maximum":null
+        },
+        {
+            "index":2,
+            "intermediate":"Water use reduction %",
+            "unit":"%",
+            "minimum":null,
+            "maximum":null
+        },
+        {
+            "index":3,
+            "intermediate":"Production cost reduction $",
+            "unit":"$",
+            "minimum":null,
+            "maximum":null
+        },
+        {
+            "index":4,
+            "intermediate":"Cost of training per employee",
+            "unit":"$",
+            "minimum":null,
+            "maximum":null
+        },
+        {
+            "index":5,
+            "intermediate":"New water use",
+            "unit":"hl\/year",
+            "minimum":null,
+            "maximum":null
+        },
+        {
+            "index":6,
+            "intermediate":"New # accidents",
+            "unit":"#\/year",
+            "minimum":null,
+            "maximum":null
+        }
+    ]
+}

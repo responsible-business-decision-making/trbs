@@ -1,0 +1,9 @@
+# ignore Operating System files
+.DS_Store
+
+# ignore Configuration files
+.idea/
+
+# ignore virtual environments (common names)
+venv
+.env
