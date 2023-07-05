@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 notebook = "==6.5.4"
+pre-commit = "==3.3.3"
 
 [dev-packages]
 

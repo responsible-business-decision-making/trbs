@@ -19,7 +19,13 @@ authenticate with GitHub, see [GitHub's manual](https://docs.github.com/en/get-s
 git clone https://github.com/responsible-business-decision-making/tRBS_model.git
 ```
 
-**Step 2:**
+**Step 2:** pipenv
+
+**Step 3:** configure the pre-commit file. This file helps you adhere to a clean coding style and checks
+amongst others for PEP8 violations. 
+```
+pre-commit install
+```
 
 
 **Step x:** open the Jupyter notebook.
