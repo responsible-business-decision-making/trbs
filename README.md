@@ -19,7 +19,10 @@ authenticate with GitHub, see [GitHub's manual](https://docs.github.com/en/get-s
 git clone https://github.com/responsible-business-decision-making/tRBS_model.git
 ```
 
-**Step 2:** pipenv
+**Step 2:** install all required dependencies with pipenv.
+```
+pipenv install
+```
 
 **Step 3:** configure the pre-commit file. This file helps you adhere to a clean coding style and checks
 amongst others for PEP8 violations. 

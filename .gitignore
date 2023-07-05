@@ -8,3 +8,9 @@
 # ignore virtual environments (common names)
 venv
 .env
+
+# ignore cache-files
+__pycache__
+
+# ignore open .xlsx file
+~$*

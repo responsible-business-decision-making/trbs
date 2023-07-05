@@ -1,9 +1,20 @@
-# importing some packages
+'''
+This file contains the import_case() function that deals with reading the data (.csv, .json or .xlsx) and structuring
+it as a dictionary of numpy arrays.
+'''
+# importing necessary dependencies
+from pathlib import Path
 import pandas as pd
 import numpy as np
 
-def import_case(file_format, path):
 
+def import_case(file_format: str, path):
+    '''
+    This function reads and formats the data for a specific case
+    :param file_format: either csv, json or xlsx
+    :param path: path to location of relevant data
+    :return: a dictionary containing numpy arrays for all data input
+    '''
     # specify the 10 tables
     tables = [
         'configurations',
@@ -18,22 +29,26 @@ def import_case(file_format, path):
         'scenario_weights'
         ]
 
+    # use Path to avoid issues between users on macOS and Windows
+    path_base = Path(path) / file_format
+
     # depending on file_format, import into a dictionary with 10 pandas dataframes
     df_dict = {}
     if file_format == 'csv':
-        path_csv = path + "csv\\"
+        # path_csv = path + "csv\\"
         for t in tables:
-            df = pd.read_csv(path_csv + t + ".csv", sep = ";")
+            df = pd.read_csv(path_base / t / ".csv", sep = ";")
             df_dict[t] = df
     elif file_format == 'json':
-        path_json = path + "json\\"
+        # path_json = path + "json\\"
         for t in tables:
-            df = pd.read_json(path_json + t + ".json", orient = 'table')
+            df = pd.read_json(path_base / t / ".json", orient = 'table')
             df_dict[t] = df
     elif file_format == 'xlsx':
-        path_xlsx = path + "xlsx\\"
+        # path_xlsx = path + "xlsx\\"
         for t in tables:
-            df = pd.read_excel(path_xlsx + "beerwiser.xlsx", sheet_name = t)
+            print(path_base / "beerwiser.xlsx")
+            df = pd.read_excel(path_base / "beerwiser.xlsx", sheet_name = t)
             df_dict[t] = df
 
     # transform the dictionary with 10 pandas dataframes into a dictionary with numpy arrays
@@ -205,16 +220,16 @@ def import_case(file_format, path):
 
 # start main
 # choose the format of the file(s) to import from the following three options: 'csv', 'json' or 'xlsx'
-file_format = 'xlsx'
-
-# specify the path of the folder where the file(s) can be found
-# depending on the file format it is assumed that within this folder there is a subfolder called csv, json or xlsx containing the input file(s)
-# check the documentation for more details on the content and format of the input file(s) 
-path = "C:\\Users\\jswart004\\Documents\\Work\\propositions\\trbs\\beerwiser\\"
-
-np_dict = import_case(file_format, path)
-
-# print all arrays
-for n in np_dict:
-    print(n,":\n",np_dict[n])
+# file_format = 'xlsx'
+#
+# # specify the path of the folder where the file(s) can be found
+# # depending on the file format it is assumed that within this folder there is a subfolder called csv, json or xlsx containing the input file(s)
+# # check the documentation for more details on the content and format of the input file(s)
+# path = "C:\\Users\\jswart004\\Documents\\Work\\propositions\\trbs\\beerwiser\\"
+#
+# np_dict = import_case(file_format, path)
+#
+# # print all arrays
+# for n in np_dict:
+#     print(n,":\n",np_dict[n])
 
