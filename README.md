@@ -35,3 +35,10 @@ pre-commit install
 ```
 jupyter notebook --notebook-dir=\model
 ```
+
+
+
+## Code of Conduct
+- Be kind
+- Be welcoming
+- Don't be a jerk
