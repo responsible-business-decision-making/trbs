@@ -5,8 +5,8 @@ Hello! Thanks for contributing to the Responsible Business Simulator
 ## 1. Please open an Issue
 The issue should contain a description of what you're trying to add/fix/change. 
 
-## 2. Create a branch of type <description>/<issue number>
-Fork the project and create a feature branch to work on your add/fix/change. Please name the branch using the following format: <description>/<issue number>
+## 2. Create a branch of type DESCRIPTION/ISSUE NUMBER
+Fork the project and create a feature branch to work on your add/fix/change. Please name the branch using the following format: DESCRIPTION/ISSUE NUMBER
 
 ## 3. Squash your commits into one 
 Squash all your commits into a single commit with a clear commit message. 
