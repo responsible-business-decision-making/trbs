@@ -38,6 +38,11 @@ pre-commit install
 jupyter notebook --notebook-dir=\model
 ```
 
+**Step y (optional):** Create a new branch if you want to work on a new feature, bug or case.
+```
+git checkout -b 'NAME-OF-YOUR-BRANCH'
+```
+
 
 
 ## Code of Conduct
