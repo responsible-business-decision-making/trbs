@@ -19,8 +19,10 @@ authenticate with GitHub, see [GitHub's manual](https://docs.github.com/en/get-s
 git clone https://github.com/responsible-business-decision-making/tRBS_model.git
 ```
 
-**Step 2:** install all required dependencies with pipenv.
+**Step 2:** install all required dependencies with ```pipenv```. You might need to install ```pipenv``` if you have
+not used this before. 
 ```
+pip install pipenv
 pipenv install
 ```
 
