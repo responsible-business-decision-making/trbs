@@ -4,6 +4,7 @@ Business Simulator Case.
 """
 from core.import_case import import_case
 from core.evaluate import Evaluate
+from core.appreciate import Appreciate
 
 
 class ResponsibleBusinessSimulator:
@@ -36,3 +37,8 @@ class ResponsibleBusinessSimulator:
         """This function deals with the evaluation of all dependencies"""
         case_evaluation = Evaluate(self.input_dict)
         case_evaluation.evaluate_all_scenarios()
+
+    def appreciate(self):
+        """This function deals with the appreciation of the outcomes"""
+        case_appreciation = Appreciate(self.output_dict)
+        case_appreciation.appreciate_all()

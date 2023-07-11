@@ -32,4 +32,4 @@ repos:
         - --max-attributes=10
         - --ignore-imports=yes
         - -d duplicate-code
-        - --disable=E0401, W0511
+        - --disable=E0401
