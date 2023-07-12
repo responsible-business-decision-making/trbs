@@ -76,6 +76,14 @@ class Evaluate:
         )
         return result
 
+    def _get_key_outputs(self) -> dict:
+        """
+        This function retrieves the current values of the key outputs, based on the value_dict.
+        :return: a dictionary matching key outputs to their values, i.e. {KO1: 1.12, KO2: 2.33, ...}
+        """
+        key_output_values = [self.value_dict[key_output] for key_output in self.input_dict["key_outputs"]]
+        return dict(zip(self.input_dict["key_outputs"], key_output_values))
+
     def _evaluate_single_dependency(self, argument_1_value: int, argument_2_value: int, operator: str):
         """
         This function ...
@@ -135,19 +143,30 @@ class Evaluate:
             # update the value dictionary
             self.value_dict.update(result)
 
+        # structure the output dictionary
+        output_dict = {"key_outputs": self._get_key_outputs()}
+        return output_dict
+
     def evaluate_selected_scenario(self, scenario):
         """
         [All dependencies, for all dmos for a single scenario]
         :return:
+        output_dict: a dictionary that contains the outputs per decision makers options (for a single scenario)
         """
+        output_dict = {}
         for decision_makers_option in self.input_dict["decision_makers_options"]:
-            self.evaluate_all_dependencies(scenario, decision_makers_option)
+            output_dict[decision_makers_option] = self.evaluate_all_dependencies(scenario, decision_makers_option)
+
+        return output_dict
 
     def evaluate_all_scenarios(self):
         """
-        [All dependencies, for all scenario's, for all dmo's]
+        This function evaluates the dependencies for all scenario's and all decision makers options.
         :return:
+        output_dict: for each scenario, a dictionary for all decision makers options is returned
         """
-
+        output_dict = {}
         for scenario in self.input_dict["scenarios"]:
-            self.evaluate_selected_scenario(scenario)
+            output_dict[scenario] = self.evaluate_selected_scenario(scenario)
+
+        return output_dict

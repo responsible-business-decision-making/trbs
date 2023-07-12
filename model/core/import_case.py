@@ -81,42 +81,17 @@ def import_case(file_format: str, path):
 
     # step 3
     df = df_dict["decision_makers_options"]
-    decision_makers_options = np.array([])
-    internal_variable_inputs = np.array([])
-    decision_makers_option_value = np.empty(
-        (df.decision_makers_option.nunique(), df.internal_variable_input.nunique())
-    )
-    # TODO: check correctness of this code block. Not all entries of matrix are filled
-    for i in range(len(df)):
-        if not (df.decision_makers_option.iloc[i] in decision_makers_options):
-            row_index = len(decision_makers_options)
-            decision_makers_options = np.append(decision_makers_options, [df.decision_makers_option.iloc[i]])
-        if not (df.internal_variable_input.iloc[i] in internal_variable_inputs):
-            column_index = len(internal_variable_inputs)
-            internal_variable_inputs = np.append(internal_variable_inputs, [df.internal_variable_input.iloc[i]])
-        # print(row_index, column_index, df.value.iloc[i])
-        decision_makers_option_value[row_index, column_index] = df.value.iloc[i]
-    np_dict["decision_makers_options"] = decision_makers_options
-    np_dict["internal_variable_inputs"] = internal_variable_inputs
-    np_dict["decision_makers_option_value"] = decision_makers_option_value
+    pivotted_df = df.pivot(index="decision_makers_option", columns="internal_variable_input", values="value")
+    np_dict["decision_makers_options"] = pivotted_df.index.to_numpy()
+    np_dict["internal_variable_inputs"] = pivotted_df.columns.to_numpy()
+    np_dict["decision_makers_option_value"] = pivotted_df.values
 
     # step 4
     df = df_dict["scenarios"]
-    scenarios = np.array([])
-    external_variable_inputs = np.array([])
-    scenario_value = np.empty((df.scenario.nunique(), df.external_variable_input.nunique()))
-    # TODO: check correctness of this code block. Not all entries of matrix are filled
-    for i in range(len(df)):
-        if not (df.scenario.iloc[i] in scenarios):
-            row_index = len(scenarios)
-            scenarios = np.append(scenarios, [df.scenario.iloc[i]])
-        if not (df.external_variable_input.iloc[i] in external_variable_inputs):
-            column_index = len(external_variable_inputs)
-            external_variable_inputs = np.append(external_variable_inputs, [df.external_variable_input.iloc[i]])
-        scenario_value[row_index, column_index] = df.value.iloc[i]
-    np_dict["scenarios"] = scenarios
-    np_dict["external_variable_inputs"] = external_variable_inputs
-    np_dict["scenario_value"] = scenario_value
+    pivotted_df = df.pivot(index="scenario", columns="external_variable_input", values="value")
+    np_dict["scenarios"] = pivotted_df.index.to_numpy()
+    np_dict["external_variable_inputs"] = pivotted_df.columns.to_numpy()
+    np_dict["scenario_value"] = pivotted_df.values
 
     # step 5a
     df = df_dict["fixed_inputs"]
@@ -146,7 +121,7 @@ def import_case(file_format: str, path):
     # derive hierarchy & calculation order of dependencies in two steps
     # step 1: initialize hierarchy = 1 for destinations that depend on input model objects
     input_model_objects = np.append(
-        np_dict["fixed_inputs"], np.append(internal_variable_inputs, external_variable_inputs)
+        np_dict["fixed_inputs"], np.append(np_dict["internal_variable_inputs"], np_dict["external_variable_inputs"])
     )
 
     # add '', which represents a missing argument and should be treated as input as well
@@ -218,7 +193,7 @@ def import_case(file_format: str, path):
     no_scenarios = len(np_dict["scenarios"])
     scenario_weight = np.empty(no_scenarios)
     for i in range(no_scenarios):
-        scenario_weight[i] = scenario_weight_unsorted[np.where(scenarios_unsorted == scenarios[i])[0][0]]
+        scenario_weight[i] = scenario_weight_unsorted[np.where(scenarios_unsorted == np_dict["scenarios"][i])[0][0]]
     np_dict["scenario_weight"] = scenario_weight
 
     return np_dict

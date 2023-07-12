@@ -21,7 +21,11 @@ class ResponsibleBusinessSimulator:
         self.output_dict = {}
 
     def __str__(self):
-        input_data_formatted = "\n\n".join(f"{key}\n\t{value}" for key, value in self.input_dict.items())
+        input_data_formatted = (
+            "\n\n".join(f"{key}\n\t{value}" for key, value in self.input_dict.items())
+            if self.input_dict
+            else "First .build() a case to import data"
+        )
         return (
             f"Case: {self.name} ({self.file_extension}) \n"
             f"Data location: {self.file_path} \n"
@@ -36,7 +40,7 @@ class ResponsibleBusinessSimulator:
     def evaluate(self):
         """This function deals with the evaluation of all dependencies"""
         case_evaluation = Evaluate(self.input_dict)
-        case_evaluation.evaluate_all_scenarios()
+        self.output_dict = case_evaluation.evaluate_all_scenarios()
 
     def appreciate(self):
         """This function deals with the appreciation of the outcomes"""
