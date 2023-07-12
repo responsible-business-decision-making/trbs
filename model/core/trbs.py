@@ -45,4 +45,4 @@ class ResponsibleBusinessSimulator:
     def appreciate(self):
         """This function deals with the appreciation of the outcomes"""
         case_appreciation = Appreciate(self.output_dict)
-        case_appreciation.appreciate_all()
+        case_appreciation.appreciate_all_scenarios()
