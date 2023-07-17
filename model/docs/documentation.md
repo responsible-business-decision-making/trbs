@@ -35,3 +35,13 @@ added along the way and do not need to be initialized. A missing value `""` is s
 
 What **doesn't** this class do?
 - No checks and/or boundaries on calculated values. 
+
+### Function: *appreciate()*
+This function creates a `Appreciate` class (see: core/appreciate.py).
+
+What **does** this class do?
+- a
+- b
+
+What **doesn't** this class do?
+- a

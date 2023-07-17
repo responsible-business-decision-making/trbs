@@ -4,6 +4,7 @@ This file contains the Appreciate class that deals with the calculation of appre
 import math
 import pandas as pd
 import numpy as np
+from core.utils import get_values_from_target
 
 
 class Appreciate:
@@ -14,31 +15,15 @@ class Appreciate:
         self.output_dict = output_dict
         self.start_and_end_points = self._get_start_and_end_points()
 
-    def _get_values_from_target(self, dictionary, target):
-        """
-
-        :param dictionary:
-        :param target:
-        :return:
-        """
-        values = []
-
-        for key, value in dictionary.items():
-            if key == target:
-                values.append(value)
-            elif isinstance(value, dict):
-                values.extend(self._get_values_from_target(value, target))
-
-        return values
-
     # TODO: monetary values
-    def _get_start_and_end_points(self):
+    def _get_start_and_end_points(self) -> dict:
         """
-
-        :return:
+        This function obtains the minimum and maximum values of the calculated key_output values, over ALL scenarios
+        and decision makers options.
+        :return: a dictionary of type {key_output 1: [min, max], key_output 2: [min, max], .. }
         """
         boundaries = {}
-        all_key_output_values = self._get_values_from_target(self.output_dict, "key_outputs")
+        all_key_output_values = get_values_from_target(self.output_dict, "key_outputs")
         values_as_df = pd.DataFrame.from_dict(all_key_output_values)
 
         for key_output in values_as_df.columns:
