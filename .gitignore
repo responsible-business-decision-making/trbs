@@ -11,6 +11,7 @@ venv
 
 # ignore cache-files
 __pycache__
+.pytest_cache
 
 # ignore open .xlsx file
 ~$*

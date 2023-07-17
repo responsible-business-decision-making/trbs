@@ -30,12 +30,15 @@ class Evaluate:
             "*": lambda x, y: x * y,
             "/": lambda x, y: x / y if y else 0,
             "-*": lambda x, y: -x * y,
+            "-/": lambda x, y: -x / y if y else 0,
         }
 
     def _create_value_dict(self, scen_index: int, dmo_index: int) -> None:
         """
         This function creates a 'value-dictionary' that maps all variables to their current value.
-        :return:
+        :param scen_index: index of the current scenario in the input_dictionary
+        :param dmo_index: index of the current decision makers option in the input_dictionary
+        :return None: self.value_dict is updated in this function
         """
         self.value_dict = {
             # add key outputs. Initialise at zero.
@@ -54,11 +57,11 @@ class Evaluate:
             "": 1,
         }
 
-    def _find_index(self, key: str, value: str) -> int:
+    def _find_index(self, key: str, value: str or int) -> int:
         """This helper function returns the FIRST index of a value for a given key and value of self.input_dict."""
         return np.where(self.input_dict[key] == value)[0][0]
 
-    def _squeeze(self, argument_1_value: int, argument_2_value: int, squeeze_args: dict):
+    def _squeeze(self, argument_1_value: int, argument_2_value: int, squeeze_args: dict) -> int:
         """This functions evaluates ONLY the Squeeze * operator function."""
         division_part = self.operators_dict["/"](
             min(argument_1_value, argument_2_value), squeeze_args["saturation_point"]
@@ -84,10 +87,13 @@ class Evaluate:
         key_output_values = [self.value_dict[key_output] for key_output in self.input_dict["key_outputs"]]
         return dict(zip(self.input_dict["key_outputs"], key_output_values))
 
-    def _evaluate_single_dependency(self, argument_1_value: int, argument_2_value: int, operator: str):
+    def _evaluate_single_dependency(self, argument_1_value: int, argument_2_value: int, operator: str) -> int:
         """
-        This function ...
-        [Single row of dependencies]
+        This function evaluates a single dependency. Raises an EvaluationError when the operator is unknown.
+        :param argument_1_value: value of first argument
+        :param argument_2_value: value of second argument
+        :param operator: operator needed to calculate result based on the two arguments
+        :return result: calculated value based on inputs & operator
         """
         if operator not in self.operators_dict.keys():  # ignore warning about .keys() | pylint: disable=C0201
             raise EvaluationError(f"operator {operator} not available")
@@ -97,11 +103,13 @@ class Evaluate:
         print(f"\tadd: '{result}' = '{argument_1_value}' {operator} '{argument_2_value}'")
         return result
 
-    def evaluate_all_dependencies(self, scenario, decision_makers_option):
+    def evaluate_all_dependencies(self, scenario: str, decision_makers_option: str) -> dict:
         """
-        [All dependencies, for single dmo and single scenario]
-        --> this function should create/renew the value_dict
-        :return:
+        This function returns an output dictionary containing the values of the key outputs for a given scenario and
+        a given decision makers option.
+        :param scenario: string of scenario name
+        :param decision_makers_option: string of decision makers option
+        :return: dictionary containing all key outputs for given scenario and decision makers option
         """
         scen_index = self._find_index("scenarios", scenario)
         dmo_index = self._find_index("decision_makers_options", decision_makers_option)
@@ -147,11 +155,11 @@ class Evaluate:
         output_dict = {"key_outputs": self._get_key_outputs()}
         return output_dict
 
-    def evaluate_selected_scenario(self, scenario):
+    def evaluate_selected_scenario(self, scenario: str) -> dict:
         """
-        [All dependencies, for all dmos for a single scenario]
-        :return:
-        output_dict: a dictionary that contains the outputs per decision makers options (for a single scenario)
+        This function creates an output dictionary for all decision makers option within a given scenario.
+        :param scenario:
+        :return: a dictionary that contains the outputs per decision makers options (for a single scenario)
         """
         output_dict = {}
         for decision_makers_option in self.input_dict["decision_makers_options"]:
@@ -159,11 +167,10 @@ class Evaluate:
 
         return output_dict
 
-    def evaluate_all_scenarios(self):
+    def evaluate_all_scenarios(self) -> dict:
         """
         This function evaluates the dependencies for all scenario's and all decision makers options.
-        :return:
-        output_dict: for each scenario, a dictionary for all decision makers options is returned
+        :return: for each scenario, a dictionary for all decision makers options is returned
         """
         output_dict = {}
         for scenario in self.input_dict["scenarios"]:
