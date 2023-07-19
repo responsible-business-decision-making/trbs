@@ -31,18 +31,19 @@ class Appreciate:
 
         return boundaries
 
-    def _appreciate_single_key_output(self, value, args: dict):
+    def _appreciate_single_key_output(self, value: float, args: dict) -> float:
         """
-
-        :param value:
-        :param args:
-        :return:
+        This function appreciates a single key output, given the value, arguments and start & end point.
+        :param value: value of key output
+        :param args: dictionary containing whether the key output should be appreciated linear or smaller the better.
+        :return: the appreciated value of the key output
         """
         start_and_end = self.start_and_end_points[args["key_outputs"]]
         stb_ind = args["key_output_smaller_the_better"]
 
-        # By construction of the start and end point it is not possible for the value to lie outside these bounds.
-        # Therefore start <= value <= end always holds
+        # Option 0: values lie outside the boundaries. Return maximum or minimum based on STB
+        if value < start_and_end[0] or value > start_and_end[1]:
+            return stb_ind * (value < start_and_end[0]) * 100 + (1 - stb_ind) * (value > start_and_end[1]) * 100
 
         # Option 1: Linear appreciation
         #   - if STB = 1: (end - val) / (end - start) * 100
@@ -55,13 +56,16 @@ class Appreciate:
         core_part = (value - start_and_end[0]) / (start_and_end[1] - start_and_end[0])
         return ([1, -1][stb_ind] * math.sin(0.5 * math.pi * core_part) + stb_ind) * 100
 
-    def appreciate_single_decision_maker_option(self, scenario, decision_maker_option, value_dict_in):
+    def appreciate_single_decision_maker_option(
+        self, scenario: str, decision_maker_option: str, value_dict_in: dict
+    ) -> None:
         """
-
-        :param value_dict_in:
-        :param scenario:
-        :param decision_maker_option:
-        :return:
+        This function calculates the appreciation values, both weighted as well as unweighted for the key outputs for a
+        given scenario and decision makers option. Results are stored within the output_dict.
+        :param scenario: given scenario
+        :param decision_maker_option: given dmo
+        :param value_dict_in: dictionary corresponding with given scenario and dmo
+        :return: None as results are stored within the output_dict
         """
         print("\n", scenario, "|", decision_maker_option)
 
