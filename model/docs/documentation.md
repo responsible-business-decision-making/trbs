@@ -47,12 +47,11 @@ key output values (so for all scenarios and decision makers options).
   appreciation.
   - `key_output_linear` ($I_{l}$) that determines whether a linear or non-linear appreciation should be applied.
 - The appreciations are calculated as 
-  - if $I_l=1$:
-  $$ f(x, s, e) = (-1)^{I_{STB}} \cdot \frac{x - s - I_{STB}(e-s)}{e-s} \cdot 100 $$ 
+  - if $I_l=1$: $$f(x, s, e) = (-1)^{I_{STB}} \cdot \frac{x - s - I_{STB}(e-s)}{e-s} \cdot 100$$ 
   where $x$ denotes the key output value, $s$ denotes the start value and $e$ the end value.
-  - if $I_l=0$:
-  $$ f(x, s, e) = \left((-1)^{I_{STB}} \cdot \sin\left(\frac{1}{2} \cdot \pi \cdot \frac{x-s}{e-s}\right) + I_{STB}\right) \cdot 100 $$
+  - if $I_l=0$: $$f(x, s, e) = \left((-1)^{I_{STB}} \cdot \sin\left(\frac{1}{2} \cdot \pi \cdot \frac{x-s}{e-s}\right) + I_{STB}\right) \cdot 100$$
   where $x$ denotes the key output value, $s$ denotes the start value and $e$ the end value.
+- `Weights` ($w$) are calculated as 
 
 
 What **doesn't** this class do?
