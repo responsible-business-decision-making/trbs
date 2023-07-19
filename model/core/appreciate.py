@@ -84,42 +84,53 @@ class Appreciate:
             key: weighted_appreciations[index] for index, key in enumerate(self.input_dict["key_outputs"])
         }
 
-    def appreciate_single_scenario(self, scenario, value_dict_in):
+    def appreciate_single_scenario(self, scenario: str, value_dict_in: dict) -> None:
         """
-
-        :param value_dict_in:
-        :param scenario:
-        :return:
+        This function calculates the appreciation values, both weighted as well as unweighted for the key outputs for a
+        given scenario and ALL decision makers options. Results are stored within the output_dict.
+        :param scenario: given scenario
+        :param value_dict_in: dictionary corresponding with given scenario
+        :return: None as results are stored within the output_dict
         """
         for decision_maker_option, value_dict_out in value_dict_in.items():
             self.appreciate_single_decision_maker_option(scenario, decision_maker_option, value_dict_out)
 
-    def appreciate_all_scenarios(self):
-        """This function ..."""
+    def appreciate_all_scenarios(self) -> None:
+        """
+        This function calculates the appreciation values, both weighted as well as unweighted for the key outputs for a
+        given scenario and ALL decision makers options. Results are stored within the output_dict.
+        :return: None as results are stored within the output_dict
+        """ ""
         for scenario, value_dict in self.output_dict.items():
             self.appreciate_single_scenario(scenario, value_dict)
 
     @staticmethod
-    def _apply_weights_single_key_output(weights):
+    def _apply_weights_single_key_output(weights: dict) -> float:
         """
-
-        :param weights:
-        :return:
+        This function calculates the weight for a single key output.
+        :param weights: dictionary containing necessary parameters. Should contain:
+            - 'sum_within_theme': sum of all weights of all key outputs with the same theme
+            - 'sum_theme': sum of the theme weights (theme weights are user input)
+            - 'key_output': weight of this key_output
+            - 'theme': weight of the theme of the key_output
+        :return: the calculated weight of the key output
         """
         # 'sum_within_theme' or 'sum_theme' cannot be 0
         if not weights["sum_within_theme"] or not weights["sum_theme"]:
             return 0
         return (weights["key_output"] / weights["sum_within_theme"]) * (weights["theme"] / weights["sum_theme"])
 
-    def _calculate_weights(self):
-        key_outputs = self.input_dict["key_outputs"]
+    def _calculate_weights(self) -> list:
+        """
+        This function creates a weights list for all key outputs.
+        :return: list with weights for all key outputs
+        """
         key_output_themes = self.input_dict["key_output_theme"]
         weights = self.input_dict["key_output_weight"]
-        themes = self.input_dict["themes"]
         theme_weights = self.input_dict["theme_weight"]
 
         adjusted_weights = []
-        for index, _ in enumerate(key_outputs):
+        for index, _ in enumerate(self.input_dict["key_outputs"]):
             theme = key_output_themes[index]
             # Find all key outputs weights that share the same theme as 'key_output' (>= 1)
             theme_indices = [
@@ -127,7 +138,7 @@ class Appreciate:
             ]
             weights_within_theme = weights[theme_indices]
             # Find theme weight of 'key_output' - as a number instead of array
-            theme_weight = theme_weights[np.where(themes == theme)[0]][0]
+            theme_weight = theme_weights[np.where(self.input_dict["themes"] == theme)[0]][0]
 
             weights_dict = {
                 "key_output": weights[index],
@@ -139,8 +150,12 @@ class Appreciate:
 
         return adjusted_weights
 
-    def _apply_weights(self, appreciation_dict: dict):
-        """This function ..."""
+    def _apply_weights(self, appreciation_dict: dict) -> np.array:
+        """
+        This function applies the weights to the appreciations
+        :param appreciation_dict: dictionary contain the unweighted appreciations
+        :return: a numpy array with the weighted appreciations
+        """
         # ensure appreciation vector has same order as weight & key_outputs vector
         appreciations = [appreciation_dict[key_output] for key_output in self.input_dict["key_outputs"]]
         # calculate the (adjusted) weight for given key_output & theme weight

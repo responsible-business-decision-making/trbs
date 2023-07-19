@@ -4,7 +4,7 @@ This module contains all test for the Appreciate() class
 """
 import pytest
 from core.appreciate import Appreciate
-from core.utils import round_all_dict_values
+from core.utils import round_all_dict_values, get_values_from_target
 from params import INPUT_DICT, OUTPUT_DICT
 
 
@@ -86,3 +86,83 @@ def test_appreciate_single_decision_maker_option(appreciate_beerwiser):
         },
     }
     assert result == expected_result
+
+
+def test_appreciate_single_scenario_only_structure(appreciate_beerwiser):
+    """
+    This function tests the STRUCTURE after appreciate_single_scenario of the output dictionary. Only the keys and the
+    length of the values are checked (should be 3 now) as these values are a result from
+    appreciate_single_decision_maker_option() which is already checked above.
+    :param appreciate_beerwiser: an Appreciate() class for Beerwiser
+    """
+    value_dict_in = appreciate_beerwiser.output_dict["Pessimistic"]
+    appreciate_beerwiser.appreciate_single_scenario("Pessimistic", value_dict_in)
+
+    result = appreciate_beerwiser.output_dict["Pessimistic"]
+    result_structure = {key: len(value) for key, value in result.items()}
+    expected_structure = {"Equal spread": 3, "Focus on training": 3, "Focus on water recycling": 3}
+    assert result_structure == expected_structure
+
+
+def test_appreciate_all_scenarios_only_structure(appreciate_beerwiser):
+    """
+    This function tests for the presence of 'appreciations' and 'weighted_appreciations' in the output dictionary
+    structure. The correctness of these values is already tested above.
+    :param appreciate_beerwiser: an Appreciate() class for Beerwiser
+    """
+    appreciate_beerwiser.appreciate_all_scenarios()
+    result = appreciate_beerwiser.output_dict
+
+    # There should be 3 x 3 (dmo x scenario) appreciation dictionaries and 3 x 3 weighted appreciation dictionaries
+    count_dictionaries = {
+        "appreciations": len(get_values_from_target(result, "appreciations")),
+        "weighted_appreciations": len(get_values_from_target(result, "weighted_appreciations")),
+    }
+    expected_count = {"appreciations": 9, "weighted_appreciations": 9}
+    assert count_dictionaries == expected_count
+
+
+@pytest.mark.parametrize(
+    "weights_list, expected_result",
+    [([3, 5, 3, 15], 0.33), ([2, 4, 8, 20], 0.05), ([10, 8, 0, 2], 0), ([2, 3, 4, 0], 0)],
+)
+def test_apply_weights_single_key_output(appreciate_beerwiser, weights_list, expected_result):
+    """
+    This function tests _apply_weights_single_key_output to return the correct weight for a variety of
+    different inputs. Also boundary cases with zero weights are tested.
+    :param appreciate_beerwiser: an Appreciate() class for Beerwiser
+    :param weights_list: a list with weights needed to create weight dictionary
+    :param expected_result: expected value for the weight
+    """
+    # prepare dictionary | easier to parametrize in this way
+    weights_dict = {
+        "key_output": weights_list[0],
+        "theme": weights_list[1],
+        "sum_within_theme": weights_list[2],
+        "sum_theme": weights_list[3],
+    }
+    result = round(appreciate_beerwiser._apply_weights_single_key_output(weights_dict), 2)
+    assert result == expected_result
+
+
+def test_calculate_weights(appreciate_beerwiser):
+    """
+    This function tests _calculate_weights to return the correct values
+    :param appreciate_beerwiser: an Appreciate() class for Beerwiser
+    """
+    result = appreciate_beerwiser._calculate_weights()
+    rounded_result = [round(value, 2) for value in result]
+    expected_result = [0.33, 0.17, 0.50]
+    assert rounded_result == expected_result
+
+
+def test_apply_weights(appreciate_beerwiser):
+    """
+    This function tests _apply_weights to return the correct weighted appreciations
+    :param appreciate_beerwiser: an Appreciate() class for Beerwiser
+    """
+    appreciation_dict = {"Accidents reduction": 50, "Water use reduction": 49.756, "Production cost reduction": 81.12}
+    result = appreciate_beerwiser._apply_weights(appreciation_dict)
+    rounded_result = [round(value, 2) for value in result]
+    expected_result = [16.67, 8.29, 40.56]
+    assert expected_result == rounded_result

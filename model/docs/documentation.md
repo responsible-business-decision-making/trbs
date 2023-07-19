@@ -51,7 +51,14 @@ key output values (so for all scenarios and decision makers options).
   where $x$ denotes the key output value, $s$ denotes the start value and $e$ the end value.
   - if $I_l=0$: $$f(x, s, e) = \left((-1)^{I_{STB}} \cdot \sin\left(\frac{1}{2} \cdot \pi \cdot \frac{x-s}{e-s}\right) + I_{STB}\right) \cdot 100$$
   where $x$ denotes the key output value, $s$ denotes the start value and $e$ the end value.
-- `Weights` ($w$) are calculated as 
+- For the calculation of the `Weights` ($w$) we first define the following variables:
+  - $w_{ko}$ or `weights["key_output"]`: the weight of the given key output (user-input)
+  - $w_{kos|t}$ or `weights["sum_within_theme"]`: the sum of the weights of all key outputs with the same theme as the 
+  given key output
+  - $w_{t}$ or `weights["theme"]`: the weight of the theme of the given key output (user-input)
+  - $w_{ts}$ or `weights["sum_theme"]`: the sum of the weights of all themes 
+- The weight for a given key output is then calculated as: $$w = \frac{w_{ko}}{w_{kos|t}} \cdot \frac{w_t}{w_{ts}}$$ 
+  
 
 
 What **doesn't** this class do?
