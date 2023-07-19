@@ -1,8 +1,8 @@
-## Documentation: ResponsibleBusinessSimulator
+## Documentation: TheResponsibleBusinessSimulator
 
 ### Goal of this document
 The goal of this document to keep track of what can (and cannot) be done with the (functions of) the 
-`ResponsibleBusinessSimulator` class. The structure of this document is as follows: each core function is discussed in
+`TheResponsibleBusinessSimulator` class. The structure of this document is as follows: each core function is discussed in
 a separate chapter, with the focus on the currently available options. 
 
 ### Function: *build()*

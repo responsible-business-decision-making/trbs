@@ -7,7 +7,7 @@ from core.evaluate import Evaluate
 from core.appreciate import Appreciate
 
 
-class ResponsibleBusinessSimulator:
+class TheResponsibleBusinessSimulator:
     """
     This class is the base class of an tRBS-case and contains all necessary information to import data, evaluate
     dependencies and calculate appreciations.

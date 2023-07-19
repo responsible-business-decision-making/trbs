@@ -13,5 +13,5 @@ evaluate_single_dependency()
 ### Discussed on Wednesday 19th July
 - (open) Remove units
 - (open) remove `starts_with("key_output")`
-- (open) Renaming: TheResponsibleBusinessSimulator, trbs, analyze_case
+- **(closed)** Renaming: TheResponsibleBusinessSimulator, trbs, analyze_case
 - (open) Visualize class: Bar charts  step 6 (stacked) and step 7 (singular), appreciation table and value

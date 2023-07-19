@@ -6,24 +6,26 @@ evaluate, and collaborate. The RBS model is designed to simulate the impact of b
 and social responsibility. By open-sourcing the code, we promote transparency and invite contributions from 
 researchers and practitioners.
 
-## In this repository
+## In this repository (WIP)
 This repository contains 
 - _(model/tRBS.ipynb)_ A **Jupyter notebook** to work with the model in an interactive way
 - The **core functions** of the RBS model
 
-## Local set-up (TBD)
+## Local set-up (WIP)
 
 **Step 1:** connect with the repository. If you either need to set-up git and/or 
 authenticate with GitHub, see [GitHub's manual](https://docs.github.com/en/get-started/quickstart/set-up-git).
 ```
-git clone https://github.com/responsible-business-decision-making/tRBS_model.git
+git clone https://github.com/responsible-business-decision-making/trbs.git
 ```
 
-**Step 2:** install all required dependencies with ```pipenv```. You might need to install ```pipenv``` if you have
+**Step 2:** Move inside the `trbs`-folder and install all required dependencies with ```pipenv```. You might need to install ```pipenv``` if you have
 not used this before. 
 ```
+cd trbs
 pip install pipenv
 pipenv install
+pipenv shell
 ```
 
 **Step 3:** configure the pre-commit file. This file helps you adhere to a clean coding style and checks
@@ -45,6 +47,7 @@ git checkout -b 'NAME-OF-YOUR-BRANCH'
 
 **(optional) A2:** Run all `pytest` tests in the `/model` folder.
 ```
+cd model
 python -m pytest
 ```
 
