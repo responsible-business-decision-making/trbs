@@ -5,6 +5,7 @@ Business Simulator Case.
 from core.import_case import import_case
 from core.evaluate import Evaluate
 from core.appreciate import Appreciate
+from core.visualize import Visualize
 
 
 class TheResponsibleBusinessSimulator:
@@ -19,6 +20,7 @@ class TheResponsibleBusinessSimulator:
         self.file_path = file_path
         self.input_dict = {}
         self.output_dict = {}
+        self.visualizer = None
 
     def __str__(self):
         input_data_formatted = (
@@ -46,3 +48,10 @@ class TheResponsibleBusinessSimulator:
         """This function deals with the appreciation of the outcomes"""
         case_appreciation = Appreciate(self.input_dict, self.output_dict)
         case_appreciation.appreciate_all_scenarios()
+
+    def visualize(self, visual_request, *args):
+        """This function deals with the visualizations of the outcomes"""
+        # Set a Visualize class only if this has not yet been initialised.
+        if not self.visualizer:
+            self.visualizer = Visualize(self.output_dict)
+        return self.visualizer.create_visual(visual_request, *args)

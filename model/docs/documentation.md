@@ -33,7 +33,7 @@ added along the way and do not need to be initialized. A missing value `""` is s
 - Operators that are not part of the list above will raise an `EvaluationError`. 
 - The `output_dict` consists of the values of ONLY the key outputs, per scenario and per decision maker option.
 
-What **doesn't** this class do?
+What **doesn't** this class do (yet)?
 - No checks and/or boundaries on calculated values. 
 
 ### Function: *appreciate()*
@@ -61,5 +61,5 @@ key output values (so for all scenarios and decision makers options).
   
 
 
-What **doesn't** this class do?
-- a
+What **doesn't** this class do (yet)?
+- Weight scenarios
