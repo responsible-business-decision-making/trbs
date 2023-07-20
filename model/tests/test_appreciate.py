@@ -36,10 +36,10 @@ def test_get_start_and_end_points(appreciate_beerwiser):
 @pytest.mark.parametrize(
     "value, args, expected_result",
     [
-        (10, {"key_outputs": "Sample A", "key_output_smaller_the_better": 0, "key_output_linear": 1}, 33.33),
-        (30, {"key_outputs": "Sample A", "key_output_smaller_the_better": 1, "key_output_linear": 1}, 0),
-        (150, {"key_outputs": "Sample B", "key_output_smaller_the_better": 1, "key_output_linear": 0}, 15.71),
-        (-20, {"key_outputs": "Sample A", "key_output_smaller_the_better": 0, "key_output_linear": 0}, 0),
+        (10, {"key_output": "Sample A", "key_output_smaller_the_better": 0, "key_output_linear": 1}, 33.33),
+        (30, {"key_output": "Sample A", "key_output_smaller_the_better": 1, "key_output_linear": 1}, 0),
+        (150, {"key_output": "Sample B", "key_output_smaller_the_better": 1, "key_output_linear": 0}, 15.71),
+        (-20, {"key_output": "Sample A", "key_output_smaller_the_better": 0, "key_output_linear": 0}, 0),
     ],
 )
 def test_appreciate_single_key_output(appreciate_beerwiser, value, args, expected_result):
@@ -65,7 +65,7 @@ def test_appreciate_single_decision_maker_option(appreciate_beerwiser):
     """
 
     value_dict_in = appreciate_beerwiser.output_dict["Base case"]["Focus on training"]
-    appreciate_beerwiser.appreciate_single_decision_maker_option("Base case", "Focus on training", value_dict_in)
+    appreciate_beerwiser.appreciate_single_decision_maker_option(value_dict_in)
 
     result = round_all_dict_values(appreciate_beerwiser.output_dict["Base case"]["Focus on training"])
     expected_result = {
@@ -96,7 +96,7 @@ def test_appreciate_single_scenario_only_structure(appreciate_beerwiser):
     :param appreciate_beerwiser: an Appreciate() class for Beerwiser
     """
     value_dict_in = appreciate_beerwiser.output_dict["Pessimistic"]
-    appreciate_beerwiser.appreciate_single_scenario("Pessimistic", value_dict_in)
+    appreciate_beerwiser.appreciate_single_scenario(value_dict_in)
 
     result = appreciate_beerwiser.output_dict["Pessimistic"]
     result_structure = {key: len(value) for key, value in result.items()}

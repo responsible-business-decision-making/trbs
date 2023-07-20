@@ -38,7 +38,7 @@ class Appreciate:
         :param args: dictionary containing whether the key output should be appreciated linear or smaller the better.
         :return: the appreciated value of the key output
         """
-        start_and_end = self.start_and_end_points[args["key_outputs"]]
+        start_and_end = self.start_and_end_points[args["key_output"]]
         stb_ind = args["key_output_smaller_the_better"]
 
         # Option 0: values lie outside the boundaries. Return maximum or minimum based on STB
@@ -56,9 +56,7 @@ class Appreciate:
         core_part = (value - start_and_end[0]) / (start_and_end[1] - start_and_end[0])
         return ([1, -1][stb_ind] * math.sin(0.5 * math.pi * core_part) + stb_ind) * 100
 
-    def appreciate_single_decision_maker_option(
-        self, scenario: str, decision_maker_option: str, value_dict_in: dict
-    ) -> None:
+    def appreciate_single_decision_maker_option(self, value_dict_in: dict) -> None:
         """
         This function calculates the appreciation values, both weighted as well as unweighted for the key outputs for a
         given scenario and decision makers option. Results are stored within the output_dict.
@@ -67,13 +65,13 @@ class Appreciate:
         :param value_dict_in: dictionary corresponding with given scenario and dmo
         :return: None as results are stored within the output_dict
         """
-        print("\n", scenario, "|", decision_maker_option)
-
         value_dict_in["appreciations"] = {}
         for index, key_output in enumerate(self.input_dict["key_outputs"]):
             key_output_value = value_dict_in["key_outputs"][key_output]
             appreciation_args = {
-                key: value[index] for key, value in self.input_dict.items() if key.startswith("key_output")
+                "key_output": key_output,
+                "key_output_smaller_the_better": self.input_dict["key_output_smaller_the_better"][index],
+                "key_output_linear": self.input_dict["key_output_linear"][index],
             }
             appreciation = self._appreciate_single_key_output(key_output_value, appreciation_args)
 
@@ -84,7 +82,7 @@ class Appreciate:
             key: weighted_appreciations[index] for index, key in enumerate(self.input_dict["key_outputs"])
         }
 
-    def appreciate_single_scenario(self, scenario: str, value_dict_in: dict) -> None:
+    def appreciate_single_scenario(self, value_dict_in: dict) -> None:
         """
         This function calculates the appreciation values, both weighted as well as unweighted for the key outputs for a
         given scenario and ALL decision makers options. Results are stored within the output_dict.
@@ -92,8 +90,8 @@ class Appreciate:
         :param value_dict_in: dictionary corresponding with given scenario
         :return: None as results are stored within the output_dict
         """
-        for decision_maker_option, value_dict_out in value_dict_in.items():
-            self.appreciate_single_decision_maker_option(scenario, decision_maker_option, value_dict_out)
+        for _, value_dict_out in value_dict_in.items():
+            self.appreciate_single_decision_maker_option(value_dict_out)
 
     def appreciate_all_scenarios(self) -> None:
         """
@@ -101,8 +99,9 @@ class Appreciate:
         given scenario and ALL decision makers options. Results are stored within the output_dict.
         :return: None as results are stored within the output_dict
         """ ""
-        for scenario, value_dict in self.output_dict.items():
-            self.appreciate_single_scenario(scenario, value_dict)
+        for _, value_dict in self.output_dict.items():
+            self.appreciate_single_scenario(value_dict)
+        print("Key output values have been processed | Appreciated, weighted & aggregated")
 
     @staticmethod
     def _apply_weights_single_key_output(weights: dict) -> float:
@@ -162,5 +161,4 @@ class Appreciate:
         weights = self._calculate_weights()
         weighted_appreciations = np.array(appreciations) * np.array(weights)
 
-        print(f"{self.input_dict['key_outputs']}: {appreciations} * {weights} = {weighted_appreciations}")
         return weighted_appreciations

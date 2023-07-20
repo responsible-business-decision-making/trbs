@@ -61,7 +61,7 @@ class Evaluate:
         """This helper function returns the FIRST index of a value for a given key and value of self.input_dict."""
         return np.where(self.input_dict[key] == value)[0][0]
 
-    def _squeeze(self, argument_1_value: int, argument_2_value: int, squeeze_args: dict) -> int:
+    def _squeeze(self, argument_1_value: float, argument_2_value: float, squeeze_args: dict) -> int:
         """This functions evaluates ONLY the Squeeze * operator function."""
         division_part = self.operators_dict["/"](
             min(argument_1_value, argument_2_value), squeeze_args["saturation_point"]
@@ -71,11 +71,6 @@ class Evaluate:
             * squeeze_args["accessibility"]
             * squeeze_args["probability_of_success"]
             * squeeze_args["maximum_effect"]
-        )
-        print(
-            f"\t add: {result} = min({argument_1_value},{argument_2_value}) / {squeeze_args['saturation_point']}"
-            f"* {squeeze_args['accessibility']} * {squeeze_args['probability_of_success']} *"
-            f"{squeeze_args['maximum_effect']}"
         )
         return result
 
@@ -87,7 +82,7 @@ class Evaluate:
         key_output_values = [self.value_dict[key_output] for key_output in self.input_dict["key_outputs"]]
         return dict(zip(self.input_dict["key_outputs"], key_output_values))
 
-    def _evaluate_single_dependency(self, argument_1_value: int, argument_2_value: int, operator: str) -> int:
+    def _evaluate_single_dependency(self, argument_1_value: float, argument_2_value: float, operator: str) -> int:
         """
         This function evaluates a single dependency. Raises an EvaluationError when the operator is unknown.
         :param argument_1_value: value of first argument
@@ -100,7 +95,6 @@ class Evaluate:
 
         # apply operations based on occurrence in operators_dict
         result = self.operators_dict[operator](argument_1_value, argument_2_value)
-        print(f"\tadd: '{result}' = '{argument_1_value}' {operator} '{argument_2_value}'")
         return result
 
     def evaluate_all_dependencies(self, scenario: str, decision_makers_option: str) -> dict:
@@ -114,7 +108,6 @@ class Evaluate:
         scen_index = self._find_index("scenarios", scenario)
         dmo_index = self._find_index("decision_makers_options", decision_makers_option)
         self._create_value_dict(scen_index, dmo_index)
-        print(f"\n\nScenario: {scenario} | Decision Makers Option: {decision_makers_option}")
 
         # calculate each destination -- already ordered on hierarchy during the import
         for index, dest in enumerate(self.input_dict["destination"]):
@@ -122,8 +115,6 @@ class Evaluate:
             arg1 = self.input_dict["argument_1"][index]
             arg2 = self.input_dict["argument_2"][index]
             operator = self.input_dict["operator"][index]
-
-            print(f"\n{index}. '{dest} (value: {dest_value})' = '{arg1}' {operator} '{arg2}'")
 
             # Squeezed * has its own evaluation function
             if operator == "Squeezed *":
@@ -175,5 +166,6 @@ class Evaluate:
         output_dict = {}
         for scenario in self.input_dict["scenarios"]:
             output_dict[scenario] = self.evaluate_selected_scenario(scenario)
+            print(f"- Evaluated '{scenario}' successfully for all decision makers options!")
 
         return output_dict

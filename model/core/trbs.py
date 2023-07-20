@@ -49,9 +49,9 @@ class TheResponsibleBusinessSimulator:
         case_appreciation = Appreciate(self.input_dict, self.output_dict)
         case_appreciation.appreciate_all_scenarios()
 
-    def visualize(self, visual_request, *args):
+    def visualize(self, visual_request, key, **kwargs):
         """This function deals with the visualizations of the outcomes"""
         # Set a Visualize class only if this has not yet been initialised.
         if not self.visualizer:
             self.visualizer = Visualize(self.output_dict)
-        return self.visualizer.create_visual(visual_request, *args)
+        return self.visualizer.create_visual(visual_request, key, **kwargs)
