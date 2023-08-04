@@ -1,0 +1,4 @@
+key_output;theme;monetary;smaller_the_better;linear;automatic;start;end;threshold
+Accidents reduction;People;0;0;1;1;;;
+Water use reduction;Planet;0;0;1;1;;;
+Production cost reduction;Profit;0;0;0;1;;;

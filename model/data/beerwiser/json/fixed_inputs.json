@@ -1,0 +1,49 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"fixed_input",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "fixed_input":"# employees",
+            "value":500.0
+        },
+        {
+            "index":1,
+            "fixed_input":"Current # accidents",
+            "value":51.0
+        },
+        {
+            "index":2,
+            "fixed_input":"Current production cost",
+            "value":7500000.0
+        },
+        {
+            "index":3,
+            "fixed_input":"Current water use",
+            "value":15000000.0
+        },
+        {
+            "index":4,
+            "fixed_input":"Water unit cost",
+            "value":0.05
+        }
+    ]
+}

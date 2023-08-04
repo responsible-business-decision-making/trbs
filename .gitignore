@@ -1,0 +1,17 @@
+# ignore Operating System files
+.DS_Store
+
+# ignore Configuration files
+.idea/
+.ipynb_checkpoints/
+
+# ignore virtual environments (common names)
+venv
+.env
+
+# ignore cache-files
+__pycache__
+.pytest_cache
+
+# ignore open .xlsx file
+~$*

@@ -1,0 +1,64 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"external_variable_input",
+                "type":"string"
+            },
+            {
+                "name":"scenario",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "external_variable_input":"Cost of accident",
+            "scenario":"Base case",
+            "value":15000.0
+        },
+        {
+            "index":1,
+            "external_variable_input":"Effectiveness water recycling",
+            "scenario":"Base case",
+            "value":0.98
+        },
+        {
+            "index":2,
+            "external_variable_input":"Cost of accident",
+            "scenario":"Optimistic",
+            "value":12000.0
+        },
+        {
+            "index":3,
+            "external_variable_input":"Effectiveness water recycling",
+            "scenario":"Optimistic",
+            "value":1.0
+        },
+        {
+            "index":4,
+            "external_variable_input":"Cost of accident",
+            "scenario":"Pessimistic",
+            "value":20000.0
+        },
+        {
+            "index":5,
+            "external_variable_input":"Effectiveness water recycling",
+            "scenario":"Pessimistic",
+            "value":0.9
+        }
+    ]
+}
