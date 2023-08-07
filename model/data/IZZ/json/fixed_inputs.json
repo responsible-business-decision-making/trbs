@@ -1,0 +1,89 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"fixed_input",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "fixed_input":"Average costs of a day lost through absenteeism",
+            "value":500.0
+        },
+        {
+            "index":1,
+            "fixed_input":"Average costs of staff turnover",
+            "value":3000.0
+        },
+        {
+            "index":2,
+            "fixed_input":"Average wage costs per employee",
+            "value":40000.0
+        },
+        {
+            "index":3,
+            "fixed_input":"Current absenteeism %",
+            "value":0.00064
+        },
+        {
+            "index":4,
+            "fixed_input":"Current customer satisfaction",
+            "value":6.5
+        },
+        {
+            "index":5,
+            "fixed_input":"Current employee satisfaction",
+            "value":6.0
+        },
+        {
+            "index":6,
+            "fixed_input":"Current number of employees",
+            "value":1200.0
+        },
+        {
+            "index":7,
+            "fixed_input":"Current productivity %",
+            "value":0.007
+        },
+        {
+            "index":8,
+            "fixed_input":"Current staff turnover %",
+            "value":0.00086
+        },
+        {
+            "index":9,
+            "fixed_input":"Indirect effect employee satisfaction on customer satisfaction",
+            "value":0.26
+        },
+        {
+            "index":10,
+            "fixed_input":"Indirect effect employee satisfaction on productivity %",
+            "value":0.23
+        },
+        {
+            "index":11,
+            "fixed_input":"Threshold salary increase effect",
+            "value":0.5
+        },
+        {
+            "index":12,
+            "fixed_input":"Number of workable days per year",
+            "value":200.0
+        }
+    ]
+}

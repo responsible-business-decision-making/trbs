@@ -1,0 +1,8 @@
+key_output;theme;monetary;smaller_the_better;linear;automatic;start;end;threshold
+Quality of life Ukrainians;Society;0;0;0;1;0;1;
+Quality of life other refugees;Society;0;0;0;1;0;1;
+Quality of life inhabitants;Society;0;0;0;1;0;1;
+Unemployment reduction Ukrainians;Society;0;0;0;1;0;1;
+Unemployment reduction other refugees;Society;0;0;0;1;0;1;
+Unemployment reduction inhabitants;Society;0;0;0;1;0;1;
+Economic impact;Economy;1;0;0;1;0;50000000;

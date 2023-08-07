@@ -1,0 +1,249 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"fixed_input",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "fixed_input":"Effect of unemployment reduction other refugees on income other refugees",
+            "value":0.81
+        },
+        {
+            "index":1,
+            "fixed_input":"Effect of unemployment reduction Ukrainians on income Ukrainians",
+            "value":0.81
+        },
+        {
+            "index":2,
+            "fixed_input":"Effect of unemployment reduction inhabitants on income inhabitants",
+            "value":0.37
+        },
+        {
+            "index":3,
+            "fixed_input":"Effect of unemployment reduction other refugees on social trust other refugees",
+            "value":0.01
+        },
+        {
+            "index":4,
+            "fixed_input":"Effect of unemployment reduction inhabitants on QoL inhabitants",
+            "value":0.266
+        },
+        {
+            "index":5,
+            "fixed_input":"Effect of unemployment reduction other refugees on QoL other refugees",
+            "value":0.266
+        },
+        {
+            "index":6,
+            "fixed_input":"Effect of unemployment reduction Ukrainians on QoL Ukrainians",
+            "value":0.266
+        },
+        {
+            "index":7,
+            "fixed_input":"Effect of health Ukrainians on quality of life Ukrainians",
+            "value":1.12
+        },
+        {
+            "index":8,
+            "fixed_input":"Effect of language acquisition Ukrainians on income Ukrainians",
+            "value":0.1549
+        },
+        {
+            "index":9,
+            "fixed_input":"Effect of language acquisition Ukrainians on unemployment reduction Ukrainians",
+            "value":0.229
+        },
+        {
+            "index":10,
+            "fixed_input":"Effect of language acquisition Ukrainians on social cohesion Ukrainians",
+            "value":0.022
+        },
+        {
+            "index":11,
+            "fixed_input":"Effect of income Ukrainians on financial security Ukrainians",
+            "value":0.0073
+        },
+        {
+            "index":12,
+            "fixed_input":"Effect of income other refugees on financial security other refugees",
+            "value":0.0073
+        },
+        {
+            "index":13,
+            "fixed_input":"Effect of income other refugees on crime rate",
+            "value":0.26
+        },
+        {
+            "index":14,
+            "fixed_input":"Effect of income Ukrainians on crime rate",
+            "value":0.26
+        },
+        {
+            "index":15,
+            "fixed_input":"Effect of crime rate on personal safety Ukrainians",
+            "value":0.29
+        },
+        {
+            "index":16,
+            "fixed_input":"Effect of crime rate on personal safety other refugees",
+            "value":0.29
+        },
+        {
+            "index":17,
+            "fixed_input":"Effect of crime rate on personal safety inhabitants",
+            "value":0.29
+        },
+        {
+            "index":18,
+            "fixed_input":"Effect of income inhabitants on financial security inhabitants",
+            "value":0.0041
+        },
+        {
+            "index":19,
+            "fixed_input":"Effect of personal safety other refugees on quality of life other refugees",
+            "value":0.82
+        },
+        {
+            "index":20,
+            "fixed_input":"Effect of personal safety Ukrainians on quality of life Ukrainians",
+            "value":0.82
+        },
+        {
+            "index":21,
+            "fixed_input":"Effect of personal safety inhabitants on quality of life inhabitants",
+            "value":0.0912
+        },
+        {
+            "index":22,
+            "fixed_input":"Effect of tertiary education completed Ukrainians on income Ukrainians",
+            "value":0.7
+        },
+        {
+            "index":23,
+            "fixed_input":"Effect of tertiary education completed Ukrainians on personal safety Ukrainians",
+            "value":0.267
+        },
+        {
+            "index":24,
+            "fixed_input":"Effect of tertiary education completed Ukrainians on unemployment reduction Ukrainians",
+            "value":0.158
+        },
+        {
+            "index":25,
+            "fixed_input":"Effect of social cohesion Ukrainians on crime rate reduction",
+            "value":0.26
+        },
+        {
+            "index":26,
+            "fixed_input":"Effect of social cohesion Ukrainians on quality of life Ukrainians",
+            "value":0.363
+        },
+        {
+            "index":27,
+            "fixed_input":"Effect of social participation Ukrainians on quality of life Ukrainians",
+            "value":0.391
+        },
+        {
+            "index":28,
+            "fixed_input":"Effect of social trust other refugees on quality of life other refugees",
+            "value":0.209
+        },
+        {
+            "index":29,
+            "fixed_input":"Effect of financial security Ukrainians on quality of life Ukrainians",
+            "value":0.46
+        },
+        {
+            "index":30,
+            "fixed_input":"Effect of financial security other refugees on quality of life other refugees",
+            "value":0.46
+        },
+        {
+            "index":31,
+            "fixed_input":"Effect of financial security inhabitants on quality of life inhabitants",
+            "value":0.46
+        },
+        {
+            "index":32,
+            "fixed_input":"Effect intervention on jealousy",
+            "value":1.0
+        },
+        {
+            "index":33,
+            "fixed_input":"Effect of jealousy on QoL on quality of life other refugees",
+            "value":-0.05
+        },
+        {
+            "index":34,
+            "fixed_input":"Effect of jealousy on QoL on quality of life inhabitants",
+            "value":-0.05
+        },
+        {
+            "index":35,
+            "fixed_input":"Average yearly salary Ukrainians",
+            "value":20700.0
+        },
+        {
+            "index":36,
+            "fixed_input":"Effect of additional jobs on number of additional jobs Ukrainians",
+            "value":0.061
+        },
+        {
+            "index":37,
+            "fixed_input":"Effect of additional jobs on number of additional jobs other refugees",
+            "value":0.197
+        },
+        {
+            "index":38,
+            "fixed_input":"Effect of additional jobs on number of additional jobs inhabitants",
+            "value":0.742
+        },
+        {
+            "index":39,
+            "fixed_input":"Number of other refugees workforce",
+            "value":1532.0
+        },
+        {
+            "index":40,
+            "fixed_input":"Number of inhabitants workforce",
+            "value":24000.0
+        },
+        {
+            "index":41,
+            "fixed_input":"Number of Ukrainian refugees workforce",
+            "value":3105.0
+        },
+        {
+            "index":42,
+            "fixed_input":"Social benefits Ukrainian refugees",
+            "value":3120.0
+        },
+        {
+            "index":43,
+            "fixed_input":"Social benefits other refugees",
+            "value":3120.0
+        },
+        {
+            "index":44,
+            "fixed_input":"Social benefits inhabitants",
+            "value":14352.0
+        }
+    ]
+}

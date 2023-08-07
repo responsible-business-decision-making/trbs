@@ -1,0 +1,10 @@
+key_output;theme;monetary;smaller_the_better;linear;automatic;start;end;threshold
+Decrease in absenteeism %;People;0;0;0;1;;;
+Decrease in staff turnover %;People;0;0;0;1;;;
+Increase in customer satisfaction;People;0;0;0;1;;;
+Increase in employee satisfaction;People;0;0;0;1;;;
+Decrease in absenteeism costs;Profit;1;0;0;1;;;
+Decrease in staff turnover costs;Profit;1;0;0;1;;;
+Decrease in wage costs;Profit;1;0;0;1;;;
+Increase in production capacity;Profit;0;1;0;1;;;
+Total investment;Profit;1;0;0;1;;;

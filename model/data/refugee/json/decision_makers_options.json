@@ -1,0 +1,178 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"internal_variable_input",
+                "type":"string"
+            },
+            {
+                "name":"decision_makers_option",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "internal_variable_input":"Language and integration course",
+            "decision_makers_option":"Employment & Education",
+            "value":0.0
+        },
+        {
+            "index":1,
+            "internal_variable_input":"Sports and association",
+            "decision_makers_option":"Employment & Education",
+            "value":0.0
+        },
+        {
+            "index":2,
+            "internal_variable_input":"Employment",
+            "decision_makers_option":"Employment & Education",
+            "value":3234502.0
+        },
+        {
+            "index":3,
+            "internal_variable_input":"Access to transport",
+            "decision_makers_option":"Employment & Education",
+            "value":0.0
+        },
+        {
+            "index":4,
+            "internal_variable_input":"Education after 18",
+            "decision_makers_option":"Employment & Education",
+            "value":3234502.0
+        },
+        {
+            "index":5,
+            "internal_variable_input":"Language and integration course",
+            "decision_makers_option":"Employment & Language",
+            "value":3234502.0
+        },
+        {
+            "index":6,
+            "internal_variable_input":"Sports and association",
+            "decision_makers_option":"Employment & Language",
+            "value":0.0
+        },
+        {
+            "index":7,
+            "internal_variable_input":"Employment",
+            "decision_makers_option":"Employment & Language",
+            "value":3234502.0
+        },
+        {
+            "index":8,
+            "internal_variable_input":"Access to transport",
+            "decision_makers_option":"Employment & Language",
+            "value":0.0
+        },
+        {
+            "index":9,
+            "internal_variable_input":"Education after 18",
+            "decision_makers_option":"Employment & Language",
+            "value":0.0
+        },
+        {
+            "index":10,
+            "internal_variable_input":"Language and integration course",
+            "decision_makers_option":"Sports & Language",
+            "value":3881402.3999999999
+        },
+        {
+            "index":11,
+            "internal_variable_input":"Sports and association",
+            "decision_makers_option":"Sports & Language",
+            "value":2587601.6000000001
+        },
+        {
+            "index":12,
+            "internal_variable_input":"Employment",
+            "decision_makers_option":"Sports & Language",
+            "value":0.0
+        },
+        {
+            "index":13,
+            "internal_variable_input":"Access to transport",
+            "decision_makers_option":"Sports & Language",
+            "value":0.0
+        },
+        {
+            "index":14,
+            "internal_variable_input":"Education after 18",
+            "decision_makers_option":"Sports & Language",
+            "value":0.0
+        },
+        {
+            "index":15,
+            "internal_variable_input":"Language and integration course",
+            "decision_makers_option":"Mix all interventions",
+            "value":1293800.8
+        },
+        {
+            "index":16,
+            "internal_variable_input":"Sports and association",
+            "decision_makers_option":"Mix all interventions",
+            "value":1293800.8
+        },
+        {
+            "index":17,
+            "internal_variable_input":"Employment",
+            "decision_makers_option":"Mix all interventions",
+            "value":1293800.8
+        },
+        {
+            "index":18,
+            "internal_variable_input":"Access to transport",
+            "decision_makers_option":"Mix all interventions",
+            "value":1293800.8
+        },
+        {
+            "index":19,
+            "internal_variable_input":"Education after 18",
+            "decision_makers_option":"Mix all interventions",
+            "value":1293800.8
+        },
+        {
+            "index":20,
+            "internal_variable_input":"Language and integration course",
+            "decision_makers_option":"Employment & Sports",
+            "value":0.0
+        },
+        {
+            "index":21,
+            "internal_variable_input":"Sports and association",
+            "decision_makers_option":"Employment & Sports",
+            "value":2587601.6000000001
+        },
+        {
+            "index":22,
+            "internal_variable_input":"Employment",
+            "decision_makers_option":"Employment & Sports",
+            "value":3881402.3999999999
+        },
+        {
+            "index":23,
+            "internal_variable_input":"Access to transport",
+            "decision_makers_option":"Employment & Sports",
+            "value":0.0
+        },
+        {
+            "index":24,
+            "internal_variable_input":"Education after 18",
+            "decision_makers_option":"Employment & Sports",
+            "value":0.0
+        }
+    ]
+}
