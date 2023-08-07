@@ -160,7 +160,7 @@ class CaseImporter:
             )
         ).ravel()
 
-        # step 2: determine hierarchies
+        # STEP 2: determine hierarchies
         # step 2A: first-level hierarchies | calculations that use solely input variables
         data["hierarchy"] = data.apply(self._apply_first_level_hierarchy_to_row, all_inputs=all_inputs, axis=1)
         subdata = data[data["hierarchy"] != 1]
@@ -177,6 +177,7 @@ class CaseImporter:
         # step 3: store the data in the input_dict
         for col in self.validate_dict["dependencies"]:
             self.input_dict[col] = data[col].to_numpy()
+        self.input_dict["hierarchy"] = data["hierarchy"].to_numpy()
         self.input_dict["dependencies_order"] = data.index.to_numpy()
 
     def _convert_to_numpy_arrays_weights(self, table: str, data: pd.DataFrame) -> None:

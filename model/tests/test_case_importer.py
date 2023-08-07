@@ -271,15 +271,16 @@ def test_convert_to_ordered_dependencies(import_beerwiser_json):
         "fixed_inputs": ["love", "money"],
         "internal_variable_inputs": [],
         "external_variable_inputs": [],
-        "destination": np.array(["super love", "crook", "education", "law", "lawyer", "IT"], dtype=object),
-        "argument_1": np.array(["love", "5", "money", "tech", "education", "law"], dtype=object),
-        "argument_2": np.array(["", "money", "love", "", "law", "tech"], dtype=object),
+        "destination": np.array(["crook", "education", "law", "super love", "lawyer", "IT"], dtype=object),
+        "argument_1": np.array(["5", "money", "tech", "love", "education", "law"], dtype=object),
+        "argument_2": np.array(["money", "love", "", "", "law", "tech"], dtype=object),
         "operator": np.full(6, "N/A", dtype=object),
         "maximum_effect": np.full(6, "N/A", dtype=object),
         "accessibility": np.full(6, "N/A", dtype=object),
         "probability_of_success": np.full(6, "N/A", dtype=object),
         "saturation_point": np.full(6, "N/A", dtype=object),
-        "dependencies_order": np.array([1, 4, 5, 0, 2, 3]),
+        "hierarchy": np.array([1, 1, 2, 2, 3, 3]),
+        "dependencies_order": np.array([4, 5, 0, 1, 2, 3]),
     }
     assert all(np.array_equal(expected_result[key], result[key]) for key in result)
 

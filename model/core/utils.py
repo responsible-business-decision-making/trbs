@@ -52,7 +52,6 @@ def number_formatter(number: float) -> str:
     return f"{number:.2f}"
 
 
-# TODO: fix .isdigit() with this function
 def check_numeric(arg: str or float or int) -> bool:
     """
     This function checks if the provided argument can be numeric

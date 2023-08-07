@@ -2,7 +2,7 @@
 """
 This module contains all tests for the utils.py file
 """
-from core.utils import round_all_dict_values, get_values_from_target, number_formatter
+from core.utils import round_all_dict_values, get_values_from_target, number_formatter, check_numeric
 import pytest
 
 
@@ -59,4 +59,24 @@ def test_number_formatter(number, expected_result):
     This function tests number_formatter to return a formatted string
     """
     result = number_formatter(number)
+    assert result == expected_result
+
+
+@pytest.mark.parametrize(
+    "arg, expected_result",
+    [
+        ("256.74", True),
+        ("256", True),
+        (256, True),
+        (256.74, True),
+        ("N/A", False),
+        ("2/3", False),
+        ("23.34.56", False),
+    ],
+)
+def test_check_numeric(arg, expected_result):
+    """
+    This function tests check_numeric to return the correct boolean
+    """
+    result = check_numeric(arg)
     assert result == expected_result
