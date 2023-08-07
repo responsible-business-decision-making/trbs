@@ -5,6 +5,7 @@ from pathlib import Path
 import warnings
 import pandas as pd
 import numpy as np
+from core.utils import check_numeric
 
 
 class TemplateError(Exception):
@@ -113,7 +114,7 @@ class CaseImporter:
         :return: hierarchy level of either 1 or 2
         """
         args_with_known_value = sum(
-            [(row[arg] in all_inputs or row[arg].isdigit()) for arg in ["argument_1", "argument_2"]]
+            [(row[arg] in all_inputs or check_numeric(row[arg])) for arg in ["argument_1", "argument_2"]]
         )
         # if both values of the args are known return level 1, else return level 2
         if args_with_known_value == 2:
@@ -150,16 +151,12 @@ class CaseImporter:
         The sorted arrays are stored in the input dictionary.
         :param data: dataframe containing a dependencies table
         """
-        # step 0: clean-up empty arguments
-        data[["argument_1", "argument_2"]] = data[["argument_1", "argument_2"]].fillna("")
-
         # step 1: collect all input where the value is known
         all_inputs = np.hstack(
             (
                 self.input_dict["fixed_inputs"],
                 self.input_dict["internal_variable_inputs"],
                 self.input_dict["external_variable_inputs"],
-                "",
             )
         ).ravel()
 

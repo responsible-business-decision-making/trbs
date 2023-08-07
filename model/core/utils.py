@@ -50,3 +50,17 @@ def number_formatter(number: float) -> str:
     if number >= 1e3:
         return f"{number/1e3:.1f}K"
     return f"{number:.2f}"
+
+
+# TODO: fix .isdigit() with this function
+def check_numeric(arg: str or float or int) -> bool:
+    """
+    This function checks if the provided argument can be numeric
+    :param arg: the argument that needs to be checked
+    :return: a boolean indicating whether the argument is numeric
+    """
+    try:
+        float(arg)
+        return True
+    except ValueError:
+        return False
