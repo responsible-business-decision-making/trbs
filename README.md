@@ -1,15 +1,15 @@
-# Model: Responsible Business Simulator
+# Model: the Responsible Business Simulator
 
-Welcome to the open-source GitHub repository of the Responsible Business Simulator (RBS) model based on the book. 
+Welcome to the open-source GitHub repository of the Responsible Business Simulator (tRBS) model based on the book. 
 This repo allows users to understand the framework and interact with the model, providing the opportunity to experiment, 
-evaluate, and collaborate. The RBS model is designed to simulate the impact of business decisions on sustainability 
+evaluate, and collaborate. The tRBS model is designed to simulate the impact of business decisions on sustainability 
 and social responsibility. By open-sourcing the code, we promote transparency and invite contributions from 
 researchers and practitioners.
 
 ## In this repository
 This repository contains 
 - A **Jupyter notebook** to work with the model in an interactive way
-- The **core functions** of the RBS model
+- The **core functions** of the tRBS model
 - The following demo cases: beerwiser 
 
 ## Local set-up
