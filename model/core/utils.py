@@ -45,9 +45,9 @@ def number_formatter(number: float) -> str:
     :param number: input value
     :return: formatted string, ending with M, K, or two digits (depending on number size)
     """
-    if number >= 1e6:
+    if abs(number) >= 1e6:
         return f"{number/1e6:.1f}M"
-    if number >= 1e3:
+    if abs(number) >= 1e3:
         return f"{number/1e3:.1f}K"
     return f"{number:.2f}"
 

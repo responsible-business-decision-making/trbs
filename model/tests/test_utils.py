@@ -52,7 +52,15 @@ def test_get_values_from_target(dictionary, target, expected_result):
 
 @pytest.mark.parametrize(
     "number, expected_result",
-    [(12.456874, "12.46"), (755, "755.00"), (1005.12, "1.0K"), (12567.43, "12.6K"), (7684536, "7.7M")],
+    [
+        (12.456874, "12.46"),
+        (755, "755.00"),
+        (1005.12, "1.0K"),
+        (12567.43, "12.6K"),
+        (7684536, "7.7M"),
+        (-123456, "-123.5K"),
+        (-123.3, "-123.30"),
+    ],
 )
 def test_number_formatter(number, expected_result):
     """
