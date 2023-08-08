@@ -1,0 +1,12 @@
+destination;argument_1;argument_2;operator;maximum_effect;accessibility;probability_of_success;saturation_point
+Accidents reduction %;Invest in training of employees;;squeezed *;0.48;0.95;0.9;300000.0
+Water use reduction % when effective;Invest in water recycling;;squeezed *;0.5;1.0;1.0;275000.0
+Water use reduction %;Water use reduction % when effective;Effectiveness water recycling;*;;;;
+Accidents reduction;Current # accidents;Accidents reduction %;*;;;;
+Water use reduction;Water use reduction %;Current water use;*;;;;
+Production cost reduction $;Water use reduction;Water unit cost;*;;;;
+Production cost reduction $;Accidents reduction;Cost of accident;*;;;;
+Production cost reduction;Production cost reduction $;Current production cost;/;;;;
+Cost of training per employee;Invest in training of employees;# employees;/;;;;
+New # accidents;Current # accidents;Accidents reduction;-;;;;
+New water use;Current water use;Water use reduction;-;;;;

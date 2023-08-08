@@ -1,0 +1,64 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"internal_variable_input",
+                "type":"string"
+            },
+            {
+                "name":"decision_makers_option",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"integer"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "internal_variable_input":"Invest in training of employees",
+            "decision_makers_option":"Focus on water recycling",
+            "value":50000
+        },
+        {
+            "index":1,
+            "internal_variable_input":"Invest in water recycling",
+            "decision_makers_option":"Focus on water recycling",
+            "value":250000
+        },
+        {
+            "index":2,
+            "internal_variable_input":"Invest in training of employees",
+            "decision_makers_option":"Focus on training",
+            "value":250000
+        },
+        {
+            "index":3,
+            "internal_variable_input":"Invest in water recycling",
+            "decision_makers_option":"Focus on training",
+            "value":50000
+        },
+        {
+            "index":4,
+            "internal_variable_input":"Invest in training of employees",
+            "decision_makers_option":"Equal spread",
+            "value":150000
+        },
+        {
+            "index":5,
+            "internal_variable_input":"Invest in water recycling",
+            "decision_makers_option":"Equal spread",
+            "value":150000
+        }
+    ]
+}
