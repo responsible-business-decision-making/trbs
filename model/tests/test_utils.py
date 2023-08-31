@@ -2,7 +2,13 @@
 """
 This module contains all tests for the utils.py file
 """
-from core.utils import round_all_dict_values, get_values_from_target, number_formatter, check_numeric
+from core.utils import (
+    round_all_dict_values,
+    get_values_from_target,
+    number_formatter,
+    check_numeric,
+    check_list_content,
+)
 import pytest
 
 
@@ -85,6 +91,26 @@ def test_number_formatter(number, expected_result):
 def test_check_numeric(arg, expected_result):
     """
     This function tests check_numeric to return the correct boolean
+    :param arg: the value to be checked
+    :param expected_result: the correct identification of numeric values
     """
     result = check_numeric(arg)
+    assert result == expected_result
+
+
+@pytest.mark.parametrize(
+    "arg, expected_result",
+    [
+        ([23, 1.22, 66], "numeric"),
+        ([{"A": 23}, {"B": 23, "C": [1, 2, 3]}], "dictionaries"),
+        (["A", {"B": 5}], "other"),
+    ],
+)
+def test_check_list_content(arg, expected_result):
+    """
+    This function tests check_list_content to correctly identify the content of a list
+    :param arg: the list to be checked
+    :param expected_result: the expected content of this list
+    """
+    result = check_list_content(arg)
     assert result == expected_result

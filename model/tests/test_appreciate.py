@@ -5,7 +5,7 @@ This module contains all tests for the Appreciate() class
 import pytest
 from core.appreciate import Appreciate
 from core.utils import round_all_dict_values, get_values_from_target
-from params import INPUT_DICT, OUTPUT_DICT
+from params import INPUT_DICT_BEERWISER, OUTPUT_DICT_BEERWISER
 
 
 @pytest.fixture(name="appreciate_beerwiser")
@@ -14,7 +14,7 @@ def fixture_appreciate_beerwiser():
     This fixture initialises a Beerwiser case.
     :return: an Evaluate class for Beerwiser
     """
-    return Appreciate(INPUT_DICT, OUTPUT_DICT)
+    return Appreciate(INPUT_DICT_BEERWISER, OUTPUT_DICT_BEERWISER)
 
 
 def test_get_start_and_end_points(appreciate_beerwiser):
@@ -89,7 +89,7 @@ def test_appreciate_single_decision_maker_option(appreciate_beerwiser):
             "Water use reduction": 0.33,
             "Production cost reduction": 28.36,
         },
-        "decision_makers_option_appreciations": 62.02,
+        "decision_makers_option_appreciation": 62.02,
     }
     assert result == expected_result
 
@@ -123,11 +123,11 @@ def test_appreciate_all_scenarios_only_structure(appreciate_beerwiser):
     count_dictionaries = {
         "appreciations": len(get_values_from_target(result, "appreciations")),
         "weighted_appreciations": len(get_values_from_target(result, "weighted_appreciations")),
-        "decision_makers_option_appreciations": len(
-            get_values_from_target(result, "decision_makers_option_appreciations")
+        "decision_makers_option_appreciation": len(
+            get_values_from_target(result, "decision_makers_option_appreciation")
         ),
     }
-    expected_count = {"appreciations": 9, "weighted_appreciations": 9, "decision_makers_option_appreciations": 9}
+    expected_count = {"appreciations": 9, "weighted_appreciations": 9, "decision_makers_option_appreciation": 9}
     assert count_dictionaries == expected_count
 
 

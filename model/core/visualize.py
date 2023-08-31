@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from core.utils import round_all_dict_values, number_formatter, get_values_from_target
+from core.utils import round_all_dict_values, number_formatter, get_values_from_target, check_list_content
 
 
 class VisualizationError(Exception):
@@ -33,7 +33,12 @@ class Visualize:
             "table": self._create_table,
             "barchart": self._create_barchart,
         }
-        self.available_outputs = ["key_outputs", "appreciations", "weighted_appreciations"]
+        self.available_outputs = [
+            "key_outputs",
+            "appreciations",
+            "weighted_appreciations",
+            "decision_makers_option_appreciation",
+        ]
         self.available_kwargs = ["scenario", "decision_makers_option", "stacked"]
 
     def _validate_kwargs(self, **kwargs):
@@ -107,12 +112,17 @@ class Visualize:
             dict_for_iteration = tmp_dict
             dim_level -= 1
 
-        # add the values from the 'key_data' dictionary
+        # add the values from 'key_data' | this can be either a list of dictionaries or a list of values
         key_data_list = get_values_from_target(self.outcomes, key_data)
-        keys = [key for dictionary in key_data_list for key, _ in dictionary.items()]
-        values = [value for dictionary in key_data_list for _, value in dictionary.items()]
-        formatted_data[key_data] = keys
-        formatted_data["value"] = values
+        key_data_list_content = check_list_content(key_data_list)
+
+        if key_data_list_content == "numeric":
+            # if the final dimension is numeric we initialised too many rows
+            formatted_data = formatted_data.drop_duplicates()
+            formatted_data["value"] = key_data_list
+        elif key_data_list_content == "dictionaries":
+            formatted_data[key_data] = [key for dictionary in key_data_list for key, _ in dictionary.items()]
+            formatted_data["value"] = [value for dictionary in key_data_list for _, value in dictionary.items()]
         return formatted_data
 
     @staticmethod
@@ -166,7 +176,9 @@ class Visualize:
 
     def create_visual(self, visual_request, key, **kwargs):
         """
-        This function redirects the visual_request based on the requested format to the correct helper function
+        This function redirects the visual_request based on the requested format to the correct helper function.
+        Validation checks are performed on the available visuals and outputs.See 'available_outputs' and
+        'available_kwargs' for all possible options.
         :param visual_request: type of visual that is requested
         :param key: key in output_dict containing the values to be visualised
         :param **kwargs: any additional arguments provide by the user

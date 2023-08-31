@@ -4,7 +4,7 @@
 import pytest
 from core.evaluate import Evaluate, EvaluationError
 from core.utils import round_all_dict_values
-from params import INPUT_DICT
+from params import INPUT_DICT_BEERWISER
 
 
 @pytest.fixture(name="evaluate_beerwiser")
@@ -13,7 +13,7 @@ def fixture_evaluate_beerwiser():
     This fixture initialises a Beerwiser case.
     :return Evaluate(): an Evaluate class for Beerwiser
     """
-    return Evaluate(INPUT_DICT)
+    return Evaluate(INPUT_DICT_BEERWISER)
 
 
 def test_create_value_dict(evaluate_beerwiser):

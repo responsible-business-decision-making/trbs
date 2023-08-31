@@ -85,7 +85,7 @@ class Appreciate:
         value_dict_in["weighted_appreciations"] = {
             key: weighted_appreciations[index] for index, key in enumerate(self.input_dict["key_outputs"])
         }
-        value_dict_in["decision_makers_option_appreciations"] = sum(weighted_appreciations)
+        value_dict_in["decision_makers_option_appreciation"] = sum(weighted_appreciations)
 
     def appreciate_single_scenario(self, value_dict_in: dict) -> None:
         """

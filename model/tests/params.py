@@ -4,7 +4,7 @@ This module contains some fixed parameters / values needed for the fixtures in t
 import numpy as np
 
 # Input dictionary is created using repr(case.input_dict) on 17/07/2023 [Beerwiser].
-INPUT_DICT = {
+INPUT_DICT_BEERWISER = {
     "configurations": np.array(["use_theme_weights"], dtype=object),
     "configuration_value": np.array([0]),
     "key_outputs": np.array(["Accidents reduction", "Water use reduction", "Production cost reduction"], dtype=object),
@@ -138,8 +138,12 @@ INPUT_DICT = {
     "scenario_weight": np.array([2.0, 1.0, 3.0]),
 }
 
+# Generic output dictionary that is not related to a particular case
+OUTPUT_DICT_GENERIC = {}
+
+
 # Output dictionary is created using repr(case.output_dict) on 17/07/2023 [Beerwiser].
-OUTPUT_DICT = {
+OUTPUT_DICT_BEERWISER = {
     "Base case": {
         "Equal spread": {
             "key_outputs": {
