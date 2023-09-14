@@ -1,0 +1,136 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"external_variable_input",
+                "type":"string"
+            },
+            {
+                "name":"scenario",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "external_variable_input":"Min. investment in language and integration for full employment effect",
+            "scenario":"Base case",
+            "value":2587601.6000000001
+        },
+        {
+            "index":1,
+            "external_variable_input":"Min. investment in language and integration for full employment effect",
+            "scenario":"Labour optimistic",
+            "value":2587601.6000000001
+        },
+        {
+            "index":2,
+            "external_variable_input":"Min. investment in language and integration for full employment effect",
+            "scenario":"Labour pessimistic",
+            "value":5175203.3470000001
+        },
+        {
+            "index":3,
+            "external_variable_input":"Reduction employment effect",
+            "scenario":"Base case",
+            "value":0.7
+        },
+        {
+            "index":4,
+            "external_variable_input":"Reduction employment effect",
+            "scenario":"Labour optimistic",
+            "value":0.7
+        },
+        {
+            "index":5,
+            "external_variable_input":"Reduction employment effect",
+            "scenario":"Labour pessimistic",
+            "value":0.7
+        },
+        {
+            "index":6,
+            "external_variable_input":"Yearly salary education after 18",
+            "scenario":"Labour optimistic",
+            "value":36972.0
+        },
+        {
+            "index":7,
+            "external_variable_input":"Yearly salary sports and associations",
+            "scenario":"Labour optimistic",
+            "value":21384.0
+        },
+        {
+            "index":8,
+            "external_variable_input":"Yearly salary language and integration",
+            "scenario":"Labour optimistic",
+            "value":27084.0
+        },
+        {
+            "index":9,
+            "external_variable_input":"Yearly salary employment creating and matching",
+            "scenario":"Labour optimistic",
+            "value":26796.0
+        },
+        {
+            "index":10,
+            "external_variable_input":"Yearly salary education after 18",
+            "scenario":"Base case",
+            "value":43512.0
+        },
+        {
+            "index":11,
+            "external_variable_input":"Yearly salary sports and associations",
+            "scenario":"Base case",
+            "value":25332.0
+        },
+        {
+            "index":12,
+            "external_variable_input":"Yearly salary language and integration",
+            "scenario":"Base case",
+            "value":34872.0
+        },
+        {
+            "index":13,
+            "external_variable_input":"Yearly salary employment creating and matching",
+            "scenario":"Base case",
+            "value":30492.0
+        },
+        {
+            "index":14,
+            "external_variable_input":"Yearly salary education after 18",
+            "scenario":"Labour pessimistic",
+            "value":50052.0
+        },
+        {
+            "index":15,
+            "external_variable_input":"Yearly salary sports and associations",
+            "scenario":"Labour pessimistic",
+            "value":34332.0
+        },
+        {
+            "index":16,
+            "external_variable_input":"Yearly salary language and integration",
+            "scenario":"Labour pessimistic",
+            "value":40776.0
+        },
+        {
+            "index":17,
+            "external_variable_input":"Yearly salary employment creating and matching",
+            "scenario":"Labour pessimistic",
+            "value":34080.0
+        }
+    ]
+}
