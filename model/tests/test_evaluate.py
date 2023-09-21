@@ -118,6 +118,19 @@ def test_get_key_outputs(evaluate_beerwiser):
     assert result == expected_result
 
 
+@pytest.mark.parametrize("arg, expected_result", [("2", 2.0), ("3.12", 3.12), ("A", 1.25)])
+def test_get_value_of_argument(evaluate_beerwiser, arg, expected_result):
+    """
+    This function tests _get_value_of_argument to return the right value
+    :param evaluate_beerwiser: an Evaluate() class for Beerwiser
+    :param arg: value of argument
+    :param expected_result: expected result of this single dependency
+    """
+    evaluate_beerwiser.value_dict = {"A": 1.25}
+    result = evaluate_beerwiser._get_value_of_argument(arg)
+    assert result == expected_result
+
+
 @pytest.mark.parametrize(
     "arg1, arg2, operator, expected_result",
     [

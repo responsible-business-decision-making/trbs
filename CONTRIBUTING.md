@@ -21,8 +21,12 @@ changes fixed the issue. Note that a PR requires **at least two** approvals from
 A pull request is reviewed by at least two maintainers. These maintainers will validate the pull request using the
 the checklist outlined below.
 
-1. The code passes all **unit tests** in the `model` folder. This can be tested with `python -m pytest`. 
- If unit tests are changed, there is a valid reason to do so.
+1. The code passes all **unit tests** in the `model` folder. This can be tested with 
+    ```
+    python -m pytest
+    ```
+     If unit tests are changed, there is a valid reason to do so.
+
 2. The code satisfies PEP8 and is **properly formatted**. The format rules can be found, and enforced, in the 
  `.pre-commit-config.yaml`-file. To run this for all files, simply run
     ```
@@ -33,4 +37,5 @@ the checklist outlined below.
     `transform` function to generate the other two. 
    2. Add at least one relevant unit test to `test_evaluate_all_dependencies` for the new case.
    3. The `README.md`-file in the data folder has been updated. 
-4. If the **notebook** has been changed, ensure that it still uses Beerwiser as default case
+
+4. If the **notebook** has been changed, ensure that it still uses Beerwiser as default case.
