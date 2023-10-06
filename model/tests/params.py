@@ -4,7 +4,7 @@ This module contains some fixed parameters / values needed for the fixtures in t
 import numpy as np
 
 # Input dictionary is created using repr(case.input_dict) on 17/07/2023 [Beerwiser].
-INPUT_DICT = {
+INPUT_DICT_BEERWISER = {
     "configurations": np.array(["use_theme_weights"], dtype=object),
     "configuration_value": np.array([0]),
     "key_outputs": np.array(["Accidents reduction", "Water use reduction", "Production cost reduction"], dtype=object),
@@ -138,8 +138,27 @@ INPUT_DICT = {
     "scenario_weight": np.array([2.0, 1.0, 3.0]),
 }
 
+# Generic output dictionary that is not related to a particular case
+OUTPUT_DICT_GENERIC = {
+    "SCEN A": {
+        "DMO 1": {"val1": {"KO1": 2, "KO2": 4, "KO3": 3}, "val2": {"KO1": 0.4, "KO2": 0.4, "KO3": 0.2}, "val3": 5},
+        "DMO 2": {"val1": {"KO1": 3, "KO2": 2, "KO3": 4}, "val2": {"KO1": 0.2, "KO2": 0.2, "KO3": 0.6}, "val3": 2},
+        "DMO 3": {
+            "val1": {"KO1": 5, "KO2": 2.5, "KO3": 3.5},
+            "val2": {"KO1": 0.25, "KO2": 0.5, "KO3": 0.25},
+            "val3": 4,
+        },
+    },
+    "SCEN B": {
+        "DMO 1": {"val1": {"KO1": 2.5, "KO2": 3, "KO3": 2}, "val2": {"KO1": 0.1, "KO2": 0.3, "KO3": 0.6}, "val3": 1.5},
+        "DMO 2": {"val1": {"KO1": 4, "KO2": 1.5, "KO3": 2.5}, "val2": {"KO1": 0.2, "KO2": 0.2, "KO3": 0.6}, "val3": 2},
+        "DMO 3": {"val1": {"KO1": 1, "KO2": 3, "KO3": 2.5}, "val2": {"KO1": 0.4, "KO2": 0.2, "KO3": 0.4}, "val3": 3.5},
+    },
+}
+
+
 # Output dictionary is created using repr(case.output_dict) on 17/07/2023 [Beerwiser].
-OUTPUT_DICT = {
+OUTPUT_DICT_BEERWISER = {
     "Base case": {
         "Equal spread": {
             "key_outputs": {

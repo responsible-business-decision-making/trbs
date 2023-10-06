@@ -63,3 +63,19 @@ def check_numeric(arg: str or float or int) -> bool:
         return True
     except ValueError:
         return False
+
+
+def check_list_content(input_list: list) -> str:
+    """
+    This function checks the content of a given list: only numbers, only dictionaries or other.
+    :param input_list: the list we need to know the content from
+    :return: a string indicating the content of the list
+    """
+    contains_numbers = all(isinstance(item, (int, float)) for item in input_list)
+    contains_dicts = all(isinstance(item, dict) for item in input_list)
+
+    if contains_numbers and not contains_dicts:
+        return "numeric"
+    if contains_dicts and not contains_numbers:
+        return "dictionaries"
+    return "other"

@@ -135,6 +135,7 @@ class CaseImporter:
             return row["hierarchy"]
 
         # iterate through the dependencies and increase if a row needs another destination to be calculated first
+        hierarchy_start = row["hierarchy"]
         for _, dep in data.iterrows():
             if dep["destination"] == row["argument_1"]:
                 row["hierarchy"] += 1
@@ -143,6 +144,7 @@ class CaseImporter:
 
         # apply a correction when argument & dependency are equal
         row["hierarchy"] -= sum(row[column] == row["destination"] for column in ["argument_1", "argument_2"])
+        row["hierarchy"] = max(row["hierarchy"], hierarchy_start)
         return row["hierarchy"]
 
     def _convert_to_ordered_dependencies(self, data: pd.DataFrame) -> None:
@@ -172,7 +174,9 @@ class CaseImporter:
             subdata = data[data["hierarchy"] > min(subdata["hierarchy"])]
             steps += 1
         print(f"Hierarchy calculated in {steps} iterations")
-        data = data.sort_values("hierarchy")
+
+        # use stable sorting to ensure user-order is used for equal hierarchies
+        data = data.sort_values("hierarchy", kind="stable")
 
         # step 3: store the data in the input_dict
         for col in self.validate_dict["dependencies"]:

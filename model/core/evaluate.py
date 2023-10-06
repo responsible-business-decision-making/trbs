@@ -85,8 +85,13 @@ class Evaluate:
         key_output_values = [self.value_dict[key_output] for key_output in self.input_dict["key_outputs"]]
         return dict(zip(self.input_dict["key_outputs"], key_output_values))
 
-    # TODO: needs an unit test
-    def _get_value_of_argument(self, arg: str):
+    def _get_value_of_argument(self, arg: str) -> float:
+        """
+        This function transforms a string to a number (if applicable) else it looks up the correct value in the
+        value dictionary.
+        :param arg: the value that needs to be checked
+        :return: the correct value of the argument
+        """
         try:
             value = float(arg)
         except ValueError:

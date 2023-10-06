@@ -1,0 +1,1115 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"destination",
+                "type":"string"
+            },
+            {
+                "name":"argument_1",
+                "type":"string"
+            },
+            {
+                "name":"argument_2",
+                "type":"string"
+            },
+            {
+                "name":"operator",
+                "type":"string"
+            },
+            {
+                "name":"maximum_effect",
+                "type":"number"
+            },
+            {
+                "name":"accessibility",
+                "type":"number"
+            },
+            {
+                "name":"probability_of_success",
+                "type":"number"
+            },
+            {
+                "name":"saturation_point",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "destination":"Tertiary education completed Ukrainians",
+            "argument_1":"Education after 18",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.47,
+            "accessibility":1.0,
+            "probability_of_success":0.71,
+            "saturation_point":13774010.7200000007
+        },
+        {
+            "index":1,
+            "destination":"Sports and association exists",
+            "argument_1":"Sports and association",
+            "argument_2":0,
+            "operator":">",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":2,
+            "destination":"Language and integration course exists",
+            "argument_1":"Language and integration course",
+            "argument_2":0,
+            "operator":">",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":3,
+            "destination":"Employment exists",
+            "argument_1":"Employment",
+            "argument_2":0,
+            "operator":">",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":4,
+            "destination":"Education exists",
+            "argument_1":"Education after 18",
+            "argument_2":0,
+            "operator":">",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":5,
+            "destination":"Access to transport exists",
+            "argument_1":"Access to transport",
+            "argument_2":0,
+            "operator":">",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":6,
+            "destination":"Check for interventions",
+            "argument_1":"Sports and association exists",
+            "argument_2":"Language and integration course exists",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":7,
+            "destination":"Check for interventions",
+            "argument_1":"Employment exists",
+            "argument_2":"Education exists",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":8,
+            "destination":"Check for interventions",
+            "argument_1":"Access to transport exists",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":9,
+            "destination":"Jealousy effect",
+            "argument_1":"Check for interventions",
+            "argument_2":0,
+            "operator":">",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":10,
+            "destination":"Jealousy effect Interventions",
+            "argument_1":"Jealousy effect",
+            "argument_2":"Effect intervention on jealousy",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":11,
+            "destination":"Quality of life other refugees Interventions",
+            "argument_1":"Jealousy effect Interventions",
+            "argument_2":"Effect of jealousy on QoL on quality of life other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":12,
+            "destination":"Quality of life inhabitants Interventions",
+            "argument_1":"Jealousy effect Interventions",
+            "argument_2":"Effect of jealousy on QoL on quality of life inhabitants",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":13,
+            "destination":"Language acquisition Ukrainians Sports",
+            "argument_1":"Sports and association",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.42,
+            "accessibility":1.0,
+            "probability_of_success":0.7,
+            "saturation_point":1630189.054
+        },
+        {
+            "index":14,
+            "destination":"Language acquisition Ukrainians Integration",
+            "argument_1":"Language and integration course",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.65,
+            "accessibility":1.0,
+            "probability_of_success":0.7,
+            "saturation_point":7946938.7560000001
+        },
+        {
+            "index":15,
+            "destination":"Language acquisition Ukrainians",
+            "argument_1":"Language acquisition Ukrainians Sports",
+            "argument_2":"Language acquisition Ukrainians Integration",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":16,
+            "destination":"Employment effect reduced",
+            "argument_1":"Language and integration course",
+            "argument_2":"Min. investment in language and integration for full employment effect",
+            "operator":"<=",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":17,
+            "destination":"Reduction employment effect conditional",
+            "argument_1":"Reduction employment effect",
+            "argument_2":"Employment effect reduced",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":18,
+            "destination":"Unemployment reduction Ukrainians Employment",
+            "argument_1":"Employment",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.68,
+            "accessibility":1.0,
+            "probability_of_success":0.6,
+            "saturation_point":8150945.2719999999
+        },
+        {
+            "index":19,
+            "destination":"Unemployment reduction Ukrainians Employment",
+            "argument_1":"Unemployment reduction Ukrainians Employment",
+            "argument_2":"Reduction employment effect conditional",
+            "operator":"-*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":20,
+            "destination":"Unemployment reduction Ukrainians Language Acq",
+            "argument_1":"Language acquisition Ukrainians",
+            "argument_2":"Effect of language acquisition Ukrainians on unemployment reduction Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":21,
+            "destination":"Unemployment reduction Ukrainians Education Compl",
+            "argument_1":"Tertiary education completed Ukrainians",
+            "argument_2":"Effect of tertiary education completed Ukrainians on unemployment reduction Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":22,
+            "destination":"Umployment reduction Ukrainians Interventions",
+            "argument_1":"Unemployment reduction Ukrainians Employment",
+            "argument_2":"Unemployment reduction Ukrainians Language Acq",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":23,
+            "destination":"Umployment reduction Ukrainians Interventions",
+            "argument_1":"Unemployment reduction Ukrainians Education Compl",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":24,
+            "destination":"Increase in income Ukrainians Employment",
+            "argument_1":"Unemployment reduction Ukrainians Employment",
+            "argument_2":"Effect of unemployment reduction Ukrainians on income Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":25,
+            "destination":"Increase in income Ukrainians Language Acq",
+            "argument_1":"Language acquisition Ukrainians",
+            "argument_2":"Effect of language acquisition Ukrainians on income Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":26,
+            "destination":"Increase in income Ukrainians Education Compl",
+            "argument_1":"Tertiary education completed Ukrainians",
+            "argument_2":"Effect of tertiary education completed Ukrainians on income Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":27,
+            "destination":"Increase in income Ukrainians",
+            "argument_1":"Increase in income Ukrainians Employment",
+            "argument_2":"Increase in income Ukrainians Language Acq",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":28,
+            "destination":"Increase in income Ukrainians",
+            "argument_1":"Increase in income Ukrainians Education Compl",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":29,
+            "destination":"Number of additional jobs Sports",
+            "argument_1":"Sports and association",
+            "argument_2":"Yearly salary sports and associations",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":30,
+            "destination":"Number of additional jobs Integration",
+            "argument_1":"Language and integration course",
+            "argument_2":"Yearly salary language and integration",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":31,
+            "destination":"Number of additional jobs Employment",
+            "argument_1":"Employment",
+            "argument_2":"Yearly salary employment creating and matching",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":32,
+            "destination":"Number of additional jobs Education",
+            "argument_1":"Education after 18",
+            "argument_2":"Yearly salary education after 18",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":33,
+            "destination":"Number of additional jobs",
+            "argument_1":"Number of additional jobs Sports",
+            "argument_2":"Number of additional jobs Integration",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":34,
+            "destination":"Number of additional jobs",
+            "argument_1":"Number of additional jobs Employment",
+            "argument_2":"Number of additional jobs Education",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":35,
+            "destination":"Number of additional jobs Ukrainians",
+            "argument_1":"Number of additional jobs",
+            "argument_2":"Effect of additional jobs on number of additional jobs Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":36,
+            "destination":"Number of additional jobs other refugees",
+            "argument_1":"Number of additional jobs",
+            "argument_2":"Effect of additional jobs on number of additional jobs other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":37,
+            "destination":"Number of additional jobs inhabitants",
+            "argument_1":"Number of additional jobs",
+            "argument_2":"Effect of additional jobs on number of additional jobs inhabitants",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":38,
+            "destination":"Economic impact Investing",
+            "argument_1":"Sports and association",
+            "argument_2":"Language and integration course",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":39,
+            "destination":"Economic impact Investing",
+            "argument_1":"Employment",
+            "argument_2":"Education after 18",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":40,
+            "destination":"Unemployment reduction other refugees",
+            "argument_1":"Number of additional jobs other refugees",
+            "argument_2":"Number of other refugees workforce",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":41,
+            "destination":"Increase in income other refugees",
+            "argument_1":"Unemployment reduction other refugees",
+            "argument_2":"Effect of unemployment reduction other refugees on income other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":42,
+            "destination":"Quality of life other refugees Unemployment reduction",
+            "argument_1":"Unemployment reduction other refugees",
+            "argument_2":"Effect of unemployment reduction other refugees on QoL other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":43,
+            "destination":"Unemployment reduction inhabitants",
+            "argument_1":"Number of additional jobs inhabitants",
+            "argument_2":"Number of inhabitants workforce",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":44,
+            "destination":"Unemployment reduction Ukrainians",
+            "argument_1":"Umployment reduction Ukrainians Interventions",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":45,
+            "destination":"Unemployment reduction Ukrainians",
+            "argument_1":"Number of additional jobs Ukrainians",
+            "argument_2":"Number of Ukrainian refugees workforce",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":46,
+            "destination":"Quality of life Ukrainians Unemployment reduction",
+            "argument_1":"Unemployment reduction Ukrainians",
+            "argument_2":"Effect of unemployment reduction Ukrainians on QoL Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":47,
+            "destination":"Change in number of employed Ukrainian refugees",
+            "argument_1":"Umployment reduction Ukrainians Interventions",
+            "argument_2":"Number of Ukrainian refugees workforce",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":48,
+            "destination":"Economic impact Ukrainians",
+            "argument_1":"Change in number of employed Ukrainian refugees",
+            "argument_2":"Average yearly salary Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":49,
+            "destination":"Economic impact Employment",
+            "argument_1":"Economic impact Ukrainians",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":50,
+            "destination":"Economic impact social benefits Ukr 1",
+            "argument_1":"Number of additional jobs Ukrainians",
+            "argument_2":"Social benefits Ukrainian refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":51,
+            "destination":"Economic impact social benefits Ukr 2",
+            "argument_1":"Change in number of employed Ukrainian refugees",
+            "argument_2":"Social benefits Ukrainian refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":52,
+            "destination":"Economic impact social benefits Other refugees",
+            "argument_1":"Number of additional jobs other refugees",
+            "argument_2":"Social benefits other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":53,
+            "destination":"Economic impact social benefits Inhabitants",
+            "argument_1":"Number of additional jobs inhabitants",
+            "argument_2":"Social benefits inhabitants",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":54,
+            "destination":"Economic impact Social benefits",
+            "argument_1":"Economic impact social benefits Ukr 1",
+            "argument_2":"Economic impact social benefits Ukr 2",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":55,
+            "destination":"Economic impact Social benefits",
+            "argument_1":"Economic impact social benefits Other refugees",
+            "argument_2":"Economic impact social benefits Inhabitants",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":56,
+            "destination":"Economic impact",
+            "argument_1":"Economic impact Employment",
+            "argument_2":"Economic impact Investing",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":57,
+            "destination":"Economic impact",
+            "argument_1":"Economic impact Social benefits",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":58,
+            "destination":"Increase in income inhabitants",
+            "argument_1":"Unemployment reduction inhabitants",
+            "argument_2":"Effect of unemployment reduction inhabitants on income inhabitants",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":59,
+            "destination":"Quality of life inhabitants Unemployment reduction",
+            "argument_1":"Unemployment reduction inhabitants",
+            "argument_2":"Effect of unemployment reduction inhabitants on QoL inhabitants",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":60,
+            "destination":"Social cohesion Ukrainians Sports",
+            "argument_1":"Sports and association",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.12,
+            "accessibility":1.0,
+            "probability_of_success":0.7,
+            "saturation_point":1630189.054
+        },
+        {
+            "index":61,
+            "destination":"Social cohesion Ukrainians Transport",
+            "argument_1":"Access to transport",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.014,
+            "accessibility":1.0,
+            "probability_of_success":0.6,
+            "saturation_point":15216753.9100000001
+        },
+        {
+            "index":62,
+            "destination":"Social cohesion Ukrainians Language Acq",
+            "argument_1":"Language acquisition Ukrainians",
+            "argument_2":"Effect of language acquisition Ukrainians on social cohesion Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":63,
+            "destination":"Social cohesion Ukrainians",
+            "argument_1":"Social cohesion Ukrainians Sports",
+            "argument_2":"Social cohesion Ukrainians Transport",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":64,
+            "destination":"Social cohesion Ukrainians",
+            "argument_1":"Social cohesion Ukrainians Language Acq",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":65,
+            "destination":"Crime rate reduction",
+            "argument_1":"Social cohesion Ukrainians",
+            "argument_2":"Effect of social cohesion Ukrainians on crime rate reduction",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":66,
+            "destination":"Crime rate reduction",
+            "argument_1":"Increase in income other refugees",
+            "argument_2":"Effect of income other refugees on crime rate",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":67,
+            "destination":"Crime rate reduction",
+            "argument_1":"Increase in income Ukrainians",
+            "argument_2":"Effect of income Ukrainians on crime rate",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":68,
+            "destination":"Personal safety Ukrainians Crime rate",
+            "argument_1":"Crime rate reduction",
+            "argument_2":"Effect of crime rate on personal safety Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":69,
+            "destination":"Personal safety other refugees",
+            "argument_1":"Crime rate reduction",
+            "argument_2":"Effect of crime rate on personal safety other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":70,
+            "destination":"Personal safety inhabitants",
+            "argument_1":"Crime rate reduction",
+            "argument_2":"Effect of crime rate on personal safety inhabitants",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":71,
+            "destination":"Personal safety Ukrainians Education",
+            "argument_1":"Tertiary education completed Ukrainians",
+            "argument_2":"Effect of tertiary education completed Ukrainians on personal safety Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":72,
+            "destination":"Personal safety Ukrainians",
+            "argument_1":"Personal safety Ukrainians Crime rate",
+            "argument_2":"Personal safety Ukrainians Education",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":73,
+            "destination":"Health Ukrainians",
+            "argument_1":"Sports and association",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.22,
+            "accessibility":1.0,
+            "probability_of_success":0.7,
+            "saturation_point":1630189.054
+        },
+        {
+            "index":74,
+            "destination":"Social participation Ukrainians",
+            "argument_1":"Access to transport",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.537,
+            "accessibility":1.0,
+            "probability_of_success":0.6,
+            "saturation_point":15216753.9100000001
+        },
+        {
+            "index":75,
+            "destination":"Financial security Ukrainians",
+            "argument_1":"Increase in income Ukrainians",
+            "argument_2":"Effect of income Ukrainians on financial security Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":76,
+            "destination":"Financial security other refugees",
+            "argument_1":"Increase in income other refugees",
+            "argument_2":"Effect of income other refugees on financial security other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":77,
+            "destination":"Financial security inhabitants",
+            "argument_1":"Increase in income inhabitants",
+            "argument_2":"Effect of income inhabitants on financial security inhabitants",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":78,
+            "destination":"Social trust other refugees",
+            "argument_1":"Unemployment reduction other refugees",
+            "argument_2":"Effect of unemployment reduction other refugees on social trust other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":79,
+            "destination":"Quality of life Ukrainians Health",
+            "argument_1":"Health Ukrainians",
+            "argument_2":"Effect of health Ukrainians on quality of life Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":80,
+            "destination":"Quality of life Ukrainians Financial security",
+            "argument_1":"Financial security Ukrainians",
+            "argument_2":"Effect of financial security Ukrainians on quality of life Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":81,
+            "destination":"Quality of life Ukrainians Personal safety",
+            "argument_1":"Personal safety Ukrainians",
+            "argument_2":"Effect of personal safety Ukrainians on quality of life Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":82,
+            "destination":"Quality of life Ukrainians Social cohesion",
+            "argument_1":"Social cohesion Ukrainians",
+            "argument_2":"Effect of social cohesion Ukrainians on quality of life Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":83,
+            "destination":"Quality of life Ukrainians Social participation",
+            "argument_1":"Social participation Ukrainians",
+            "argument_2":"Effect of social participation Ukrainians on quality of life Ukrainians",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":84,
+            "destination":"Quality of life Ukrainians",
+            "argument_1":"Quality of life Ukrainians Unemployment reduction",
+            "argument_2":"Quality of life Ukrainians Social participation",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":85,
+            "destination":"Quality of life Ukrainians",
+            "argument_1":"Quality of life Ukrainians Health",
+            "argument_2":"Quality of life Ukrainians Financial security",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":86,
+            "destination":"Quality of life Ukrainians",
+            "argument_1":"Quality of life Ukrainians Personal safety",
+            "argument_2":"Quality of life Ukrainians Social cohesion",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":87,
+            "destination":"Quality of life other refugees Financial security",
+            "argument_1":"Financial security other refugees",
+            "argument_2":"Effect of financial security other refugees on quality of life other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":88,
+            "destination":"Quality of life other refugees Social trust",
+            "argument_1":"Social trust other refugees",
+            "argument_2":"Effect of social trust other refugees on quality of life other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":89,
+            "destination":"Quality of life other refugees Personal safety",
+            "argument_1":"Personal safety other refugees",
+            "argument_2":"Effect of personal safety other refugees on quality of life other refugees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":90,
+            "destination":"Quality of life other refugees",
+            "argument_1":"Quality of life other refugees Interventions",
+            "argument_2":"Quality of life other refugees Unemployment reduction",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":91,
+            "destination":"Quality of life other refugees",
+            "argument_1":"Quality of life other refugees Financial security",
+            "argument_2":"Quality of life other refugees Social trust",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":92,
+            "destination":"Quality of life other refugees",
+            "argument_1":"Quality of life other refugees Personal safety",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":93,
+            "destination":"Quality of life inhabitants Financial security",
+            "argument_1":"Financial security inhabitants",
+            "argument_2":"Effect of financial security inhabitants on quality of life inhabitants",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":94,
+            "destination":"Quality of life inhabitants Personal safety",
+            "argument_1":"Personal safety inhabitants",
+            "argument_2":"Effect of personal safety inhabitants on quality of life inhabitants",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":95,
+            "destination":"Quality of life inhabitants",
+            "argument_1":"Quality of life inhabitants Interventions",
+            "argument_2":"Quality of life inhabitants Unemployment reduction",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":96,
+            "destination":"Quality of life inhabitants",
+            "argument_1":"Quality of life inhabitants Financial security",
+            "argument_2":"Quality of life inhabitants Personal safety",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        }
+    ]
+}

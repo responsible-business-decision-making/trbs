@@ -1,10 +1,11 @@
 # Ignore PEP8 protected-access to client class | pylint: disable=W0212
 """This module contains all tests for the Evaluate() class"""
-
+from pathlib import Path
 import pytest
 from core.evaluate import Evaluate, EvaluationError
 from core.utils import round_all_dict_values
-from params import INPUT_DICT
+from core.trbs import TheResponsibleBusinessSimulator
+from params import INPUT_DICT_BEERWISER
 
 
 @pytest.fixture(name="evaluate_beerwiser")
@@ -13,7 +14,19 @@ def fixture_evaluate_beerwiser():
     This fixture initialises a Beerwiser case.
     :return Evaluate(): an Evaluate class for Beerwiser
     """
-    return Evaluate(INPUT_DICT)
+    return Evaluate(INPUT_DICT_BEERWISER)
+
+
+@pytest.fixture(name="evaluate_refugee")
+def fixture_evaluate_refugee():
+    """
+    This fixture initialises a Refugee case.
+    :return Evaluate(): an Evaluate class for Beerwiser
+    """
+
+    case = TheResponsibleBusinessSimulator(Path.cwd() / "data", "xlsx", "refugee")
+    case.build()
+    return Evaluate(case.input_dict)
 
 
 def test_create_value_dict(evaluate_beerwiser):
@@ -105,6 +118,19 @@ def test_get_key_outputs(evaluate_beerwiser):
     assert result == expected_result
 
 
+@pytest.mark.parametrize("arg, expected_result", [("2", 2.0), ("3.12", 3.12), ("A", 1.25)])
+def test_get_value_of_argument(evaluate_beerwiser, arg, expected_result):
+    """
+    This function tests _get_value_of_argument to return the right value
+    :param evaluate_beerwiser: an Evaluate() class for Beerwiser
+    :param arg: value of argument
+    :param expected_result: expected result of this single dependency
+    """
+    evaluate_beerwiser.value_dict = {"A": 1.25}
+    result = evaluate_beerwiser._get_value_of_argument(arg)
+    assert result == expected_result
+
+
 @pytest.mark.parametrize(
     "arg1, arg2, operator, expected_result",
     [
@@ -149,22 +175,50 @@ def test_evaluate_single_dependency_evaluation_error(evaluate_beerwiser):
     assert str(evaluation_error.value) == expected_result
 
 
-def test_evaluate_all_dependencies(evaluate_beerwiser):
+@pytest.mark.parametrize(
+    "fixture_name, scenario, dmo, expected_result",
+    [
+        (
+            "evaluate_beerwiser",
+            "Optimistic",
+            "Focus on water recycling",
+            {
+                "key_outputs": {
+                    "Accidents reduction": 3.49,
+                    "Water use reduction": 6818181.82,
+                    "Production cost reduction": 0.05,
+                }
+            },
+        ),
+        (
+            "evaluate_refugee",
+            "Base case",
+            "Employment & Language",
+            {
+                "key_outputs": {
+                    "Quality of life Ukrainians": 0.07,
+                    "Quality of life other refugees": -0.03,
+                    "Quality of life inhabitants": -0.05,
+                    "Unemployment reduction Ukrainians": 0.21,
+                    "Unemployment reduction other refugees": 0.03,
+                    "Unemployment reduction inhabitants": 0.01,
+                    "Economic impact": 23857682.88,
+                }
+            },
+        ),
+    ],
+)
+def test_evaluate_all_dependencies(fixture_name, expected_result, scenario, dmo, request):
     """
     This function tests evaluate_all_dependencies to return a dictionary containing the key_outputs for a given
     scenario and decision_makers_option.
     :param evaluate_beerwiser: an Evaluate() class for Beerwiser
     """
-
-    result = evaluate_beerwiser.evaluate_all_dependencies("Optimistic", "Focus on water recycling")
+    case = request.getfixturevalue(fixture_name)
+    result = case.evaluate_all_dependencies(scenario, dmo)
     rounded_result = round_all_dict_values(result)
-    expected_result = {
-        "key_outputs": {
-            "Accidents reduction": 3.49,
-            "Water use reduction": 6818181.82,
-            "Production cost reduction": 0.05,
-        }
-    }
+
+    print(rounded_result)
     assert rounded_result == expected_result
 
 

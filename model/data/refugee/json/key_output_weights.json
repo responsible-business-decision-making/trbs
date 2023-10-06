@@ -1,0 +1,59 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"key_output",
+                "type":"string"
+            },
+            {
+                "name":"weight",
+                "type":"integer"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "key_output":"Quality of life Ukrainians",
+            "weight":1
+        },
+        {
+            "index":1,
+            "key_output":"Quality of life other refugees",
+            "weight":1
+        },
+        {
+            "index":2,
+            "key_output":"Quality of life inhabitants",
+            "weight":1
+        },
+        {
+            "index":3,
+            "key_output":"Unemployment reduction Ukrainians",
+            "weight":1
+        },
+        {
+            "index":4,
+            "key_output":"Unemployment reduction other refugees",
+            "weight":1
+        },
+        {
+            "index":5,
+            "key_output":"Unemployment reduction inhabitants",
+            "weight":1
+        },
+        {
+            "index":6,
+            "key_output":"Economic impact",
+            "weight":1
+        }
+    ]
+}

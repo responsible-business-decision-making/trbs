@@ -1,0 +1,39 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"scenario",
+                "type":"string"
+            },
+            {
+                "name":"weight",
+                "type":"integer"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "scenario":"Base case",
+            "weight":1
+        },
+        {
+            "index":1,
+            "scenario":"Labour optimistic",
+            "weight":1
+        },
+        {
+            "index":2,
+            "scenario":"Labour pessimistic",
+            "weight":1
+        }
+    ]
+}
