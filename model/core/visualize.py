@@ -39,7 +39,7 @@ class Visualize:
             "weighted_appreciations",
             "decision_makers_option_appreciation",
         ]
-        self.available_kwargs = ["scenario", "decision_makers_option", "stacked"]
+        self.available_kwargs = ["scenario", "decision_makers_option", "stacked", "show_legend"]
 
     def _validate_kwargs(self, **kwargs) -> None:
         """
@@ -112,7 +112,7 @@ class Visualize:
         styler.background_gradient(cmap=cmap, axis=1)
         return styler
 
-    def _graph_styler(self, axis: mpl.axis, title: str) -> mpl.axis:
+    def _graph_styler(self, axis: mpl.axis, title: str, show_legend: bool) -> mpl.axis:
         """
         This function adds a coherent style for all generated graphs.
         :param axis: a matplotlib axis object containing the graph
@@ -124,6 +124,8 @@ class Visualize:
         axis.set_ylim(0, 100)
         axis.set_xticklabels(xtick_formatted, rotation=0, fontweight="bold")
         axis.legend(loc="upper left", bbox_to_anchor=(1, 1))
+        if not show_legend:
+            axis.legend_ = None
         return axis
 
     def _format_data_for_visual(self, key_data: str) -> pd.DataFrame:
@@ -222,13 +224,14 @@ class Visualize:
         if dims > 2 and "scenario" not in kwargs:
             raise VisualizationError(f"Too many dimensions ({dims}). Please specify a scenario")
         stacked = kwargs["stacked"] if "stacked" in kwargs else True
+        show_legend = kwargs["show_legend"] if "show_legend" in kwargs else True
 
         appreciations = self._format_data_for_visual(key)
         bar_data, name_str = self._apply_filters(appreciations, drop_used=True, **kwargs)
         rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
         bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
         axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5))
-        self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}")
+        self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
 
         plt.show()
 
