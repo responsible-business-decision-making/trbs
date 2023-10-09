@@ -29,7 +29,7 @@ def fixture_evaluate_refugee():
     return Evaluate(case.input_dict)
 
 @pytest.fixture(name="evaluate_izz")
-def fixture_evaluate_refugee():
+def fixture_evaluate_izz():
     """
     This fixture initialises a IZZ case.
     :return Evaluate(): an Evaluate class for IZZ

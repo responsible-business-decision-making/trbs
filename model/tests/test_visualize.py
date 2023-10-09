@@ -145,7 +145,6 @@ def test_format_data_for_visual(test_outcomes, key_data, expected_result):
     :param expected_result: expected dataframe
     """
     result = test_outcomes._format_data_for_visual(key_data)
-    print(result)
     assert result.equals(expected_result)
 
 
