@@ -145,7 +145,7 @@ def test_format_data_for_visual(test_outcomes, key_data, expected_result):
     :param expected_result: expected dataframe
     """
     result = test_outcomes._format_data_for_visual(key_data)
-    assert result.equals(expected_result)
+    assert result.to_dict() == expected_result.to_dict()
 
 
 @pytest.mark.parametrize(
@@ -170,7 +170,7 @@ def test_apply_filters(test_outcomes, drop_used, expected_result):
     )
     result = test_outcomes._apply_filters(test_data, drop_used, Col1="A", Col3=3, other_arg="abc")
     result_df = result[0].reset_index(drop=True)
-    assert result_df.equals(expected_result)
+    assert result_df.to_dict() == expected_result.to_dict()
 
 
 def test_apply_filters_error(test_outcomes):
