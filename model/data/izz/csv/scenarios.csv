@@ -1,0 +1,19 @@
+external_variable_input;scenario;value
+Relative effect employee satisfaction on customer satisfaction;Base case;1.0
+Relative effect employee satisfaction on customer satisfaction;Optimistic;1.3
+Relative effect employee satisfaction on customer satisfaction;Pessimistic;0.7
+Relative effect employee satisfaction on productivity %;Base case;1.0
+Relative effect employee satisfaction on productivity %;Optimistic;1.3
+Relative effect employee satisfaction on productivity %;Pessimistic;0.5
+Relative effect intervention on absenteeism %;Base case;1.0
+Relative effect intervention on absenteeism %;Optimistic;1.1
+Relative effect intervention on absenteeism %;Pessimistic;0.9
+Relative effect intervention on employee satisfaction;Base case;1.0
+Relative effect intervention on employee satisfaction;Optimistic;1.1
+Relative effect intervention on employee satisfaction;Pessimistic;0.5
+Relative effect intervention on productivity %;Base case;1.0
+Relative effect intervention on productivity %;Optimistic;1.1
+Relative effect intervention on productivity %;Pessimistic;0.9
+Relative effect intervention on staff turnover %;Base case;1.0
+Relative effect intervention on staff turnover %;Optimistic;1.1
+Relative effect intervention on staff turnover %;Pessimistic;0.9

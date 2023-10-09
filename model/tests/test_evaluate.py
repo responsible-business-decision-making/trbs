@@ -21,10 +21,21 @@ def fixture_evaluate_beerwiser():
 def fixture_evaluate_refugee():
     """
     This fixture initialises a Refugee case.
-    :return Evaluate(): an Evaluate class for Beerwiser
+    :return Evaluate(): an Evaluate class for Refugee
     """
 
     case = TheResponsibleBusinessSimulator(Path.cwd() / "data", "xlsx", "refugee")
+    case.build()
+    return Evaluate(case.input_dict)
+
+@pytest.fixture(name="evaluate_izz")
+def fixture_evaluate_refugee():
+    """
+    This fixture initialises a IZZ case.
+    :return Evaluate(): an Evaluate class for IZZ
+    """
+
+    case = TheResponsibleBusinessSimulator(Path.cwd() / "data", "xlsx", "izz")
     case.build()
     return Evaluate(case.input_dict)
 
@@ -203,6 +214,24 @@ def test_evaluate_single_dependency_evaluation_error(evaluate_beerwiser):
                     "Unemployment reduction other refugees": 0.03,
                     "Unemployment reduction inhabitants": 0.01,
                     "Economic impact": 23857682.88,
+                }
+            },
+        ),
+        (
+            "evaluate_izz",
+            "Optimistic",
+            "Social",
+            {
+                "key_outputs": {
+                    'Decrease in absenteeism %': 0.0,
+                    'Decrease in staff turnover %': 0.0,
+                    'Increase in customer satisfaction': 0.01,
+                    'Increase in employee satisfaction': 0.03,
+                    'Decrease in absenteeism costs': 18610.66,
+                    'Decrease in staff turnover costs': 734.7,
+                    'Decrease in wage costs': 11235861.75,
+                    'Increase in production capacity': 513.44,
+                    'Total investment': 120000.0
                 }
             },
         ),
