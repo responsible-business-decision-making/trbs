@@ -90,7 +90,7 @@
         },
         {
             "index":4,
-            "destination":"Volume RE make",
+            "destination":"Demand RE make",
             "argument_1":"Energy demand",
             "argument_2":"Demand % RE make",
             "operator":"*",
@@ -101,10 +101,10 @@
         },
         {
             "index":5,
-            "destination":"Investment cost rate RE make after discount",
+            "destination":"Investment cost rate RE make discount",
             "argument_1":1,
             "argument_2":"RE CAPEX tax discount rate",
-            "operator":"*",
+            "operator":"-",
             "maximum_effect":null,
             "accessibility":null,
             "probability_of_success":null,
@@ -112,10 +112,10 @@
         },
         {
             "index":6,
-            "destination":"Investment cost rate RE make after discount",
+            "destination":"Investment cost rate RE make discount",
             "argument_1":0,
             "argument_2":"RE CAPEX subsidy rate",
-            "operator":"-*",
+            "operator":"-",
             "maximum_effect":null,
             "accessibility":null,
             "probability_of_success":null,
@@ -124,7 +124,7 @@
         {
             "index":7,
             "destination":"Share used of capacity RE make",
-            "argument_1":"Volume RE make",
+            "argument_1":"Demand RE make",
             "argument_2":"Capacity RE make",
             "operator":"\/",
             "maximum_effect":null,
@@ -147,7 +147,7 @@
             "index":9,
             "destination":"CAPEX",
             "argument_1":"Cost RE make",
-            "argument_2":"Investment cost rate RE make after discount",
+            "argument_2":"Investment cost rate RE make discount",
             "operator":"*",
             "maximum_effect":null,
             "accessibility":null,
@@ -365,10 +365,10 @@
         },
         {
             "index":29,
-            "destination":"Demand RE make",
-            "argument_1":"Energy demand",
-            "argument_2":"Demand % RE make",
-            "operator":"*",
+            "destination":"Total demand RS and RE",
+            "argument_1":"Demand RS partner",
+            "argument_2":"Demand RE partner",
+            "operator":"+",
             "maximum_effect":null,
             "accessibility":null,
             "probability_of_success":null,
@@ -376,10 +376,10 @@
         },
         {
             "index":30,
-            "destination":"Demand NRS market",
-            "argument_1":"Energy demand",
-            "argument_2":"Demand RS partner",
-            "operator":"-",
+            "destination":"Total demand RS and RE",
+            "argument_1":"Demand RS market",
+            "argument_2":"Demand RE market",
+            "operator":"+",
             "maximum_effect":null,
             "accessibility":null,
             "probability_of_success":null,
@@ -387,10 +387,10 @@
         },
         {
             "index":31,
-            "destination":"Demand NRS market",
+            "destination":"Total demand RS and RE",
             "argument_1":0,
-            "argument_2":"Demand RE partner",
-            "operator":"-",
+            "argument_2":"Demand RE make",
+            "operator":"+",
             "maximum_effect":null,
             "accessibility":null,
             "probability_of_success":null,
@@ -399,8 +399,8 @@
         {
             "index":32,
             "destination":"Demand NRS market",
-            "argument_1":0,
-            "argument_2":"Demand RS market",
+            "argument_1":"Energy demand",
+            "argument_2":"Total demand RS and RE",
             "operator":"-",
             "maximum_effect":null,
             "accessibility":null,
@@ -409,28 +409,6 @@
         },
         {
             "index":33,
-            "destination":"Demand NRS market",
-            "argument_1":0,
-            "argument_2":"Demand RE market",
-            "operator":"-",
-            "maximum_effect":null,
-            "accessibility":null,
-            "probability_of_success":null,
-            "saturation_point":null
-        },
-        {
-            "index":34,
-            "destination":"Demand NRS market",
-            "argument_1":0,
-            "argument_2":"Demand RE make",
-            "operator":"-",
-            "maximum_effect":null,
-            "accessibility":null,
-            "probability_of_success":null,
-            "saturation_point":null
-        },
-        {
-            "index":35,
             "destination":"Cost RS partner",
             "argument_1":"Demand RS partner",
             "argument_2":"Price RS partner",
@@ -441,7 +419,7 @@
             "saturation_point":null
         },
         {
-            "index":36,
+            "index":34,
             "destination":"Cost RE partner",
             "argument_1":"Demand RE partner",
             "argument_2":"Price RS partner",
@@ -452,7 +430,7 @@
             "saturation_point":null
         },
         {
-            "index":37,
+            "index":35,
             "destination":"Cost RE partner",
             "argument_1":"# REC partner",
             "argument_2":"Price REC partner",
@@ -463,7 +441,7 @@
             "saturation_point":null
         },
         {
-            "index":38,
+            "index":36,
             "destination":"Cost RS market",
             "argument_1":"Demand RS market",
             "argument_2":"Price RS market",
@@ -474,7 +452,7 @@
             "saturation_point":null
         },
         {
-            "index":39,
+            "index":37,
             "destination":"Cost RE market",
             "argument_1":"Demand RE market",
             "argument_2":"Price RS market",
@@ -485,7 +463,7 @@
             "saturation_point":null
         },
         {
-            "index":40,
+            "index":38,
             "destination":"Cost RE market",
             "argument_1":"# REC market",
             "argument_2":"Price REC market",
@@ -496,7 +474,7 @@
             "saturation_point":null
         },
         {
-            "index":41,
+            "index":39,
             "destination":"Cost NRS market",
             "argument_1":"Demand NRS market",
             "argument_2":"Price NRS market",
@@ -507,7 +485,7 @@
             "saturation_point":null
         },
         {
-            "index":42,
+            "index":40,
             "destination":"Total NRS demand",
             "argument_1":"Demand NRS market",
             "argument_2":"Demand RS partner",
@@ -518,10 +496,10 @@
             "saturation_point":null
         },
         {
-            "index":43,
+            "index":41,
             "destination":"Total NRS demand",
-            "argument_1":"Demand RS market",
-            "argument_2":0,
+            "argument_1":0,
+            "argument_2":"Demand RS market",
             "operator":"+",
             "maximum_effect":null,
             "accessibility":null,
@@ -529,7 +507,7 @@
             "saturation_point":null
         },
         {
-            "index":44,
+            "index":42,
             "destination":"Carbon footprint",
             "argument_1":"Total NRS demand",
             "argument_2":"CO2 emission per MWh",
@@ -540,7 +518,7 @@
             "saturation_point":null
         },
         {
-            "index":45,
+            "index":43,
             "destination":"Actual carbon emission",
             "argument_1":"Demand NRS market",
             "argument_2":"CO2 emission per MWh",
@@ -551,7 +529,7 @@
             "saturation_point":null
         },
         {
-            "index":46,
+            "index":44,
             "destination":"CO2 emission cost",
             "argument_1":"Carbon footprint",
             "argument_2":"Internal carbon price",
@@ -562,7 +540,7 @@
             "saturation_point":null
         },
         {
-            "index":47,
+            "index":45,
             "destination":"Energy cost",
             "argument_1":"Cost RS partner",
             "argument_2":"Cost RE partner",
@@ -573,7 +551,7 @@
             "saturation_point":null
         },
         {
-            "index":48,
+            "index":46,
             "destination":"Energy cost",
             "argument_1":"Cost RS market",
             "argument_2":"Cost RE market",
@@ -584,7 +562,7 @@
             "saturation_point":null
         },
         {
-            "index":49,
+            "index":47,
             "destination":"Energy cost",
             "argument_1":"Cost NRS market",
             "argument_2":"CO2 emission cost",
@@ -595,7 +573,7 @@
             "saturation_point":null
         },
         {
-            "index":50,
+            "index":48,
             "destination":"RE %",
             "argument_1":"Demand % RE partner",
             "argument_2":"Demand % RE market",
@@ -606,18 +584,18 @@
             "saturation_point":null
         },
         {
-            "index":51,
+            "index":49,
             "destination":"RE %",
-            "argument_1":"Demand % RE make",
-            "argument_2":0,
-            "operator":"*",
+            "argument_1":0,
+            "argument_2":"Demand % RE make",
+            "operator":"+",
             "maximum_effect":null,
             "accessibility":null,
             "probability_of_success":null,
             "saturation_point":null
         },
         {
-            "index":52,
+            "index":50,
             "destination":"GE %",
             "argument_1":1,
             "argument_2":"RE %",
@@ -628,7 +606,7 @@
             "saturation_point":null
         },
         {
-            "index":53,
+            "index":51,
             "destination":"Carbon footprint reduction",
             "argument_1":"Energy demand",
             "argument_2":"CO2 emission per MWh",
@@ -639,7 +617,7 @@
             "saturation_point":null
         },
         {
-            "index":54,
+            "index":52,
             "destination":"Carbon footprint reduction",
             "argument_1":0,
             "argument_2":"Carbon footprint",
@@ -650,51 +628,7 @@
             "saturation_point":null
         },
         {
-            "index":55,
-            "destination":"ICP condition",
-            "argument_1":"Internal carbon price",
-            "argument_2":0,
-            "operator":">",
-            "maximum_effect":null,
-            "accessibility":null,
-            "probability_of_success":null,
-            "saturation_point":null
-        },
-        {
-            "index":56,
-            "destination":"Carbon footprint reduction condition",
-            "argument_1":"RE %",
-            "argument_2":"Carbon footprint reduction saturation point",
-            "operator":">=",
-            "maximum_effect":null,
-            "accessibility":null,
-            "probability_of_success":null,
-            "saturation_point":null
-        },
-        {
-            "index":57,
-            "destination":"Increase in employee engagement int",
-            "argument_1":"ICP condition",
-            "argument_2":"Effect of using an internal carbon price on employee engagement",
-            "operator":"*",
-            "maximum_effect":null,
-            "accessibility":null,
-            "probability_of_success":null,
-            "saturation_point":null
-        },
-        {
-            "index":58,
-            "destination":"Increase in employee engagement",
-            "argument_1":"Carbon footprint reduction condition",
-            "argument_2":"Effect of maximum carbon footprint reduction on employee engagement",
-            "operator":"*",
-            "maximum_effect":null,
-            "accessibility":null,
-            "probability_of_success":null,
-            "saturation_point":null
-        },
-        {
-            "index":59,
+            "index":53,
             "destination":"Increase in brand value",
             "argument_1":"Carbon footprint reduction",
             "argument_2":"Effect of carbon footprint reduction on brand value",
@@ -705,10 +639,32 @@
             "saturation_point":null
         },
         {
-            "index":60,
+            "index":54,
+            "destination":"Carbon footprint reduction condition",
+            "argument_1":"RE %",
+            "argument_2":"Carbon footprint reduction saturation point",
+            "operator":">=",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":55,
+            "destination":"Increase in employee engagement score",
+            "argument_1":"Carbon footprint reduction condition",
+            "argument_2":"Effect of maximum carbon footprint reduction on employee engagement",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":56,
             "destination":"New employee engagement score",
             "argument_1":"Current employee engagement score",
-            "argument_2":"Increase in employee engagement int",
+            "argument_2":"Increase in employee engagement score",
             "operator":"+",
             "maximum_effect":null,
             "accessibility":null,
@@ -716,7 +672,7 @@
             "saturation_point":null
         },
         {
-            "index":61,
+            "index":57,
             "destination":"Current employee disengagement score",
             "argument_1":1,
             "argument_2":"Current employee engagement score",
@@ -727,7 +683,7 @@
             "saturation_point":null
         },
         {
-            "index":62,
+            "index":58,
             "destination":"New employee disengagement score",
             "argument_1":1,
             "argument_2":"New employee engagement score",
@@ -738,7 +694,7 @@
             "saturation_point":null
         },
         {
-            "index":63,
+            "index":59,
             "destination":"Current employee recommendation rate",
             "argument_1":"Current employee engagement score",
             "argument_2":"Engaged employee recommendation rate",
@@ -749,7 +705,7 @@
             "saturation_point":null
         },
         {
-            "index":64,
+            "index":60,
             "destination":"Current employee recommendation rate",
             "argument_1":"Current employee disengagement score",
             "argument_2":"Disengaged employee recommendation rate",
@@ -760,7 +716,7 @@
             "saturation_point":null
         },
         {
-            "index":65,
+            "index":61,
             "destination":"New employee recommendation rate",
             "argument_1":"New employee engagement score",
             "argument_2":"Engaged employee recommendation rate",
@@ -771,7 +727,7 @@
             "saturation_point":null
         },
         {
-            "index":66,
+            "index":62,
             "destination":"New employee recommendation rate",
             "argument_1":"New employee disengagement score",
             "argument_2":"Disengaged employee recommendation rate",
@@ -782,7 +738,7 @@
             "saturation_point":null
         },
         {
-            "index":67,
+            "index":63,
             "destination":"Increase in employee recommendation rate",
             "argument_1":"New employee recommendation rate",
             "argument_2":"Current employee recommendation rate",
@@ -793,9 +749,31 @@
             "saturation_point":null
         },
         {
-            "index":68,
-            "destination":"Increase in Net Promotor Score",
-            "argument_1":"Increase in employee engagement int",
+            "index":64,
+            "destination":"ICP condition",
+            "argument_1":"Internal carbon price",
+            "argument_2":0,
+            "operator":">",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":65,
+            "destination":"New Net Promotor Score",
+            "argument_1":"ICP condition",
+            "argument_2":"Effect of using an internal carbon price on employee engagement",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":66,
+            "destination":"New Net Promotor Score",
+            "argument_1":0,
             "argument_2":"Effect of employee engagement on customer satisfaction",
             "operator":"*",
             "maximum_effect":null,
@@ -804,10 +782,10 @@
             "saturation_point":null
         },
         {
-            "index":69,
+            "index":67,
             "destination":"New Net Promotor Score",
-            "argument_1":"Current Net Promotor Score",
-            "argument_2":"Increase in Net Promotor Score",
+            "argument_1":0,
+            "argument_2":"Current Net Promotor Score",
             "operator":"+",
             "maximum_effect":null,
             "accessibility":null,
