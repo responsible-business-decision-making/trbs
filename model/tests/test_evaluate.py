@@ -28,6 +28,17 @@ def fixture_evaluate_refugee():
     case.build()
     return Evaluate(case.input_dict)
 
+@pytest.fixture(name="evaluate_DSM")
+def fixture_evaluate_DSM():
+    """
+    This fixture initialises a DSM case.
+    :return Evaluate(): an Evaluate class for Beerwiser
+    """
+
+    case = TheResponsibleBusinessSimulator(Path.cwd() / "data", "xlsx", "DSM")
+    case.build()
+    return Evaluate(case.input_dict)
+
 
 def test_create_value_dict(evaluate_beerwiser):
     """
@@ -203,6 +214,24 @@ def test_evaluate_single_dependency_evaluation_error(evaluate_beerwiser):
                     "Unemployment reduction other refugees": 0.03,
                     "Unemployment reduction inhabitants": 0.01,
                     "Economic impact": 23857682.88,
+                }
+            },
+        ),
+        (
+            "evaluate_DSM",
+            "Base case",
+            "Partner RE",
+            {
+                "key_outputs": {
+                    "CAPEX": 0.0,
+                    "Energy cost": 4335000.0,
+                    "RE %": 0.5,
+                    "Carbon footprint reduction": 10140.0,
+                    "Actual carbon emission": 10140.0,
+                    "Increase in employee engagement score": 0.0173,
+                    "Increase in employee recommendation rate": 0.01124499999999995,
+                    "Increase in Net Promotor Score": 0,
+                    "Increase in brand value": 2149680.0,
                 }
             },
         ),
