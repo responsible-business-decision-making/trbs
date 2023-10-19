@@ -17,3 +17,11 @@ sensitive topic and provide insights based on empirical evidence.
 (e.g. increase in social cohesion and/or employment among refugees). 
 - recognizes that not all outcomes carry the same value for different stakeholders, 
 allowing the user to set strategic priorities, against which assessment is made.
+
+### IZZ
+This case demonstrates how IZZ offers healthcare institutions objective insights into what –for them- the optimal 
+strategy is with regard to the People pillar, mainly focusing on the employability of their employees. 
+There is a serious need for measures that will help achieve a balance between supply and demand in the healthcare 
+sector but also to account for the welfare of personnel. IZZ uses the strategic decision making process to support 
+many healthcare institutions in finding out what measures will help make healthcare a more pleasant, efficient and 
+attractive working environment. 
