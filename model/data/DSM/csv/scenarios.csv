@@ -1,0 +1,22 @@
+external_variable_input;scenario;value
+Price NRS market;Base case;108.0
+Price REC market;Base case;270.0
+Price REC partner;Base case;130.0
+Price RS market;Base case;115.0
+Price RS partner;Base case;51.0
+RE CAPEX subsidy rate;Base case;0.3
+RE CAPEX tax discount rate;Base case;0.3
+Price NRS market;RE optimistic;108.0
+Price REC market;RE optimistic;220.0
+Price REC partner;RE optimistic;120.0
+Price RS market;RE optimistic;90.0
+Price RS partner;RE optimistic;40.0
+RE CAPEX subsidy rate;RE optimistic;0.6
+RE CAPEX tax discount rate;RE optimistic;0.35
+Price NRS market;RE pessimistic;108.0
+Price REC market;RE pessimistic;320.0
+Price REC partner;RE pessimistic;140.0
+Price RS market;RE pessimistic;130.0
+Price RS partner;RE pessimistic;60.0
+RE CAPEX subsidy rate;RE pessimistic;0.0
+RE CAPEX tax discount rate;RE pessimistic;0.25

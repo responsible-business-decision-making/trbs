@@ -1,0 +1,280 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"internal_variable_input",
+                "type":"string"
+            },
+            {
+                "name":"decision_makers_option",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "internal_variable_input":"% RE make",
+            "decision_makers_option":"No RE",
+            "value":0.0
+        },
+        {
+            "index":1,
+            "internal_variable_input":"% RS partner",
+            "decision_makers_option":"No RE",
+            "value":0.0
+        },
+        {
+            "index":2,
+            "internal_variable_input":"% RS market",
+            "decision_makers_option":"No RE",
+            "value":0.0
+        },
+        {
+            "index":3,
+            "internal_variable_input":"% REC",
+            "decision_makers_option":"No RE",
+            "value":0.0
+        },
+        {
+            "index":4,
+            "internal_variable_input":"% REC partner",
+            "decision_makers_option":"No RE",
+            "value":0.0
+        },
+        {
+            "index":5,
+            "internal_variable_input":"% REC market",
+            "decision_makers_option":"No RE",
+            "value":0.0
+        },
+        {
+            "index":6,
+            "internal_variable_input":"Internal carbon price",
+            "decision_makers_option":"No RE",
+            "value":0.0
+        },
+        {
+            "index":7,
+            "internal_variable_input":"% RE make",
+            "decision_makers_option":"No RS with REC",
+            "value":0.0
+        },
+        {
+            "index":8,
+            "internal_variable_input":"% RS partner",
+            "decision_makers_option":"No RS with REC",
+            "value":0.0
+        },
+        {
+            "index":9,
+            "internal_variable_input":"% RS market",
+            "decision_makers_option":"No RS with REC",
+            "value":0.0
+        },
+        {
+            "index":10,
+            "internal_variable_input":"% REC",
+            "decision_makers_option":"No RS with REC",
+            "value":0.5
+        },
+        {
+            "index":11,
+            "internal_variable_input":"% REC partner",
+            "decision_makers_option":"No RS with REC",
+            "value":0.0
+        },
+        {
+            "index":12,
+            "internal_variable_input":"% REC market",
+            "decision_makers_option":"No RS with REC",
+            "value":0.0
+        },
+        {
+            "index":13,
+            "internal_variable_input":"Internal carbon price",
+            "decision_makers_option":"No RS with REC",
+            "value":0.0
+        },
+        {
+            "index":14,
+            "internal_variable_input":"% RE make",
+            "decision_makers_option":"RS partner without REC",
+            "value":0.0
+        },
+        {
+            "index":15,
+            "internal_variable_input":"% RS partner",
+            "decision_makers_option":"RS partner without REC",
+            "value":0.5
+        },
+        {
+            "index":16,
+            "internal_variable_input":"% RS market",
+            "decision_makers_option":"RS partner without REC",
+            "value":0.0
+        },
+        {
+            "index":17,
+            "internal_variable_input":"% REC",
+            "decision_makers_option":"RS partner without REC",
+            "value":0.0
+        },
+        {
+            "index":18,
+            "internal_variable_input":"% REC partner",
+            "decision_makers_option":"RS partner without REC",
+            "value":0.0
+        },
+        {
+            "index":19,
+            "internal_variable_input":"% REC market",
+            "decision_makers_option":"RS partner without REC",
+            "value":0.0
+        },
+        {
+            "index":20,
+            "internal_variable_input":"Internal carbon price",
+            "decision_makers_option":"RS partner without REC",
+            "value":0.0
+        },
+        {
+            "index":21,
+            "internal_variable_input":"% RE make",
+            "decision_makers_option":"Market RE",
+            "value":0.0
+        },
+        {
+            "index":22,
+            "internal_variable_input":"% RS partner",
+            "decision_makers_option":"Market RE",
+            "value":0.0
+        },
+        {
+            "index":23,
+            "internal_variable_input":"% RS market",
+            "decision_makers_option":"Market RE",
+            "value":0.5
+        },
+        {
+            "index":24,
+            "internal_variable_input":"% REC",
+            "decision_makers_option":"Market RE",
+            "value":0.5
+        },
+        {
+            "index":25,
+            "internal_variable_input":"% REC partner",
+            "decision_makers_option":"Market RE",
+            "value":0.0
+        },
+        {
+            "index":26,
+            "internal_variable_input":"% REC market",
+            "decision_makers_option":"Market RE",
+            "value":0.0
+        },
+        {
+            "index":27,
+            "internal_variable_input":"Internal carbon price",
+            "decision_makers_option":"Market RE",
+            "value":0.0
+        },
+        {
+            "index":28,
+            "internal_variable_input":"% RE make",
+            "decision_makers_option":"Partner RE",
+            "value":0.0
+        },
+        {
+            "index":29,
+            "internal_variable_input":"% RS partner",
+            "decision_makers_option":"Partner RE",
+            "value":0.5
+        },
+        {
+            "index":30,
+            "internal_variable_input":"% RS market",
+            "decision_makers_option":"Partner RE",
+            "value":0.0
+        },
+        {
+            "index":31,
+            "internal_variable_input":"% REC",
+            "decision_makers_option":"Partner RE",
+            "value":0.5
+        },
+        {
+            "index":32,
+            "internal_variable_input":"% REC partner",
+            "decision_makers_option":"Partner RE",
+            "value":0.0
+        },
+        {
+            "index":33,
+            "internal_variable_input":"% REC market",
+            "decision_makers_option":"Partner RE",
+            "value":0.0
+        },
+        {
+            "index":34,
+            "internal_variable_input":"Internal carbon price",
+            "decision_makers_option":"Partner RE",
+            "value":0.0
+        },
+        {
+            "index":35,
+            "internal_variable_input":"% RE make",
+            "decision_makers_option":"Make RE",
+            "value":0.5
+        },
+        {
+            "index":36,
+            "internal_variable_input":"% RS partner",
+            "decision_makers_option":"Make RE",
+            "value":0.0
+        },
+        {
+            "index":37,
+            "internal_variable_input":"% RS market",
+            "decision_makers_option":"Make RE",
+            "value":0.0
+        },
+        {
+            "index":38,
+            "internal_variable_input":"% REC",
+            "decision_makers_option":"Make RE",
+            "value":0.0
+        },
+        {
+            "index":39,
+            "internal_variable_input":"% REC partner",
+            "decision_makers_option":"Make RE",
+            "value":0.0
+        },
+        {
+            "index":40,
+            "internal_variable_input":"% REC market",
+            "decision_makers_option":"Make RE",
+            "value":0.0
+        },
+        {
+            "index":41,
+            "internal_variable_input":"Internal carbon price",
+            "decision_makers_option":"Make RE",
+            "value":0.0
+        }
+    ]
+}
