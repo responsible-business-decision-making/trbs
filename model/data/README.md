@@ -17,3 +17,12 @@ sensitive topic and provide insights based on empirical evidence.
 (e.g. increase in social cohesion and/or employment among refugees). 
 - recognizes that not all outcomes carry the same value for different stakeholders, 
 allowing the user to set strategic priorities, against which assessment is made.
+
+### DSM
+Royal Dutch multinational corporation (DSM) is a global science-based company active in health, nutrition and materials. This case elaborates the decision making at DSM who wants to anticipate climate change by addressing its own environmental and carbon footprint by means of reducing its greenhouse gas emissions and becoming more energy efficient. Their strategic challenge, therefore, has been formulated as how to source energy:
+- No renewable energy (RE)
+- Make RE
+- Partner RE
+- Market RE
+- No (RS) with renewable energy certifications (REC)
+- RS without REC
