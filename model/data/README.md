@@ -25,5 +25,5 @@ Royal Dutch multinational corporation (DSM) is a global science-based company ac
 - RE Market: buy renewable energy from the market and buy renewable energy certifications 
 - RE Partner: buy renewable energy from partners and buy renewable energy certifications
 - RS Partner without REC: buy renewable energy from partners without buying renewable energy certifications
-- No RS with REC: buy non-renewable energy from market and buy renewable energy certifications
+- No RS with REC: buy energy from non-renewable source from market and buy renewable energy certifications
 
