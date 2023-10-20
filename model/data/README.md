@@ -20,10 +20,10 @@ allowing the user to set strategic priorities, against which assessment is made.
 
 ### DSM
 Royal Dutch multinational corporation (DSM) is a global science-based company active in health, nutrition and materials. This case elaborates the decision making at DSM who wants to anticipate climate change by addressing its own environmental and carbon footprint by means of reducing its greenhouse gas emissions and becoming more energy efficient. Their strategic challenge, therefore, has been formulated as how to source energy:
-- No renewable energy (RE)
-- Make RE
-- Buy RE from Partners with renewable energy certifications (REC)
-- Buy RE from Partners without REC
-- Buy RE form Market with REC
-- Buy not from Market and Partners, but with REC
+- No RE: not buy or make renewable energy
+- Make RE: make renewable energy
+- RE Market: buy renewable energy from the market and buy renewable energy certifications 
+- RE Partner: buy renewable energy from partners and buy renewable energy certifications
+- RS Partner without REC: buy renewable energy from partners without buying renewable energy certifications
+- No RS with REC: buy non-renewable energy from market and buy renewable energy certifications
 
