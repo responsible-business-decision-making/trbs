@@ -21,10 +21,22 @@ def fixture_evaluate_beerwiser():
 def fixture_evaluate_refugee():
     """
     This fixture initialises a Refugee case.
-    :return Evaluate(): an Evaluate class for Beerwiser
+    :return Evaluate(): an Evaluate class for Refugee
     """
 
     case = TheResponsibleBusinessSimulator(Path.cwd() / "data", "xlsx", "refugee")
+    case.build()
+    return Evaluate(case.input_dict)
+
+
+@pytest.fixture(name="evaluate_izz")
+def fixture_evaluate_izz():
+    """
+    This fixture initialises a IZZ case.
+    :return Evaluate(): an Evaluate class for IZZ
+    """
+
+    case = TheResponsibleBusinessSimulator(Path.cwd() / "data", "xlsx", "izz")
     case.build()
     return Evaluate(case.input_dict)
 
@@ -206,6 +218,24 @@ def test_evaluate_single_dependency_evaluation_error(evaluate_beerwiser):
                 }
             },
         ),
+        (
+            "evaluate_izz",
+            "Optimistic",
+            "Social",
+            {
+                "key_outputs": {
+                    "Decrease in absenteeism %": 0.0,
+                    "Decrease in staff turnover %": 0.0,
+                    "Increase in customer satisfaction": 0.01,
+                    "Increase in employee satisfaction": 0.03,
+                    "Decrease in absenteeism costs": 18610.66,
+                    "Decrease in staff turnover costs": 734.7,
+                    "Decrease in wage costs": 11235861.75,
+                    "Increase in production capacity": 513.44,
+                    "Total investment": 120000.0,
+                }
+            },
+        ),
     ],
 )
 def test_evaluate_all_dependencies(fixture_name, expected_result, scenario, dmo, request):
@@ -217,8 +247,6 @@ def test_evaluate_all_dependencies(fixture_name, expected_result, scenario, dmo,
     case = request.getfixturevalue(fixture_name)
     result = case.evaluate_all_dependencies(scenario, dmo)
     rounded_result = round_all_dict_values(result)
-
-    print(rounded_result)
     assert rounded_result == expected_result
 
 
