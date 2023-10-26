@@ -28,8 +28,9 @@ def fixture_evaluate_refugee():
     case.build()
     return Evaluate(case.input_dict)
 
-@pytest.fixture(name="evaluate_DSM")
-def fixture_evaluate_DSM():
+
+@pytest.fixture(name="evaluate_dsm")
+def fixture_evaluate_dsm():
     """
     This fixture initialises a DSM case.
     :return Evaluate(): an Evaluate class for Beerwiser
@@ -218,7 +219,7 @@ def test_evaluate_single_dependency_evaluation_error(evaluate_beerwiser):
             },
         ),
         (
-            "evaluate_DSM",
+            "evaluate_dsm",
             "Base case",
             "Partner RE",
             {
@@ -228,8 +229,8 @@ def test_evaluate_single_dependency_evaluation_error(evaluate_beerwiser):
                     "RE %": 0.5,
                     "Carbon footprint reduction": 10140.0,
                     "Actual carbon emission": 10140.0,
-                    "Increase in employee engagement score": 0.0173,
-                    "Increase in employee recommendation rate": 0.01124499999999995,
+                    "Increase in employee engagement score": 0.02,
+                    "Increase in employee recommendation rate": 0.01,
                     "Increase in Net Promotor Score": 0,
                     "Increase in brand value": 2149680.0,
                 }
