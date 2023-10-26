@@ -245,7 +245,10 @@ def test_evaluate_single_dependency_evaluation_error(evaluate_beerwiser):
                     "Increase in employee recommendation rate": 0.01,
                     "Increase in Net Promotor Score": 0,
                     "Increase in brand value": 2149680.0,
-
+                }
+            },
+        ),
+        (
             "evaluate_izz",
             "Optimistic",
             "Social",
