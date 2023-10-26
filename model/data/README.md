@@ -27,3 +27,11 @@ Royal Dutch multinational corporation (DSM) is a global science-based company ac
 - RS Partner without REC: buy renewable energy from partners without buying renewable energy certifications
 - No RS with REC: buy energy from non-renewable source from market and buy renewable energy certifications
 
+
+### IZZ
+This case demonstrates how IZZ offers healthcare institutions objective insights into what –for them- the optimal 
+strategy is with regard to the People pillar, mainly focusing on the employability of their employees. 
+There is a serious need for measures that will help achieve a balance between supply and demand in the healthcare 
+sector but also to account for the welfare of personnel. IZZ uses the strategic decision making process to support 
+many healthcare institutions in finding out what measures will help make healthcare a more pleasant, efficient and 
+attractive working environment. 

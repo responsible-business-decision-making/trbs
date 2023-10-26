@@ -1,0 +1,190 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"internal_variable_input",
+                "type":"string"
+            },
+            {
+                "name":"decision_makers_option",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"integer"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "internal_variable_input":"Healthy eating",
+            "decision_makers_option":"Mix",
+            "value":11
+        },
+        {
+            "index":1,
+            "internal_variable_input":"Healthy eating",
+            "decision_makers_option":"Physical",
+            "value":10
+        },
+        {
+            "index":2,
+            "internal_variable_input":"Healthy eating",
+            "decision_makers_option":"Social",
+            "value":0
+        },
+        {
+            "index":3,
+            "internal_variable_input":"Leadership development",
+            "decision_makers_option":"Mix",
+            "value":11
+        },
+        {
+            "index":4,
+            "internal_variable_input":"Leadership development",
+            "decision_makers_option":"Social",
+            "value":10
+        },
+        {
+            "index":5,
+            "internal_variable_input":"Leadership development",
+            "decision_makers_option":"Physical",
+            "value":0
+        },
+        {
+            "index":6,
+            "internal_variable_input":"Physical exercise",
+            "decision_makers_option":"Mix",
+            "value":11
+        },
+        {
+            "index":7,
+            "internal_variable_input":"Physical exercise",
+            "decision_makers_option":"Physical",
+            "value":20
+        },
+        {
+            "index":8,
+            "internal_variable_input":"Physical exercise",
+            "decision_makers_option":"Social",
+            "value":0
+        },
+        {
+            "index":9,
+            "internal_variable_input":"Physical strain reduction",
+            "decision_makers_option":"Mix",
+            "value":11
+        },
+        {
+            "index":10,
+            "internal_variable_input":"Physical strain reduction",
+            "decision_makers_option":"Physical",
+            "value":50
+        },
+        {
+            "index":11,
+            "internal_variable_input":"Physical strain reduction",
+            "decision_makers_option":"Social",
+            "value":0
+        },
+        {
+            "index":12,
+            "internal_variable_input":"Psycho-social stress reduction",
+            "decision_makers_option":"Mix",
+            "value":12
+        },
+        {
+            "index":13,
+            "internal_variable_input":"Psycho-social stress reduction",
+            "decision_makers_option":"Social",
+            "value":35
+        },
+        {
+            "index":14,
+            "internal_variable_input":"Psycho-social stress reduction",
+            "decision_makers_option":"Physical",
+            "value":0
+        },
+        {
+            "index":15,
+            "internal_variable_input":"Salary increase",
+            "decision_makers_option":"Mix",
+            "value":11
+        },
+        {
+            "index":16,
+            "internal_variable_input":"Salary increase",
+            "decision_makers_option":"Social",
+            "value":25
+        },
+        {
+            "index":17,
+            "internal_variable_input":"Salary increase",
+            "decision_makers_option":"Physical",
+            "value":0
+        },
+        {
+            "index":18,
+            "internal_variable_input":"Smoking reduction",
+            "decision_makers_option":"Mix",
+            "value":11
+        },
+        {
+            "index":19,
+            "internal_variable_input":"Smoking reduction",
+            "decision_makers_option":"Physical",
+            "value":20
+        },
+        {
+            "index":20,
+            "internal_variable_input":"Smoking reduction",
+            "decision_makers_option":"Social",
+            "value":0
+        },
+        {
+            "index":21,
+            "internal_variable_input":"Training and development",
+            "decision_makers_option":"Mix",
+            "value":11
+        },
+        {
+            "index":22,
+            "internal_variable_input":"Training and development",
+            "decision_makers_option":"Social",
+            "value":25
+        },
+        {
+            "index":23,
+            "internal_variable_input":"Training and development",
+            "decision_makers_option":"Physical",
+            "value":0
+        },
+        {
+            "index":24,
+            "internal_variable_input":"Work-life balance",
+            "decision_makers_option":"Mix",
+            "value":11
+        },
+        {
+            "index":25,
+            "internal_variable_input":"Work-life balance",
+            "decision_makers_option":"Social",
+            "value":5
+        },
+        {
+            "index":26,
+            "internal_variable_input":"Work-life balance",
+            "decision_makers_option":"Physical",
+            "value":0
+        }
+    ]
+}
