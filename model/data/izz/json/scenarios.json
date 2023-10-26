@@ -1,0 +1,136 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"external_variable_input",
+                "type":"string"
+            },
+            {
+                "name":"scenario",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "external_variable_input":"Relative effect employee satisfaction on customer satisfaction",
+            "scenario":"Base case",
+            "value":1.0
+        },
+        {
+            "index":1,
+            "external_variable_input":"Relative effect employee satisfaction on customer satisfaction",
+            "scenario":"Optimistic",
+            "value":1.3
+        },
+        {
+            "index":2,
+            "external_variable_input":"Relative effect employee satisfaction on customer satisfaction",
+            "scenario":"Pessimistic",
+            "value":0.7
+        },
+        {
+            "index":3,
+            "external_variable_input":"Relative effect employee satisfaction on productivity %",
+            "scenario":"Base case",
+            "value":1.0
+        },
+        {
+            "index":4,
+            "external_variable_input":"Relative effect employee satisfaction on productivity %",
+            "scenario":"Optimistic",
+            "value":1.3
+        },
+        {
+            "index":5,
+            "external_variable_input":"Relative effect employee satisfaction on productivity %",
+            "scenario":"Pessimistic",
+            "value":0.5
+        },
+        {
+            "index":6,
+            "external_variable_input":"Relative effect intervention on absenteeism %",
+            "scenario":"Base case",
+            "value":1.0
+        },
+        {
+            "index":7,
+            "external_variable_input":"Relative effect intervention on absenteeism %",
+            "scenario":"Optimistic",
+            "value":1.1
+        },
+        {
+            "index":8,
+            "external_variable_input":"Relative effect intervention on absenteeism %",
+            "scenario":"Pessimistic",
+            "value":0.9
+        },
+        {
+            "index":9,
+            "external_variable_input":"Relative effect intervention on employee satisfaction",
+            "scenario":"Base case",
+            "value":1.0
+        },
+        {
+            "index":10,
+            "external_variable_input":"Relative effect intervention on employee satisfaction",
+            "scenario":"Optimistic",
+            "value":1.1
+        },
+        {
+            "index":11,
+            "external_variable_input":"Relative effect intervention on employee satisfaction",
+            "scenario":"Pessimistic",
+            "value":0.5
+        },
+        {
+            "index":12,
+            "external_variable_input":"Relative effect intervention on productivity %",
+            "scenario":"Base case",
+            "value":1.0
+        },
+        {
+            "index":13,
+            "external_variable_input":"Relative effect intervention on productivity %",
+            "scenario":"Optimistic",
+            "value":1.1
+        },
+        {
+            "index":14,
+            "external_variable_input":"Relative effect intervention on productivity %",
+            "scenario":"Pessimistic",
+            "value":0.9
+        },
+        {
+            "index":15,
+            "external_variable_input":"Relative effect intervention on staff turnover %",
+            "scenario":"Base case",
+            "value":1.0
+        },
+        {
+            "index":16,
+            "external_variable_input":"Relative effect intervention on staff turnover %",
+            "scenario":"Optimistic",
+            "value":1.1
+        },
+        {
+            "index":17,
+            "external_variable_input":"Relative effect intervention on staff turnover %",
+            "scenario":"Pessimistic",
+            "value":0.9
+        }
+    ]
+}
