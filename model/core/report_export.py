@@ -4,12 +4,15 @@ This file contains two functions which make a powerpoint of the visualisations i
 from datetime import date, datetime
 from pptx import Presentation
 from pptx.util import Pt
+from pptx.util import Cm
+from pptx.enum.text import PP_ALIGN
 from pptx.dml.color import RGBColor
 from pptx.enum.chart import XL_CHART_TYPE
 from pptx.util import Inches
 from pptx.chart.data import CategoryChartData
 from pptx.enum.chart import XL_LEGEND_POSITION
 import numpy as np
+
 
 def iter_cells(table):
     """
@@ -20,6 +23,71 @@ def iter_cells(table):
         for cell in row.cells:
             yield cell
 
+
+def make_title(slide, title_text, title_page=False):
+    """
+    This function adds a title to a slide
+    :param slide: selected slide where the title is needed
+    :param title_text: text of the title
+    :param title_page: indicate if title is made on title page
+    """
+    title = slide.shapes.title
+    if title_page:
+        title.left, title.top, title.width, title.height = Cm(5.9), Cm(5.7), Cm(21.6), Cm(4.1)
+    else:
+        title.left, title.top, title.width, title.height = Cm(5.1), Cm(0.7), Cm(22.9), Cm(3.2)
+    title.text = title_text
+    slide.shapes.title.text_frame.paragraphs[0].font.size = Pt(36)
+
+
+def make_introduction(slide, introduction_text):
+    """
+    This function adds an introduction to a slide
+    :param slide: selected slide where the title is needed
+    :param introduction_text: text of the introduction
+    """
+    tx_box = slide.shapes.add_textbox(Cm(5.1), Cm(3.3), Cm(22.8), Cm(2.6))
+    text_frame = tx_box.text_frame
+    text_frame.word_wrap = True
+    text_frame.text = introduction_text
+
+
+def make_strategic_challenge(slide, case):
+    """
+    This function adds an introduction to a slide
+    :param slide: selected slide where the title is needed
+    :param case: the selected case
+    """
+    input_info = case.input_dict
+    tx_box = slide.shapes.add_textbox(Cm(5.1), Cm(4.6), Cm(22.8), Cm(5))
+    try:
+        tx_box.text_frame.text = input_info["configuration_value"][
+            list(case.input_dict["configurations"]).index("strategic_challenge")
+        ]
+    except:
+        tx_box.text_frame.text = "Not defined in template"
+        tx_box.text_frame.paragraphs[0].font.italic = True
+    tx_box.text_frame.paragraphs[0].font.size = Pt(28)
+    tx_box.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+
+
+def add_page_number(slide, page_number):
+    """
+    This function adds a page number to a slide
+    :param slide: selected slide where the title is needed
+    :param page_number: the number on the page
+    """
+    x_loc_page_number, y_loc_page_number, x_weight_page_number, y_weight_page_number = (
+        Cm(31.9),
+        Cm(17.7),
+        Cm(0.8),
+        Cm(1),
+    )
+    tx_box = slide.shapes.add_textbox(x_loc_page_number, y_loc_page_number, x_weight_page_number, y_weight_page_number)
+    tx_box.text_frame.text = page_number
+    tx_box.text_frame.paragraphs[0].font.color.rgb = RGBColor(120, 120, 120)
+
+
 def make_slides(case, scenario):
     """
     This function present different visualisation on different slides in a powerpoint format
@@ -27,34 +95,47 @@ def make_slides(case, scenario):
     :param scenario: the desired scenario which is used in the visualisations
     """
     prs = Presentation()
+    # set width to full width.
+    prs.slide_width = Inches(13)
     output_info = case.output_dict[scenario]
     input_info = case.input_dict
-    x_loc, y_loc, x_weight, y_weight = Inches(0.5), Inches(2.5), Inches(9.0), Inches(2.0)
-    x_loc_text, y_loc_text, x_weight_text, y_weight_text = Inches(1.0), Inches(1.5), Inches(8.0), Inches(2.0)
+    # Formatting position
+    x_loc_graph, y_loc_graph, x_weight_graph, y_weight_graph = Cm(3.62), Cm(3.9), Cm(25.5), Cm(14.8)
+    x_loc_table, y_loc_table, x_weight_table, y_weight_table = Cm(3.62), Cm(6.2), Cm(25.5), Cm(0.5)
 
     # Generate title slide
     title_slide_layout = prs.slide_layouts[0]
     slide_title = prs.slides.add_slide(title_slide_layout)
-    title = slide_title.shapes.title
-    subtitle = slide_title.placeholders[1]
-    title.text = "Executive summary of the " + case.name + " case"
+    make_title(slide_title, "Executive summary of the " + case.name + " case", True)
     date_today = str(date.today().strftime("%d %B %Y"))
-    subtitle.text = f"The Responsible Business Simulator \n {date_today}"
+    subtitle = slide_title.placeholders[1]
+    subtitle.top, subtitle.left, subtitle.width, subtitle.height = Cm(10.8), Cm(7.6), Cm(17.8), Cm(4.9)
+    subtitle.text = f"Responsible business decision making \n {date_today}"
+
+    # Generate strategic challenge slide
+    challenge_slide_layout = prs.slide_layouts[5]
+    slide_challenge = prs.slides.add_slide(challenge_slide_layout)
+    make_title(slide_challenge, "Strategic Challenge")
+    make_strategic_challenge(slide_challenge, case)
+    add_page_number(slide_challenge, "1")
 
     # Create the table chart slide key outputs
     graph_slide_layout = prs.slide_layouts[5]
     slide_key_outputs = prs.slides.add_slide(graph_slide_layout)
-    title = slide_key_outputs.shapes.title
-    title.text = "The key outputs"
-    slide_key_outputs.shapes.title.text_frame.paragraphs[0].font.size = Pt(36)
-    tx_box = slide_key_outputs.shapes.add_textbox(x_loc_text, y_loc_text, x_weight_text, y_weight_text)
-    tf = tx_box.text_frame
-    tf.text = 'The outputs upon which the decision maker will base his decision. A key output \n' \
-              'is often referred to as KPI.'
+    make_title(slide_key_outputs, "Key outputs")
+    make_introduction(
+        slide_key_outputs,
+        "The outputs upon which the decision makers will base their decision. "
+        "Key outputs are often referred to as KPIs. Key outputs are grouped into "
+        "themes.",
+    )
+    add_page_number(slide_key_outputs, "2")
     #  Data for table
     input_info_ko = input_info["key_outputs"]
     input_info_ko_th = input_info["key_output_theme"]
-    shape = slide_key_outputs.shapes.add_table((len(input_info_ko) + 1), 2, x_loc, y_loc, x_weight, y_weight)
+    shape = slide_key_outputs.shapes.add_table(
+        (len(input_info_ko) + 1), 2, x_loc_table, y_loc_table, x_weight_table, y_weight_table
+    )
     table = shape.table
     headers_sum = ["Key outputs", "Theme"]
     for column, item in enumerate(headers_sum):
@@ -72,19 +153,25 @@ def make_slides(case, scenario):
     # Create the table chart slide decision maker's options
     graph_slide_layout = prs.slide_layouts[5]
     slide_dmo = prs.slides.add_slide(graph_slide_layout)
-    title = slide_dmo.shapes.title
-    title.text = "The decision maker's options"
-    slide_dmo.shapes.title.text_frame.paragraphs[0].font.size = Pt(36)
-    tx_box = slide_dmo.shapes.add_textbox(x_loc_text, y_loc_text, x_weight_text, y_weight_text)
-    tf = tx_box.text_frame
-    tf.text = 'Set of potential sub-decisions, where each potential sub-decision is represented \n' \
-              'by choosing a single value for the corresponding internal variable input'
+    make_title(slide_dmo, "Decision makers options (DMOs)")
+    make_introduction(
+        slide_dmo,
+        "Decision makers options are formulated by assigning a single value to "
+        "all internal variable inputs. These inputs can be formulated and determined "
+        "by the decision makers.",
+    )
+    add_page_number(slide_dmo, "3")
     #  Data for table
     input_info_dmo = input_info["decision_makers_options"]
     input_info_dmo_values = input_info["decision_makers_option_value"]
     input_info_internal_value = input_info["internal_variable_inputs"]
     shape = slide_dmo.shapes.add_table(
-        (len(input_info_internal_value) + 1), len(input_info_dmo) + 1, x_loc, y_loc, x_weight, y_weight
+        (len(input_info_internal_value) + 1),
+        len(input_info_dmo) + 1,
+        x_loc_table,
+        y_loc_table,
+        x_weight_table,
+        y_weight_table,
     )
     table = shape.table
     headers_sum = np.append(["Internal variable input"], input_info_dmo)
@@ -107,24 +194,28 @@ def make_slides(case, scenario):
             for run in paragraph.runs:
                 run.font.size = Pt(12)
 
-
     # Create the table chart slide the scenarios
     graph_slide_layout = prs.slide_layouts[5]
     slide_scenarios = prs.slides.add_slide(graph_slide_layout)
-    title = slide_scenarios.shapes.title
-    title.text = "The scenario's"
-    slide_scenarios.shapes.title.text_frame.paragraphs[0].font.size = Pt(36)
-    tx_box = slide_scenarios.shapes.add_textbox(x_loc_text, y_loc_text, x_weight_text, y_weight_text)
-    tf = tx_box.text_frame
-    tf.text = 'A coherent combination of future developments, where every single aspect \n' \
-              'of external uncertainty is represented by choosing a single value for \n' \
-              'the corresponding external variable input'
+    make_title(slide_scenarios, "Scenarios")
+    make_introduction(
+        slide_scenarios,
+        "Each external variable input can be thought of as a single aspect of external "
+        "uncertainty affecting the outcome of the decision in scope. "
+        "A scenario is defined by assigning a single value to all external variable inputs.",
+    )
+    add_page_number(slide_scenarios, "4")
     #  Data for table
     input_info_scen = input_info["scenarios"]
     input_info_scen_values = input_info["scenario_value"]
     input_info_external_value = input_info["external_variable_inputs"]
     shape = slide_scenarios.shapes.add_table(
-        (len(input_info_external_value) + 1), len(input_info_scen) + 1, x_loc, y_loc, x_weight, y_weight
+        (len(input_info_external_value) + 1),
+        len(input_info_scen) + 1,
+        x_loc_table,
+        y_loc_table,
+        x_weight_table,
+        y_weight_table,
     )
     table = shape.table
     headers_sum = np.append(["External variable input"], input_info_scen)
@@ -147,22 +238,26 @@ def make_slides(case, scenario):
             for run in paragraph.runs:
                 run.font.size = Pt(12)
 
+    # Generate dependency graph slide
+    dep_graph_slide_layout = prs.slide_layouts[5]
+    slide_dep_graph = prs.slides.add_slide(dep_graph_slide_layout)
+    make_title(slide_dep_graph, "Dependency graph")
+    add_page_number(slide_dep_graph, "5")
+
     # Generate weighted appreciations slide
     weighted_app_slide_layout = prs.slide_layouts[5]
     slide_weighted_app = prs.slides.add_slide(weighted_app_slide_layout)
-    title = slide_weighted_app.shapes.title
-    title.text = "The resulting appreciations of different DMO’s for selected scenario " + scenario
-    slide_weighted_app.shapes.title.text_frame.paragraphs[0].font.size = Pt(36)
+    make_title(slide_weighted_app, "Resulting appreciations of different DMOs for scenario: " + scenario)
+    add_page_number(slide_weighted_app, "6")
     #  Fill chart with data
     chart_data = CategoryChartData()
     chart_data.categories = output_info.keys()
     for series in list(output_info[list(output_info.keys())[0]]["weighted_appreciations"].keys()):
-        values = [output_info[categorie]["weighted_appreciations"][series] for categorie in list(output_info.keys())]
+        values = [output_info[category]["weighted_appreciations"][series] for category in list(output_info.keys())]
         chart_data.add_series(series, values)
     #  implement chart on slide
-    x_loc_chart, y_loc_chart, x_chart_weight, y_chart_weight = Inches(2), Inches(2), Inches(6), Inches(4.5)
     chart = slide_weighted_app.shapes.add_chart(
-        XL_CHART_TYPE.COLUMN_STACKED, x_loc_chart, y_loc_chart, x_chart_weight, y_chart_weight, chart_data
+        XL_CHART_TYPE.COLUMN_STACKED, x_loc_graph, y_loc_graph, x_weight_graph, y_weight_graph, chart_data
     ).chart
     #  color series on chart
     colors = [
@@ -186,7 +281,7 @@ def make_slides(case, scenario):
         fill = series.format.fill
         fill.solid()
         color_used = colors[index].lstrip("#")
-        rgb = tuple(int(color_used[i: i + 2], 16) for i in (0, 2, 4))
+        rgb = tuple(int(color_used[i : i + 2], 16) for i in (0, 2, 4))
         fill.fore_color.rgb = RGBColor(rgb[0], rgb[1], rgb[2])
     #  layout chart change
     category_axis = chart.category_axis
@@ -206,7 +301,6 @@ def make_slides(case, scenario):
     chart.legend.horz_offset = 0.0
     chart.legend.include_in_layout = False
     chart.legend.font.size = Pt(8)
-
     return prs
 
 
@@ -217,7 +311,10 @@ def create_report(case, scenario, path):
     :param scenario: the desired scenario which is used in the visualisations
     :param path: the desired location where the report is saved
     """
-    prs = make_slides(case, scenario,)
+    prs = make_slides(
+        case,
+        scenario,
+    )
     date_year = str(datetime.now().strftime("%Y-%m-%d"))
     date_hour = str(datetime.now().strftime("%Hh%Mm%Ss"))
     filename = "tRBS_" + case.name + f'_{date_year + "_" + date_hour}.pptx'
