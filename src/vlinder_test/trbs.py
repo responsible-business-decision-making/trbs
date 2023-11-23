@@ -2,11 +2,11 @@
 This module contains the TRBS class. This is the parent class that deals with anything related to a Responsible
 Business Simulator Case.
 """
-from core.case_exporter import CaseExporter
-from core.case_importer import CaseImporter
-from core.evaluate import Evaluate
-from core.appreciate import Appreciate
-from core.visualize import Visualize
+from case_exporter import CaseExporter
+from case_importer import CaseImporter
+from evaluate import Evaluate
+from appreciate import Appreciate
+from visualize import Visualize
 
 
 class TheResponsibleBusinessSimulator:
