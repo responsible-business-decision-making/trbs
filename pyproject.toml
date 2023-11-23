@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "vlinder_test"
-version = "0.10"
+version = "0.11"
 authors = [
-  { name="Vlinder team", email="inderdeep.singh@pwc.com" },
+  { name="Vlinder team" },
 ]
 description = "Package for responsible business decision making"
 readme = "README.md"
