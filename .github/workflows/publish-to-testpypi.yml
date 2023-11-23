@@ -3,8 +3,8 @@ name: Publish Python distribution TestPyPI
 on: push
 
 jobs:
-  build:
-    name: Build distribution
+  build and upload:
+    name: Build distribution and upload to TestPyPi
     runs-on: ubuntu-latest
 
     steps:
@@ -14,34 +14,15 @@ jobs:
       with:
         python-version: "3.9"
     - name: Install pypa/build
-      run: >-
-        python3 -m
-        pip install
-        build
-        --user
+      run: python3 -m pip install build --user
     - name: Build a binary wheel and a source tarball
       run: python3 -m build
-
-  publish-to-testpypi:
-    name: Publish Python distribution to TestPyPI
-    needs:
-    - build
-    runs-on: ubuntu-latest
-
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/p/vlinder-test
+    - name: Install twine
+      run: python3 -m pip install --upgrade twine
+    - name: Upload to TestPyPi
+      run: python3 -m twine upload --repository testpypi dist/*
+      env:
       username: __token__
       password: ${{ secrets.TEST_PYPI_API_TOKEN }}
 
-    permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
-
-    steps:
-    - name: Publish distribution to TestPyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-	username: __token__
-	password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        repository-url: https://test.pypi.org/legacy/
 	
