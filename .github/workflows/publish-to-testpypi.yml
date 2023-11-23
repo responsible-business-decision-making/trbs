@@ -32,11 +32,6 @@ jobs:
     needs:
     - build
     runs-on: ubuntu-latest
-
-    environment:
-      name: testpypi
-      url: https://test.pypi.org/p/vlinder-test
-
     steps:
     - name: Download all the dists
       uses: actions/download-artifact@v3
