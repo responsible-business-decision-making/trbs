@@ -1,14 +1,10 @@
 [build-system]
-requires = [
-"setuptools>=60",
-"setuptools-scm>=8.0"
-]
+requires = ["setuptools>= 61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "vlinder_test"
-dynamic = ["version"]
-[tool.setuptools_scm]
+version = "0.13"
 authors = [
   { name="Vlinder team" },
 ]
@@ -25,7 +21,7 @@ dependencies = [
 "numpy >= 1.25.0",
 "openpyxl >= 3.1.2",
 "matplotlib >= 3.7.2",
-"xlsxwriter >= 3.1.2"
+"xlsxwriter >= 3.1.2",
 ]
 
 [tool.setuptools]
