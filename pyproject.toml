@@ -1,7 +1,6 @@
 [build-system]
 requires = [
-"setuptools>=60",
-"setuptools-scm>=8.0",
+"setuptools",
 "pandas >= 2.0.3",
 "numpy >= 1.25.0",
 "openpyxl >= 3.1.2",
@@ -12,7 +11,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "vlinder_test"
-dynamic = ["version"]
+version = "0.12"
 authors = [
   { name="Vlinder team" },
 ]
