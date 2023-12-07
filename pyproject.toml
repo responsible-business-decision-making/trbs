@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "vlinder_test"
-version = "0.14"
+version = "0.15"
 authors = [
   {name="Vlinder team"},
 ]
