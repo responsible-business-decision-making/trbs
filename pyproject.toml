@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>= 61.0", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "vlinder_test"
@@ -24,24 +24,12 @@ dependencies = [
 "xlsxwriter >= 3.1.2",
 ]
 
-[tool.setuptools]
-include-package-data = true
+[tool.hatch.build.targets.wheel]
+only-include = ["src/vlinder_test", "docs"]
 
-[tool.setuptools.packages.find]
-namespaces = true
-where = ["src"]
-
-[tool.setuptools.package-data]
-"vlinder_test.data" = ["*.xlsx", ".md"]
-"vlinder_test.data.beerwiser.xlsx" = ["*.xlsx"]
-"vlinder_test.data.beerwiser.csv" = ["*.csv"]
-"vlinder_test.data.beerwiser.json" = ["*.json"]
-"vlinder_test.data.izz.xlsx" = ["*.xlsx"]
-"vlinder_test.data.izz.csv" = ["*.csv"]
-"vlinder_test.data.izz.json" = ["*.json"]
-"vlinder_test.data.refugee.xlsx" = ["*.xlsx"]
-"vlinder_test.data.refugee.csv" = ["*.csv"]
-"vlinder_test.data.refugee.json" = ["*.json"]
+[tool.hatch.build.targets.wheel.sources]
+"src" = ""
+"docs" = "vlinder_test/docs"
 
 [project.urls]
 "Homepage" = "https://github.com/responsible-business-decision-making/trbs"
