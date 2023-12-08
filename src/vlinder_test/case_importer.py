@@ -5,7 +5,7 @@ from pathlib import Path
 import warnings
 import pandas as pd
 import numpy as np
-from utils import check_numeric
+from vlinder_test.utils import check_numeric
 
 
 class TemplateError(Exception):

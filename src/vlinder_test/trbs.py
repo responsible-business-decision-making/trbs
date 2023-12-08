@@ -2,11 +2,11 @@
 This module contains the TRBS class. This is the parent class that deals with anything related to a Responsible
 Business Simulator Case.
 """
-from case_exporter import CaseExporter
-from case_importer import CaseImporter
-from evaluate import Evaluate
-from appreciate import Appreciate
-from visualize import Visualize
+from vlinder_test.case_exporter import CaseExporter
+from vlinder_test.case_importer import CaseImporter
+from vlinder_test.evaluate import Evaluate
+from vlinder_test.appreciate import Appreciate
+from vlinder_test.visualize import Visualize
 
 
 class TheResponsibleBusinessSimulator:
