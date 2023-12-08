@@ -49,7 +49,7 @@ class CaseImporter:
         {table/sheet 1: [list of necessary columns], table/sheet 2: [list of necessary columns], ...}
         :return: dictionary with all necessary columns per table / sheet
         """
-        template = pd.read_excel(Path(__file__).parent.parent / "data/template.xlsx", sheet_name=None)
+        template = pd.read_excel(Path(__file__).parent / "data/template.xlsx", sheet_name=None)
         return {key: value.columns.values.tolist() for key, value in template.items()}
 
     def _check_data_columns(self, to_check: pd.DataFrame, table: str) -> pd.DataFrame:
