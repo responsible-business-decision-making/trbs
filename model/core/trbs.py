@@ -7,6 +7,7 @@ from core.case_importer import CaseImporter
 from core.evaluate import Evaluate
 from core.appreciate import Appreciate
 from core.visualize import Visualize
+from core.report_export import ReportExporter
 
 
 class TheResponsibleBusinessSimulator:
@@ -24,6 +25,7 @@ class TheResponsibleBusinessSimulator:
         self.output_dict = {}
         self.visualizer = None
         self.exporter = None
+        self.powerpoint = None
 
     def __str__(self):
         input_data_formatted = (
@@ -77,3 +79,10 @@ class TheResponsibleBusinessSimulator:
         if not self.exporter:
             self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
         self.exporter.create_template_for_requested_format(requested_format)
+
+    def to_report(self, output_path, scenario):
+        """This function deals with transforming a case to a PowerPoint."""
+        if not self.powerpoint:
+            self.powerpoint = ReportExporter(output_path, self.name, self.input_dict, self.output_dict)
+        location_powerpoint = self.powerpoint.create_report(scenario, output_path)
+        print(location_powerpoint)
