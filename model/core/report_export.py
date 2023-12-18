@@ -4,6 +4,7 @@ This file contains two functions which make a report of the information performe
 import os
 from pathlib import Path
 from datetime import date, datetime
+from random import random
 from pptx import Presentation
 from pptx.util import Pt
 from pptx.util import Cm
@@ -14,7 +15,7 @@ from pptx.util import Inches
 from pptx.chart.data import CategoryChartData
 from pptx.enum.chart import XL_LEGEND_POSITION
 import numpy as np
-from random import random
+
 
 
 class ReportExporter:
@@ -49,13 +50,20 @@ class ReportExporter:
             text_element = "case_text_element"
         else:
             text_element = "generic_text_element"
-        if "title_" + target in self.input_dict[text_element + 's']:
-            if (str(self.input_dict[text_element + '_value'][
-                        list(self.input_dict[text_element + 's']).index("title_" + target)
-                    ]) != str("nan")):
-                title.text = self.input_dict[text_element + '_value'][
-                                 list(self.input_dict[text_element + 's']).index("title_" + target)
-                             ] + scenario + pos_series + key_output
+        if "title_" + target in self.input_dict[text_element + "s"]:
+            if str(
+                self.input_dict[text_element + "_value"][
+                    list(self.input_dict[text_element + "s"]).index("title_" + target)
+                ]
+            ) != str("nan"):
+                title.text = (
+                    self.input_dict[text_element + "_value"][
+                        list(self.input_dict[text_element + "s"]).index("title_" + target)
+                    ]
+                    + scenario
+                    + pos_series
+                    + key_output
+                )
             else:
                 title.text = "Not defined in template"
                 title.text_frame.paragraphs[0].runs[0].font.italic = True
@@ -89,12 +97,14 @@ class ReportExporter:
             text_element = "case_text_element"
         else:
             text_element = "generic_text_element"
-        if "intro_" + target in self.input_dict[text_element + 's']:
-            if (str(self.input_dict[text_element + '_value'][
-                        list(self.input_dict[text_element + 's']).index("intro_" + target)
-                    ]) != str("nan")):
-                text_frame.text = self.input_dict[text_element + '_value'][
-                    list(self.input_dict[text_element + 's']).index("intro_" + target)
+        if "intro_" + target in self.input_dict[text_element + "s"]:
+            if str(
+                self.input_dict[text_element + "_value"][
+                    list(self.input_dict[text_element + "s"]).index("intro_" + target)
+                ]
+            ) != str("nan"):
+                text_frame.text = self.input_dict[text_element + "_value"][
+                    list(self.input_dict[text_element + "s"]).index("intro_" + target)
                 ]
             else:
                 text_frame.text = "Not defined in template"
@@ -113,9 +123,11 @@ class ReportExporter:
         tx_box = slide.shapes.add_textbox(Cm(5.1), Cm(4.6), Cm(22.8), Cm(5))
         tx_box.text_frame.word_wrap = True
         if "strategic_challenge" in self.input_dict["case_text_elements"]:
-            if (str(self.input_dict["case_text_element_value"][
-                        list(self.input_dict["case_text_elements"]).index("strategic_challenge")
-                    ]) != str("nan")):
+            if str(
+                self.input_dict["case_text_element_value"][
+                    list(self.input_dict["case_text_elements"]).index("strategic_challenge")
+                ]
+            ) != str("nan"):
                 tx_box.text = self.input_dict["case_text_element_value"][
                     list(self.input_dict["case_text_elements"]).index("strategic_challenge")
                 ]
@@ -139,8 +151,9 @@ class ReportExporter:
             for cell in row.cells:
                 yield cell
 
-    def make_table_2_col(self, slide, col_left, col_right, col_left_header, col_right_header, first_element=0,
-                         last_element=10) -> None:
+    def make_table_2_col(
+        self, slide, col_left, col_right, col_left_header, col_right_header, first_element=0, last_element=10
+    ) -> None:
         """
         This function makes it possible to iterate over all cells in a table
         :param slide: selected slide where the title is needed
@@ -153,9 +166,7 @@ class ReportExporter:
         """
         input_info_col_left = self.input_dict[col_left][first_element:last_element]
         input_info_col_right = self.input_dict[col_right][first_element:last_element]
-        shape = slide.shapes.add_table(
-            (len(input_info_col_left) + 1), 2, Cm(3.62), Cm(6.2), Cm(25.5), Cm(0.5)
-        )
+        shape = slide.shapes.add_table((len(input_info_col_left) + 1), 2, Cm(3.62), Cm(6.2), Cm(25.5), Cm(0.5))
         table = shape.table
         headers_total = [col_left_header, col_right_header]
         for column, item in enumerate(headers_total):
@@ -180,9 +191,7 @@ class ReportExporter:
         input_info_col_values = self.input_dict[col_values]
         input_info_row_values = self.input_dict[row_names]
         shape = slide.shapes.add_table(
-            (len(input_info_row_values) + 1),
-            len(input_info_col_names) + 1,
-            Cm(3.62), Cm(6.2), Cm(25.5), Cm(0.5)
+            (len(input_info_row_values) + 1), len(input_info_col_names) + 1, Cm(3.62), Cm(6.2), Cm(25.5), Cm(0.5)
         )
         table = shape.table
         headers_sum = np.append([left_col_header], input_info_col_names)
@@ -232,7 +241,7 @@ class ReportExporter:
             fill = series.format.fill
             fill.solid()
             color_used = colors[index % 5].lstrip("#")
-            rgb = tuple(int(color_used[i: i + 2], 16) for i in (0, 2, 4))
+            rgb = tuple(int(color_used[i : i + 2], 16) for i in (0, 2, 4))
             fill.fore_color.rgb = RGBColor(rgb[0], rgb[1], rgb[2])
         #  layout chart change
         category_axis = chart.category_axis
@@ -276,8 +285,9 @@ class ReportExporter:
             Cm(0.8),
             Cm(1),
         )
-        tx_box = slide.shapes.add_textbox(x_loc_page_number, y_loc_page_number, x_weight_page_number,
-                                          y_weight_page_number)
+        tx_box = slide.shapes.add_textbox(
+            x_loc_page_number, y_loc_page_number, x_weight_page_number, y_weight_page_number
+        )
         tx_box.text_frame.text = str(self.page_number)
         tx_box.text_frame.paragraphs[0].font.color.rgb = RGBColor(120, 120, 120)
         self.page_number += 1
@@ -316,41 +326,53 @@ class ReportExporter:
         self.make_title(slide_dmo, "dmo")
         self.make_introduction(slide_dmo, "dmo")
         self.page_number = self.add_page_number(slide_dmo)
-        self.make_table_n_col(slide_dmo, "decision_makers_options", "decision_makers_option_value",
-                              "internal_variable_inputs", "Internal variable input"
-                              )
+        self.make_table_n_col(
+            slide_dmo,
+            "decision_makers_options",
+            "decision_makers_option_value",
+            "internal_variable_inputs",
+            "Internal variable input",
+        )
 
         # Create the table chart slide the scenarios
         slide_scenarios = prs.slides.add_slide(prs.slide_layouts[5])
         self.make_title(slide_scenarios, "scenarios")
         self.make_introduction(slide_scenarios, "scenarios")
         self.page_number = self.add_page_number(slide_scenarios)
-        self.make_table_n_col(slide_scenarios, "scenarios", "scenario_value",
-                              "external_variable_inputs", "External variable input"
-                              )
+        self.make_table_n_col(
+            slide_scenarios, "scenarios", "scenario_value", "external_variable_inputs", "External variable input"
+        )
 
         # Create the table chart slide fixed inputs
         number_of_iterations = round((len(self.input_dict["fixed_inputs"]) / 10) + 0.5)
         for number_iteration in range(0, number_of_iterations):
             slide_fixed_inputs = prs.slides.add_slide(prs.slide_layouts[5])
             if number_of_iterations > 1:
-                self.make_title(slide_fixed_inputs, "fixed_inputs",
-                                pos_series=" " + str(number_iteration + 1) + "/" + str(number_of_iterations))
+                self.make_title(
+                    slide_fixed_inputs,
+                    "fixed_inputs",
+                    pos_series=" " + str(number_iteration + 1) + "/" + str(number_of_iterations),
+                )
             else:
                 self.make_title(slide_fixed_inputs, "fixed_inputs")
             self.make_introduction(slide_fixed_inputs, "fixed_inputs")
             self.page_number = self.add_page_number(slide_fixed_inputs)
-            self.make_table_2_col(slide_fixed_inputs, "fixed_inputs", "fixed_input_value", "Fixed Inputs",
-                                  "Value",
-                                  (number_iteration * 10), (number_iteration * 10) + 10)
+            self.make_table_2_col(
+                slide_fixed_inputs,
+                "fixed_inputs",
+                "fixed_input_value",
+                "Fixed Inputs",
+                "Value",
+                (number_iteration * 10),
+                (number_iteration * 10) + 10,
+            )
 
         # Generate dependency graph slide
         rand_dir = random()
         os.mkdir(str(rand_dir))
-        for key_output in self.output_dict[scenario][next(iter(self.output_dict[scenario]))]['key_outputs'].items():
+        for key_output in self.output_dict[scenario][next(iter(self.output_dict[scenario]))]["key_outputs"].items():
             slide_dep_graph = prs.slides.add_slide(prs.slide_layouts[5])
-            self.make_title(slide_dep_graph, "dependency_graph",
-                            key_output=" for key output " + key_output[0])
+            self.make_title(slide_dep_graph, "dependency_graph", key_output=" for key output " + key_output[0])
             self.make_introduction(slide_dep_graph, "dependency_graph")
             # slide_dep_graph.shapes.add_picture("dep-graph.png", Cm(3.62), Cm(6.2), Cm(25.5), Cm(12.5))
             self.page_number = self.add_page_number(slide_dep_graph)
@@ -371,9 +393,7 @@ class ReportExporter:
         :param path: the desired location where the report is saved
         :return: the text where the PowerPoint is saved
         """
-        prs = self.make_slides(
-            scenario
-        )
+        prs = self.make_slides(scenario)
         date_year = str(datetime.now().strftime("%Y-%m-%d"))
         date_hour = str(datetime.now().strftime("%Hh%Mm%Ss"))
         filename = "tRBS_" + self.name + f'_{date_year + "_" + date_hour}.pptx'
