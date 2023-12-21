@@ -3,8 +3,8 @@ requires = ["setuptools>= 61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "vlinder_test"
-version = "0.22"
+name = "vlinder"
+version = "0.0.8"
 authors = [
   {name="Vlinder team"},
 ]
