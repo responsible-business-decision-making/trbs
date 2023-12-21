@@ -4,7 +4,7 @@ This file contains the Appreciate class that deals with the calculation of appre
 import math
 import pandas as pd
 import numpy as np
-from vlinder_test.utils import get_values_from_target
+from vlinder.utils import get_values_from_target
 
 
 class Appreciate:

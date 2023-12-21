@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from vlinder_test.utils import round_all_dict_values, number_formatter, get_values_from_target, check_list_content
+from vlinder.utils import round_all_dict_values, number_formatter, get_values_from_target, check_list_content
 
 
 class VisualizationError(Exception):
