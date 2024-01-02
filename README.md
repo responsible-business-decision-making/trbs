@@ -50,7 +50,7 @@ from pathlib import Path
 from core.trbs import TheResponsibleBusinessSimulator
 ```
 
-**Step 7:** Retrieve the path of the data folder from the package. This folder contains the input data of the cases.
+**Step 7:** Retrieve the path of the data folder. This folder contains the input data of the cases.
 ```
 path = Path.cwd() / 'data'
 ```
