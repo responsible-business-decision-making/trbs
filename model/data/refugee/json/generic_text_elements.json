@@ -1,0 +1,89 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"generic_text_element",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"string"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "generic_text_element":"title_strategic_challenge",
+            "value":"Strategic Challenge"
+        },
+        {
+            "index":1,
+            "generic_text_element":"title_key_outputs",
+            "value":"Key outputs"
+        },
+        {
+            "index":2,
+            "generic_text_element":"title_dmo",
+            "value":"Decision makers options (DMOs)"
+        },
+        {
+            "index":3,
+            "generic_text_element":"title_scenarios",
+            "value":"Scenarios"
+        },
+        {
+            "index":4,
+            "generic_text_element":"title_fixed_inputs",
+            "value":"Fixed inputs"
+        },
+        {
+            "index":5,
+            "generic_text_element":"title_dependency_graph",
+            "value":"Dependency graph"
+        },
+        {
+            "index":6,
+            "generic_text_element":"title_weighted_graph",
+            "value":"Resulting appreciations of different DMOs for scenario:"
+        },
+        {
+            "index":7,
+            "generic_text_element":"intro_key_outputs",
+            "value":"The outputs upon which the decision makers will base their decision. Key outputs are often referred to as KPIs. Key outputs are grouped into themes."
+        },
+        {
+            "index":8,
+            "generic_text_element":"intro_dmo",
+            "value":"Decision makers options are formulated by assigning a single value to all internal variable inputs. These inputs can be formulated and determined by the decision makers."
+        },
+        {
+            "index":9,
+            "generic_text_element":"intro_scenarios",
+            "value":"Each external variable input can be thought of as a single aspect of external uncertainty affecting the outcome of the decision in scope. A scenario is defined by assigning a single value to all external variable inputs."
+        },
+        {
+            "index":10,
+            "generic_text_element":"intro_fixed_inputs",
+            "value":"The inputs which only takes one value for all scenarios."
+        },
+        {
+            "index":11,
+            "generic_text_element":"intro_dependency_graph",
+            "value":null
+        },
+        {
+            "index":12,
+            "generic_text_element":"intro_weighted_graph",
+            "value":null
+        }
+    ]
+}
