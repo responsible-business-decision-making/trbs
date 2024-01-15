@@ -1,0 +1,154 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"external_variable_input",
+                "type":"string"
+            },
+            {
+                "name":"scenario",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "external_variable_input":"Price NRS market",
+            "scenario":"Base case",
+            "value":108.0
+        },
+        {
+            "index":1,
+            "external_variable_input":"Price REC market",
+            "scenario":"Base case",
+            "value":270.0
+        },
+        {
+            "index":2,
+            "external_variable_input":"Price REC partner",
+            "scenario":"Base case",
+            "value":130.0
+        },
+        {
+            "index":3,
+            "external_variable_input":"Price RS market",
+            "scenario":"Base case",
+            "value":115.0
+        },
+        {
+            "index":4,
+            "external_variable_input":"Price RS partner",
+            "scenario":"Base case",
+            "value":51.0
+        },
+        {
+            "index":5,
+            "external_variable_input":"RE CAPEX subsidy rate",
+            "scenario":"Base case",
+            "value":0.3
+        },
+        {
+            "index":6,
+            "external_variable_input":"RE CAPEX tax discount rate",
+            "scenario":"Base case",
+            "value":0.3
+        },
+        {
+            "index":7,
+            "external_variable_input":"Price NRS market",
+            "scenario":"RE optimistic",
+            "value":108.0
+        },
+        {
+            "index":8,
+            "external_variable_input":"Price REC market",
+            "scenario":"RE optimistic",
+            "value":220.0
+        },
+        {
+            "index":9,
+            "external_variable_input":"Price REC partner",
+            "scenario":"RE optimistic",
+            "value":120.0
+        },
+        {
+            "index":10,
+            "external_variable_input":"Price RS market",
+            "scenario":"RE optimistic",
+            "value":90.0
+        },
+        {
+            "index":11,
+            "external_variable_input":"Price RS partner",
+            "scenario":"RE optimistic",
+            "value":40.0
+        },
+        {
+            "index":12,
+            "external_variable_input":"RE CAPEX subsidy rate",
+            "scenario":"RE optimistic",
+            "value":0.6
+        },
+        {
+            "index":13,
+            "external_variable_input":"RE CAPEX tax discount rate",
+            "scenario":"RE optimistic",
+            "value":0.35
+        },
+        {
+            "index":14,
+            "external_variable_input":"Price NRS market",
+            "scenario":"RE pessimistic",
+            "value":108.0
+        },
+        {
+            "index":15,
+            "external_variable_input":"Price REC market",
+            "scenario":"RE pessimistic",
+            "value":320.0
+        },
+        {
+            "index":16,
+            "external_variable_input":"Price REC partner",
+            "scenario":"RE pessimistic",
+            "value":140.0
+        },
+        {
+            "index":17,
+            "external_variable_input":"Price RS market",
+            "scenario":"RE pessimistic",
+            "value":130.0
+        },
+        {
+            "index":18,
+            "external_variable_input":"Price RS partner",
+            "scenario":"RE pessimistic",
+            "value":60.0
+        },
+        {
+            "index":19,
+            "external_variable_input":"RE CAPEX subsidy rate",
+            "scenario":"RE pessimistic",
+            "value":0.0
+        },
+        {
+            "index":20,
+            "external_variable_input":"RE CAPEX tax discount rate",
+            "scenario":"RE pessimistic",
+            "value":0.25
+        }
+    ]
+}

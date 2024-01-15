@@ -1,0 +1,796 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"destination",
+                "type":"string"
+            },
+            {
+                "name":"argument_1",
+                "type":"string"
+            },
+            {
+                "name":"argument_2",
+                "type":"string"
+            },
+            {
+                "name":"operator",
+                "type":"string"
+            },
+            {
+                "name":"maximum_effect",
+                "type":"number"
+            },
+            {
+                "name":"accessibility",
+                "type":"number"
+            },
+            {
+                "name":"probability_of_success",
+                "type":"number"
+            },
+            {
+                "name":"saturation_point",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "destination":"% Optimise price REC",
+            "argument_1":"% REC",
+            "argument_2":"% REC market",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":1,
+            "destination":"% Optimise price REC",
+            "argument_1":0,
+            "argument_2":"% REC partner",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":2,
+            "destination":"Capacity % RE make",
+            "argument_1":"Capacity RE make",
+            "argument_2":"Energy demand",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":3,
+            "destination":"Demand % RE make",
+            "argument_1":"Capacity % RE make",
+            "argument_2":"% RE make",
+            "operator":"min",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":4,
+            "destination":"Demand RE make",
+            "argument_1":"Energy demand",
+            "argument_2":"Demand % RE make",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":5,
+            "destination":"Investment cost rate RE make discount",
+            "argument_1":1,
+            "argument_2":"RE CAPEX tax discount rate",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":6,
+            "destination":"Investment cost rate RE make discount",
+            "argument_1":0,
+            "argument_2":"RE CAPEX subsidy rate",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":7,
+            "destination":"Share used of capacity RE make",
+            "argument_1":"Demand RE make",
+            "argument_2":"Capacity RE make",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":8,
+            "destination":"Cost RE make",
+            "argument_1":"Investment cost RE make",
+            "argument_2":"Share used of capacity RE make",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":9,
+            "destination":"CAPEX",
+            "argument_1":"Cost RE make",
+            "argument_2":"Investment cost rate RE make discount",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":10,
+            "destination":"Capacity % RS partner",
+            "argument_1":"Capacity RS partner",
+            "argument_2":"Energy demand",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":11,
+            "destination":"Demand % RS partner",
+            "argument_1":"Capacity % RS partner",
+            "argument_2":"% RS partner",
+            "operator":"min",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":12,
+            "destination":"% REC partner available for optimisation",
+            "argument_1":"Demand % RS partner",
+            "argument_2":"% REC partner",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":13,
+            "destination":"% REC partner from optimisation",
+            "argument_1":"% Optimise price REC",
+            "argument_2":"% REC partner available for optimisation",
+            "operator":"min",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":14,
+            "destination":"Use REC partner",
+            "argument_1":"Price REC partner",
+            "argument_2":"Price REC market",
+            "operator":"<=",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":15,
+            "destination":"% REC partner optimised",
+            "argument_1":"Use REC partner",
+            "argument_2":"% REC partner from optimisation",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":16,
+            "destination":"% REC market optimised",
+            "argument_1":"% Optimise price REC",
+            "argument_2":"% REC partner optimised",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":17,
+            "destination":"% REC partner total",
+            "argument_1":"% REC partner",
+            "argument_2":"% REC partner optimised",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":18,
+            "destination":"% REC market total",
+            "argument_1":"% REC market",
+            "argument_2":"% REC market optimised",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":19,
+            "destination":"# REC partner",
+            "argument_1":"Energy demand",
+            "argument_2":"% REC partner total",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":20,
+            "destination":"# REC market",
+            "argument_1":"Energy demand",
+            "argument_2":"% REC market total",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":21,
+            "destination":"Demand % RE partner",
+            "argument_1":"% RS partner",
+            "argument_2":"% REC partner total",
+            "operator":"min",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":22,
+            "destination":"Demand RE partner",
+            "argument_1":"Energy demand",
+            "argument_2":"Demand % RE partner",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":23,
+            "destination":"Demand RS partner",
+            "argument_1":"Energy demand",
+            "argument_2":"% RS partner",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":24,
+            "destination":"Demand RS partner",
+            "argument_1":0,
+            "argument_2":"Demand RE partner",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":25,
+            "destination":"Demand % RE market",
+            "argument_1":"% RS market",
+            "argument_2":"% REC market total",
+            "operator":"min",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":26,
+            "destination":"Demand RE market",
+            "argument_1":"Energy demand",
+            "argument_2":"Demand % RE market",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":27,
+            "destination":"Demand RS market",
+            "argument_1":"Energy demand",
+            "argument_2":"% RS market",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":28,
+            "destination":"Demand RS market",
+            "argument_1":0,
+            "argument_2":"Demand RE market",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":29,
+            "destination":"Total demand RS and RE",
+            "argument_1":"Demand RS partner",
+            "argument_2":"Demand RE partner",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":30,
+            "destination":"Total demand RS and RE",
+            "argument_1":"Demand RS market",
+            "argument_2":"Demand RE market",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":31,
+            "destination":"Total demand RS and RE",
+            "argument_1":0,
+            "argument_2":"Demand RE make",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":32,
+            "destination":"Demand NRS market",
+            "argument_1":"Energy demand",
+            "argument_2":"Total demand RS and RE",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":33,
+            "destination":"Cost RS partner",
+            "argument_1":"Demand RS partner",
+            "argument_2":"Price RS partner",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":34,
+            "destination":"Cost RE partner",
+            "argument_1":"Demand RE partner",
+            "argument_2":"Price RS partner",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":35,
+            "destination":"Cost RE partner",
+            "argument_1":"# REC partner",
+            "argument_2":"Price REC partner",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":36,
+            "destination":"Cost RS market",
+            "argument_1":"Demand RS market",
+            "argument_2":"Price RS market",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":37,
+            "destination":"Cost RE market",
+            "argument_1":"Demand RE market",
+            "argument_2":"Price RS market",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":38,
+            "destination":"Cost RE market",
+            "argument_1":"# REC market",
+            "argument_2":"Price REC market",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":39,
+            "destination":"Cost NRS market",
+            "argument_1":"Demand NRS market",
+            "argument_2":"Price NRS market",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":40,
+            "destination":"Total NRS demand",
+            "argument_1":"Demand NRS market",
+            "argument_2":"Demand RS partner",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":41,
+            "destination":"Total NRS demand",
+            "argument_1":0,
+            "argument_2":"Demand RS market",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":42,
+            "destination":"Carbon footprint",
+            "argument_1":"Total NRS demand",
+            "argument_2":"CO2 emission per MWh",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":43,
+            "destination":"Actual carbon emission",
+            "argument_1":"Demand NRS market",
+            "argument_2":"CO2 emission per MWh",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":44,
+            "destination":"CO2 emission cost",
+            "argument_1":"Carbon footprint",
+            "argument_2":"Internal carbon price",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":45,
+            "destination":"Energy cost",
+            "argument_1":"Cost RS partner",
+            "argument_2":"Cost RE partner",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":46,
+            "destination":"Energy cost",
+            "argument_1":"Cost RS market",
+            "argument_2":"Cost RE market",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":47,
+            "destination":"Energy cost",
+            "argument_1":"Cost NRS market",
+            "argument_2":"CO2 emission cost",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":48,
+            "destination":"RE %",
+            "argument_1":"Demand % RE partner",
+            "argument_2":"Demand % RE market",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":49,
+            "destination":"RE %",
+            "argument_1":0,
+            "argument_2":"Demand % RE make",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":50,
+            "destination":"GE %",
+            "argument_1":1,
+            "argument_2":"RE %",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":51,
+            "destination":"Carbon footprint reduction",
+            "argument_1":"Energy demand",
+            "argument_2":"CO2 emission per MWh",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":52,
+            "destination":"Carbon footprint reduction",
+            "argument_1":0,
+            "argument_2":"Carbon footprint",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":53,
+            "destination":"Increase in brand value",
+            "argument_1":"Carbon footprint reduction",
+            "argument_2":"Effect of carbon footprint reduction on brand value",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":54,
+            "destination":"Carbon footprint reduction condition",
+            "argument_1":"RE %",
+            "argument_2":"Carbon footprint reduction saturation point",
+            "operator":">=",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":55,
+            "destination":"Increase in employee engagement score",
+            "argument_1":"Carbon footprint reduction condition",
+            "argument_2":"Effect of maximum carbon footprint reduction on employee engagement",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":56,
+            "destination":"New employee engagement score",
+            "argument_1":"Current employee engagement score",
+            "argument_2":"Increase in employee engagement score",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":57,
+            "destination":"Current employee disengagement score",
+            "argument_1":1,
+            "argument_2":"Current employee engagement score",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":58,
+            "destination":"New employee disengagement score",
+            "argument_1":1,
+            "argument_2":"New employee engagement score",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":59,
+            "destination":"Current employee recommendation rate",
+            "argument_1":"Current employee engagement score",
+            "argument_2":"Engaged employee recommendation rate",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":60,
+            "destination":"Current employee recommendation rate",
+            "argument_1":"Current employee disengagement score",
+            "argument_2":"Disengaged employee recommendation rate",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":61,
+            "destination":"New employee recommendation rate",
+            "argument_1":"New employee engagement score",
+            "argument_2":"Engaged employee recommendation rate",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":62,
+            "destination":"New employee recommendation rate",
+            "argument_1":"New employee disengagement score",
+            "argument_2":"Disengaged employee recommendation rate",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":63,
+            "destination":"Increase in employee recommendation rate",
+            "argument_1":"New employee recommendation rate",
+            "argument_2":"Current employee recommendation rate",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":64,
+            "destination":"ICP condition",
+            "argument_1":"Internal carbon price",
+            "argument_2":0,
+            "operator":">",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":65,
+            "destination":"New Net Promotor Score",
+            "argument_1":"ICP condition",
+            "argument_2":"Effect of using an internal carbon price on employee engagement",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":66,
+            "destination":"New Net Promotor Score",
+            "argument_1":0,
+            "argument_2":"Effect of employee engagement on customer satisfaction",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":67,
+            "destination":"New Net Promotor Score",
+            "argument_1":0,
+            "argument_2":"Current Net Promotor Score",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        }
+    ]
+}

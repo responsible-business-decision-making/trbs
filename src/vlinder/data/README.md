@@ -18,6 +18,16 @@ sensitive topic and provide insights based on empirical evidence.
 - recognizes that not all outcomes carry the same value for different stakeholders, 
 allowing the user to set strategic priorities, against which assessment is made.
 
+### DSM
+Royal Dutch multinational corporation (DSM) is a global science-based company active in health, nutrition and materials. This case elaborates the decision making at DSM who wants to anticipate climate change by addressing its own environmental and carbon footprint by means of reducing its greenhouse gas emissions and becoming more energy efficient. Their strategic challenge, therefore, has been formulated as how to source energy:
+- No RE: not buy or make renewable energy
+- Make RE: make renewable energy
+- RE Market: buy renewable energy from the market and buy renewable energy certifications 
+- RE Partner: buy renewable energy from partners and buy renewable energy certifications
+- RS Partner without REC: buy renewable energy from partners without buying renewable energy certifications
+- No RS with REC: buy energy from non-renewable source from market and buy renewable energy certifications
+
+
 ### IZZ
 This case demonstrates how IZZ offers healthcare institutions objective insights into what –for them- the optimal 
 strategy is with regard to the People pillar, mainly focusing on the employability of their employees. 

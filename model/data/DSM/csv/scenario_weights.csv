@@ -1,0 +1,4 @@
+scenario;weight
+Base case;1
+RE optimistic;1
+RE pessimistic;1
