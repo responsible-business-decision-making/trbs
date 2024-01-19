@@ -109,9 +109,9 @@ import os
 from pathlib import Path
 ```
 
-**Step 6:** Import package vlinder in Jupyter notebook.
+**Step 6:** Import package vlinder (abbreviated as vl) in Jupyter notebook.
 ```
-import vlinder
+import vlinder as vl
 from vlinder import *
 ```
 
