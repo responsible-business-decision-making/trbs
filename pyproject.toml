@@ -32,7 +32,6 @@ namespaces = true
 where = ["src"]
 
 [tool.setuptools.package-data]
-"vlinder" = ["*.md"]
 "vlinder.data" = ["*.xlsx", "*.md"]
 "vlinder.data.beerwiser.xlsx" = ["*.xlsx"]
 "vlinder.data.beerwiser.csv" = ["*.csv"]
