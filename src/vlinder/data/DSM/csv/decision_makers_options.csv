@@ -1,0 +1,43 @@
+internal_variable_input;decision_makers_option;value
+% RE make;No RE;0.0
+% RS partner;No RE;0.0
+% RS market;No RE;0.0
+% REC;No RE;0.0
+% REC partner;No RE;0.0
+% REC market;No RE;0.0
+Internal carbon price;No RE;0.0
+% RE make;No RS with REC;0.0
+% RS partner;No RS with REC;0.0
+% RS market;No RS with REC;0.0
+% REC;No RS with REC;0.5
+% REC partner;No RS with REC;0.0
+% REC market;No RS with REC;0.0
+Internal carbon price;No RS with REC;0.0
+% RE make;RS partner without REC;0.0
+% RS partner;RS partner without REC;0.5
+% RS market;RS partner without REC;0.0
+% REC;RS partner without REC;0.0
+% REC partner;RS partner without REC;0.0
+% REC market;RS partner without REC;0.0
+Internal carbon price;RS partner without REC;0.0
+% RE make;Market RE;0.0
+% RS partner;Market RE;0.0
+% RS market;Market RE;0.5
+% REC;Market RE;0.5
+% REC partner;Market RE;0.0
+% REC market;Market RE;0.0
+Internal carbon price;Market RE;0.0
+% RE make;Partner RE;0.0
+% RS partner;Partner RE;0.5
+% RS market;Partner RE;0.0
+% REC;Partner RE;0.5
+% REC partner;Partner RE;0.0
+% REC market;Partner RE;0.0
+Internal carbon price;Partner RE;0.0
+% RE make;Make RE;0.5
+% RS partner;Make RE;0.0
+% RS market;Make RE;0.0
+% REC;Make RE;0.0
+% REC partner;Make RE;0.0
+% REC market;Make RE;0.0
+Internal carbon price;Make RE;0.0
