@@ -15,7 +15,7 @@ def fixture_export_beerwiser():
     This fixture initialises an export class for a Beerwiser case
     """
     # get a dataframe dictionary from beerwiser -- this class is tested in test_case_importer
-    case = CaseImporter(Path.cwd().parent / "src/vlinder/data", "beerwiser", "csv")
+    case = CaseImporter(Path.cwd() / "src/vlinder/data", "beerwiser", "csv")
     _, dataframes_dict = case.import_case()
     # initialize exporter
     yield CaseExporter(Path.cwd(), "beerwiser", dataframes_dict)
