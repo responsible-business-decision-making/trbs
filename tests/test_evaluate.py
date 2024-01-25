@@ -2,10 +2,10 @@
 """This module contains all tests for the Evaluate() class"""
 from pathlib import Path
 import pytest
-from core.evaluate import Evaluate, EvaluationError
-from core.utils import round_all_dict_values
-from core.trbs import TheResponsibleBusinessSimulator
 from params import INPUT_DICT_BEERWISER
+from vlinder.evaluate import Evaluate, EvaluationError
+from vlinder.utils import round_all_dict_values
+from vlinder.trbs import TheResponsibleBusinessSimulator
 
 
 @pytest.fixture(name="evaluate_beerwiser")
@@ -24,7 +24,7 @@ def fixture_evaluate_refugee():
     :return Evaluate(): an Evaluate class for Refugee
     """
 
-    case = TheResponsibleBusinessSimulator(Path.cwd() / "data", "xlsx", "refugee")
+    case = TheResponsibleBusinessSimulator(Path.cwd().parent / "src/vlinder/data", "xlsx", "refugee")
     case.build()
     return Evaluate(case.input_dict)
 
@@ -36,7 +36,7 @@ def fixture_evaluate_dsm():
     :return Evaluate(): an Evaluate class for DSM
     """
 
-    case = TheResponsibleBusinessSimulator(Path.cwd() / "data", "xlsx", "DSM")
+    case = TheResponsibleBusinessSimulator(Path.cwd().parent / "src/vlinder/data", "xlsx", "DSM")
     case.build()
     return Evaluate(case.input_dict)
 
@@ -48,7 +48,7 @@ def fixture_evaluate_izz():
     :return Evaluate(): an Evaluate class for IZZ
     """
 
-    case = TheResponsibleBusinessSimulator(Path.cwd() / "data", "xlsx", "izz")
+    case = TheResponsibleBusinessSimulator(Path.cwd().parent / "src/vlinder/data", "xlsx", "izz")
     case.build()
     return Evaluate(case.input_dict)
 

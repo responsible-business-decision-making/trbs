@@ -9,8 +9,8 @@ The following functions are partly tested: _create_barchart (only errors), creat
 import pytest
 import numpy as np
 import pandas as pd
-from core.visualize import Visualize, VisualizationError
 from params import OUTPUT_DICT_GENERIC
+from vlinder.visualize import Visualize, VisualizationError
 
 
 @pytest.fixture(name="test_outcomes")

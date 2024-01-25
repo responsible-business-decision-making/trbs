@@ -2,14 +2,14 @@
 """
 This module contains all tests for the utils.py file
 """
-from core.utils import (
+import pytest
+from vlinder.utils import (
     round_all_dict_values,
     get_values_from_target,
     number_formatter,
     check_numeric,
     check_list_content,
 )
-import pytest
 
 
 @pytest.mark.parametrize(

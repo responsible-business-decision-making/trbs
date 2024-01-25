@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 import pandas as pd
 import numpy as np
-from core.case_importer import CaseImporter, TemplateError
+from vlinder.case_importer import CaseImporter, TemplateError
 
 
 @pytest.fixture(name="import_beerwiser_json")
@@ -17,7 +17,7 @@ def fixture_import_beerwiser_json():
     This fixture initialises a CaseImporter for the beerwiser case.
     :return: an CaseImporter class for the beerwiser case.
     """
-    return CaseImporter(Path.cwd() / "data", "beerwiser", "json")
+    return CaseImporter(Path.cwd().parent / "src/vlinder/data", "beerwiser", "json")
 
 
 @pytest.fixture(name="import_beerwiser_csv")
@@ -26,7 +26,7 @@ def fixture_import_beerwiser_csv():
     This fixture initialises a CaseImporter for the beerwiser case.
     :return: an CaseImporter class for the beerwiser case.
     """
-    return CaseImporter(Path.cwd() / "data", "beerwiser", "csv")
+    return CaseImporter(Path.cwd().parent / "src/vlinder/data", "beerwiser", "csv")
 
 
 @pytest.fixture(name="import_beerwiser_xlsx")
@@ -35,7 +35,7 @@ def fixture_import_beerwiser_xlsx():
     This fixture initialises a CaseImporter for the beerwiser case.
     :return: an CaseImporter class for the beerwiser case.
     """
-    return CaseImporter(Path.cwd() / "data", "beerwiser", "xlsx")
+    return CaseImporter(Path.cwd().parent / "src/vlinder/data", "beerwiser", "xlsx")
 
 
 def test_build_template_validators(import_beerwiser_json):

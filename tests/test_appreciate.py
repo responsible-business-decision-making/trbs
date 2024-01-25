@@ -3,9 +3,9 @@
 This module contains all tests for the Appreciate() class
 """
 import pytest
-from core.appreciate import Appreciate
-from core.utils import round_all_dict_values, get_values_from_target
 from params import INPUT_DICT_BEERWISER, OUTPUT_DICT_BEERWISER
+from vlinder.appreciate import Appreciate
+from vlinder.utils import round_all_dict_values, get_values_from_target
 
 
 @pytest.fixture(name="appreciate_beerwiser")
