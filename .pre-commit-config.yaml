@@ -28,8 +28,8 @@ repos:
     hooks:
     -   id: pylint
         args:
-        - --max-line-length=119
         - --max-attributes=10
         - --ignore-imports=yes
         - -d duplicate-code
         - --disable=E0401
+        - --max-line-length=119

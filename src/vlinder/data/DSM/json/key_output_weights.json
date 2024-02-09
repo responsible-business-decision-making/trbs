@@ -1,0 +1,69 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"key_output",
+                "type":"string"
+            },
+            {
+                "name":"weight",
+                "type":"integer"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "key_output":"CAPEX",
+            "weight":1
+        },
+        {
+            "index":1,
+            "key_output":"Energy cost",
+            "weight":1
+        },
+        {
+            "index":2,
+            "key_output":"RE %",
+            "weight":1
+        },
+        {
+            "index":3,
+            "key_output":"Carbon footprint reduction",
+            "weight":1
+        },
+        {
+            "index":4,
+            "key_output":"Actual carbon emission",
+            "weight":1
+        },
+        {
+            "index":5,
+            "key_output":"Increase in employee engagement score",
+            "weight":1
+        },
+        {
+            "index":6,
+            "key_output":"Increase in employee recommendation rate",
+            "weight":1
+        },
+        {
+            "index":7,
+            "key_output":"Increase in Net Promotor Score",
+            "weight":1
+        },
+        {
+            "index":8,
+            "key_output":"Increase in brand value",
+            "weight":1
+        }
+    ]
+}

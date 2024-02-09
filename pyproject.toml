@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>= 61.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vlinder"
+version = "0.1.1"
+authors = [
+  {name="Vlinder team"},
+]
+description = "Package for responsible business decision making"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+"pandas",
+"numpy",
+"openpyxl",
+"matplotlib",
+"xlsxwriter",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["src"]
+
+[tool.setuptools.package-data]
+"vlinder.data" = ["*.xlsx", "*.md"]
+"vlinder.data.beerwiser.xlsx" = ["*.xlsx"]
+"vlinder.data.beerwiser.csv" = ["*.csv"]
+"vlinder.data.beerwiser.json" = ["*.json"]
+"vlinder.data.DSM.xlsx" = ["*.xlsx"]
+"vlinder.data.DSM.csv" = ["*.csv"]
+"vlinder.data.DSM.json" = ["*.json"]
+"vlinder.data.izz.xlsx" = ["*.xlsx"]
+"vlinder.data.izz.csv" = ["*.csv"]
+"vlinder.data.izz.json" = ["*.json"]
+"vlinder.data.refugee.xlsx" = ["*.xlsx"]
+"vlinder.data.refugee.csv" = ["*.csv"]
+"vlinder.data.refugee.json" = ["*.json"]
+
+[project.urls]
+"Homepage" = "https://github.com/responsible-business-decision-making/trbs"
+"Bug Tracker" = "https://github.com/responsible-business-decision-making/trbs/issues"
