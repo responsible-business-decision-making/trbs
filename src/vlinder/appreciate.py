@@ -15,7 +15,6 @@ class Appreciate:
         self.output_dict = output_dict
         self.start_and_end_points = self._get_start_and_end_points()
 
-    # TODO: monetary values
     def _get_start_and_end_points(self) -> dict:
         """
         This function obtains the minimum and maximum values of the calculated key_output values, over ALL scenarios
@@ -25,10 +24,30 @@ class Appreciate:
         boundaries = {}
         all_key_output_values = get_values_from_target(self.output_dict, "key_outputs")
         values_as_df = pd.DataFrame.from_dict(all_key_output_values)
-
+ 
         for key_output in values_as_df.columns:
             boundaries[key_output] = [values_as_df[key_output].min(), values_as_df[key_output].max()]
-
+ 
+        #Change the boundries to max and min key output value provides by the user if key_output_automatic = 0 
+        indices_automatic = [i for i, x in enumerate(self.input_dict['key_output_automatic']) if x==0]
+        key_output_start_automatic = self.input_dict['key_output_start'][indices_automatic].tolist()
+        key_output_end_automatic = self.input_dict['key_output_end'][indices_automatic].tolist()
+        selected_key_output_automatic = self.input_dict['key_outputs'][indices_automatic].tolist()
+       
+        for index, value in enumerate(selected_key_output_automatic):
+            boundaries[selected_key_output_automatic[index]] = [key_output_start_automatic[index], key_output_end_automatic[index]]
+ 
+        #For monetary key outputs, use all monetary key output values to determine the start and end point
+        indices_monetary = [i for i, x in enumerate(self.input_dict['key_output_monetary']) if x==1]
+        selected_key_output_monetary = self.input_dict['key_outputs'][indices_monetary].tolist()
+ 
+        all_values = []
+        for key in selected_key_output_monetary:
+            all_values.extend(boundaries[key])
+ 
+        for index, value in enumerate(selected_key_output_monetary):
+            boundaries[selected_key_output_monetary[index]] = [min(all_values), max(all_values)]
+ 
         return boundaries
 
     def _appreciate_single_key_output(self, value: float, args: dict) -> float:
