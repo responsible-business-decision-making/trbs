@@ -19,23 +19,28 @@ changes fixed the issue. Note that a PR requires **at least two** approvals from
 
 ## How is my PR reviewed? 
 A pull request is reviewed by at least two maintainers. These maintainers will validate the pull request using the
-the checklist outlined below.
+the checklist outlined below. A pull request into will trigger a new release of the `vlinder`-package. To ensure this
+new release will go smoothly, the steps below should be executed using the latest version of the `vlinder`-package
+**including to local changes**. To do this, run `pip install .` in the 'trbs'-folder.
+
 
 1. The code passes all **unit tests** in the `model` folder. This can be tested with 
     ```
     python -m pytest
     ```
-     If unit tests are changed, there is a valid reason to do so.
+     If unit tests are changed, there should be a valid reason to do so. If new functions / features are implemented
 
-2. The code satisfies PEP8 and is **properly formatted**. The format rules can be found, and enforced, in the 
+3. The code satisfies PEP8 and is **properly formatted**. The format rules can be found, and enforced, in the 
  `.pre-commit-config.yaml`-file. To run this for all files, simply run
     ```
     pre-commit run --all-files
     ```
-3. If a new **data model** is added, at least the following should be present:
+4. If a new **data model** is added, at least the following should be present:
    1. An **xlsx**, **csv** and **json** file of the new data model. You only have to build one format and can use the 
     `transform` function to generate the other two. 
    2. Add at least one relevant unit test to `test_evaluate_all_dependencies` for the new case.
    3. The `README.md`-file in the data folder has been updated. 
 
-4. If the **notebook** has been changed, ensure that it still uses Beerwiser as default case.
+5. If the **notebook** has been changed, 
+   1. ensure that it still uses Beerwiser as default case
+   2. ensure that the last run is cleaned, i.e. no cells show output

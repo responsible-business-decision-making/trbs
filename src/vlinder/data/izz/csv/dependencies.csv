@@ -23,14 +23,14 @@ Relative decrease in absenteeism % excluding uncertainty;Healthy eating;;squeeze
 Relative decrease in absenteeism % excluding uncertainty;Work-life balance;;squeezed *;0.38;0.24;0.4;270.0
 Relative decrease in staff turnover % excluding uncertainty;Work-life balance;;squeezed *;0.958;0.24;0.4;270.0
 Relative decrease in staff turnover % excluding uncertainty;Physical strain reduction;;squeezed *;0.5;0.19;0.5;200.0
-Relative decrease in staff turnover % excluding uncertainty;Training and development;;squeezed *;0.19;0.5700000000000001;0.8;2000.0
-Relative decrease in staff turnover % excluding uncertainty;Effective salary increase;;squeezed *;0.33;0.65;0.7000000000000001;3600.0
-Relative decrease in staff turnover % excluding uncertainty;Leadership development;;squeezed *;0.0;0.73;0.7000000000000001;1500.0
-Relative increase in employee satisfaction excluding uncertainty;Physical strain reduction;;squeezed *;0.5700000000000001;0.19;0.5;200.0
-Relative increase in employee satisfaction excluding uncertainty;Training and development;;squeezed *;0.39;0.5700000000000001;0.8;2000.0
-Relative increase in employee satisfaction excluding uncertainty;Effective salary increase;;squeezed *;0.1;0.65;0.7000000000000001;3600.0
+Relative decrease in staff turnover % excluding uncertainty;Training and development;;squeezed *;0.19;0.57;0.8;2000.0
+Relative decrease in staff turnover % excluding uncertainty;Effective salary increase;;squeezed *;0.33;0.65;0.7;3600.0
+Relative decrease in staff turnover % excluding uncertainty;Leadership development;;squeezed *;0.0;0.73;0.7;1500.0
+Relative increase in employee satisfaction excluding uncertainty;Physical strain reduction;;squeezed *;0.57;0.19;0.5;200.0
+Relative increase in employee satisfaction excluding uncertainty;Training and development;;squeezed *;0.39;0.57;0.8;2000.0
+Relative increase in employee satisfaction excluding uncertainty;Effective salary increase;;squeezed *;0.1;0.65;0.7;3600.0
 Relative increase in employee satisfaction excluding uncertainty;Work-life balance;;squeezed *;0.64;0.24;0.4;270.0
-Relative increase in employee satisfaction excluding uncertainty;Leadership development;;squeezed *;0.22;0.73;0.7000000000000001;1500.0
+Relative increase in employee satisfaction excluding uncertainty;Leadership development;;squeezed *;0.22;0.73;0.7;1500.0
 Direct increase in productivity % excluding uncertainty;Psycho-social stress reduction;;squeezed *;0.07;0.71;0.2;180.0
 Direct increase in productivity % excluding uncertainty;Physical exercise;;squeezed *;0.1;0.5;0.25;125.0
 Direct increase in productivity % excluding uncertainty;Smoking reduction;;squeezed *;0.25;0.232;0.137;390.0

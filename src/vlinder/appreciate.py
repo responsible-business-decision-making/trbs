@@ -119,9 +119,13 @@ class Appreciate:
             - 'theme': weight of the theme of the key_output
         :return: the calculated weight of the key output
         """
-        # 'sum_within_theme' or 'sum_theme' cannot be 0
-        if not weights["sum_within_theme"] or not weights["sum_theme"]:
+        # 'sum_within_theme', 'sum_theme' or 'sum_key_output' cannot be 0
+        if not weights["sum_within_theme"] * weights["sum_theme"] * weights["sum_key_output"]:
             return 0
+        # weights without using the theme
+        if not weights["use_theme_weights"]:
+            return weights["key_output"] / weights["sum_key_output"]
+        # weights when using the theme
         return (weights["key_output"] / weights["sum_within_theme"]) * (weights["theme"] / weights["sum_theme"])
 
     def _calculate_weights(self) -> list:
@@ -129,6 +133,9 @@ class Appreciate:
         This function creates a weights list for all key outputs.
         :return: list with weights for all key outputs
         """
+        use_theme_weights = self.input_dict["configuration_value"][
+            np.where(self.input_dict["configurations"] == "use_theme_weights")
+        ]
         key_output_themes = self.input_dict["key_output_theme"]
         weights = self.input_dict["key_output_weight"]
         theme_weights = self.input_dict["theme_weight"]
@@ -146,6 +153,8 @@ class Appreciate:
 
             weights_dict = {
                 "key_output": weights[index],
+                "sum_key_output": np.sum(weights),
+                "use_theme_weights": use_theme_weights,
                 "theme": theme_weight,
                 "sum_theme": np.sum(theme_weights),
                 "sum_within_theme": np.sum(weights_within_theme),

@@ -133,7 +133,14 @@ def test_appreciate_all_scenarios_only_structure(appreciate_beerwiser):
 
 @pytest.mark.parametrize(
     "weights_list, expected_result",
-    [([3, 5, 3, 15], 0.33), ([2, 4, 8, 20], 0.05), ([10, 8, 0, 2], 0), ([2, 3, 4, 0], 0)],
+    [
+        ([3, 6, 1, 5, 3, 15], 0.33),
+        ([2, 5, 1, 4, 8, 20], 0.05),
+        ([10, 20, 1, 8, 0, 2], 0),
+        ([2, 6, 1, 3, 4, 0], 0),
+        ([2, 8, 0, 2, 5, 10], 0.25),
+        ([2, 0, 0, 3, 5, 10], 0),
+    ],
 )
 def test_apply_weights_single_key_output(appreciate_beerwiser, weights_list, expected_result):
     """
@@ -146,9 +153,11 @@ def test_apply_weights_single_key_output(appreciate_beerwiser, weights_list, exp
     # prepare dictionary | easier to parametrize in this way
     weights_dict = {
         "key_output": weights_list[0],
-        "theme": weights_list[1],
-        "sum_within_theme": weights_list[2],
-        "sum_theme": weights_list[3],
+        "sum_key_output": weights_list[1],
+        "use_theme_weights": weights_list[2],
+        "theme": weights_list[3],
+        "sum_within_theme": weights_list[4],
+        "sum_theme": weights_list[5],
     }
     result = round(appreciate_beerwiser._apply_weights_single_key_output(weights_dict), 2)
     assert result == expected_result

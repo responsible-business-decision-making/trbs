@@ -15,3 +15,7 @@ __pycache__
 
 # ignore open .xlsx file
 ~$*
+
+# ignore build-files
+build/
+vlinder.egg-info/

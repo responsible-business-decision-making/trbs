@@ -11,7 +11,7 @@
             },
             {
                 "name":"value",
-                "type":"string"
+                "type":"integer"
             }
         ],
         "primaryKey":[
@@ -20,6 +20,10 @@
         "pandas_version":"1.4.0"
     },
     "data":[
-
+        {
+            "index":0,
+            "configuration":"use_theme_weights",
+            "value":1
+        }
     ]
 }

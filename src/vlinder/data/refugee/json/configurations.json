@@ -23,7 +23,7 @@
         {
             "index":0,
             "configuration":"use_theme_weights",
-            "value":0
+            "value":1
         }
     ]
 }
