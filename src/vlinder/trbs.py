@@ -78,17 +78,19 @@ class TheResponsibleBusinessSimulator:
             self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
         self.exporter.create_template_for_requested_format(requested_format)
 
-    def modify(self, input_dict_key, element_key, new_value)
+    def modify(self, input_dict_key, element_key, new_value):
         """
         This function changes the value of one of the inputs in the input_dict.
-        :param input_dict_key: the key in the input_dict for which the value should be changed. Currently supported: ['key_output_weight', 'scenario_weight', 'theme_weight']
+        The following keys in input_dict are currently supported: key_output_weight, scenario_weight, theme_weight
+        :param input_dict_key: the key in the input_dict for which the value should be changed. 
         :param element_key: is the name of the element within the input_dict_key to be changed
         :param new_value: is the new value to be changed to
         """
         supported_input_keys = ['key_output_weight', 'scenario_weight', 'theme_weight']
         if input_dict_key not in supported_input_keys:
-            raise ValueError("Please specify one of", supperted_input_keys)
-        index = np.where(self.input_dict[input_dict_key] == element_key)
-        old_value = case.input_dict[input_dict_key][index]
+            raise ValueError("Please specify one of", supported_input_keys)
+        master_key = self.input_dict_key.split('_weight')[0] + 's'
+        index = np.where(self.input_dict[master_key] == element_key)
+        old_value = self.input_dict[input_dict_key][index]
         self.input_dict[input_dict_key][index] = new_value
         print(f"The weight for {element_key} in {input_dict_key} is changed from {old_value[0]} to {new_value}.")
