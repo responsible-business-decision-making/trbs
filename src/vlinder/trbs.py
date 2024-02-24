@@ -8,6 +8,7 @@ from vlinder.evaluate import Evaluate
 from vlinder.appreciate import Appreciate
 from vlinder.visualize import Visualize
 
+import numpy as np
 
 class TheResponsibleBusinessSimulator:
     """
@@ -89,7 +90,7 @@ class TheResponsibleBusinessSimulator:
         supported_input_keys = ['key_output_weight', 'scenario_weight', 'theme_weight']
         if input_dict_key not in supported_input_keys:
             raise ValueError("Please specify one of", supported_input_keys)
-        master_key = self.input_dict_key.split('_weight')[0] + 's'
+        master_key = input_dict_key.split('_weight')[0] + 's'
         index = np.where(self.input_dict[master_key] == element_key)
         old_value = self.input_dict[input_dict_key][index]
         self.input_dict[input_dict_key][index] = new_value
