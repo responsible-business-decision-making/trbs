@@ -7,6 +7,7 @@ from vlinder.case_importer import CaseImporter
 from vlinder.evaluate import Evaluate
 from vlinder.appreciate import Appreciate
 from vlinder.visualize import Visualize
+from vlinder.report_export import ReportExporter
 
 
 class TheResponsibleBusinessSimulator:
@@ -24,6 +25,7 @@ class TheResponsibleBusinessSimulator:
         self.output_dict = {}
         self.visualizer = None
         self.exporter = None
+        self.powerpoint = None
 
     def __str__(self):
         input_data_formatted = (
@@ -43,9 +45,9 @@ class TheResponsibleBusinessSimulator:
         Amount of scenarios x Amount of decision makers options x Amount of key outputs
         """
         return (
-            len(self.input_dict["scenarios"])
-            * len(self.input_dict["decision_makers_options"])
-            * len(self.input_dict["key_outputs"])
+                len(self.input_dict["scenarios"])
+                * len(self.input_dict["decision_makers_options"])
+                * len(self.input_dict["key_outputs"])
         )
 
     def build(self):
@@ -77,3 +79,30 @@ class TheResponsibleBusinessSimulator:
         if not self.exporter:
             self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
         self.exporter.create_template_for_requested_format(requested_format)
+
+    def _check_steps_completed(self) -> bool:
+        """This function checks whether all steps are performed.
+        :return: boolean which indicates if all steps are performed
+        """
+        ready = False
+        if len(self.input_dict) == 0:
+            print("First .build() a case to import data")
+        elif len(self.output_dict) == 0:
+            print("First .evaluate() a case to calculate key output values")
+        elif 'appreciations' not in \
+                self.output_dict[self.input_dict['scenarios'][0]][self.input_dict['decision_makers_options'][0]]:
+            print("First .appreciate() a case to process key output values")
+        else:
+            ready = True
+        return ready
+
+    def to_report(self, output_path, scenario):
+        """This function deals with transforming a case to a PowerPoint.
+        :param output_path: desired location of the report
+        :param scenario: the selected scenario of the case
+        """
+        if self._check_steps_completed():
+            if not self.powerpoint:
+                self.powerpoint = ReportExporter(output_path, self.name, self.input_dict, self.output_dict)
+            location_powerpoint = self.powerpoint.create_report(scenario, output_path)
+            print(location_powerpoint)

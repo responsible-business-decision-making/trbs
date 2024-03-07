@@ -1,0 +1,14 @@
+generic_text_element;value
+title_strategic_challenge;Strategic Challenge
+title_key_outputs;Key outputs
+title_dmo;Decision makers options (DMOs)
+title_scenarios;Scenarios
+title_fixed_inputs;Fixed inputs
+title_dependency_graph;Dependency graph
+title_weighted_graph;Resulting appreciations of different DMOs for scenario: 
+intro_key_outputs;The outputs upon which the decision makers will base their decision. Key outputs are often referred to as KPIs. Key outputs are grouped into themes.
+intro_dmo;Decision makers options are formulated by assigning a single value to all internal variable inputs. These inputs can be formulated and determined by the decision makers.
+intro_scenarios;Each external variable input can be thought of as a single aspect of external uncertainty affecting the outcome of the decision in scope. A scenario is defined by assigning a single value to all external variable inputs.
+intro_fixed_inputs;The inputs which only takes one value for all scenarios.
+intro_dependency_graph;
+intro_weighted_graph;
