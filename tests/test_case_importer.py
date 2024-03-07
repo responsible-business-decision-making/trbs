@@ -48,6 +48,7 @@ def test_build_template_validators(import_beerwiser_json):
     result = import_beerwiser_json._build_template_validators()
     expected_result = {
         "configurations": ["configuration", "value"],
+        "case_text_elements": ["case_text_element", "value"],
         "key_outputs": [
             "key_output",
             "theme",
@@ -75,6 +76,7 @@ def test_build_template_validators(import_beerwiser_json):
         "theme_weights": ["theme", "weight"],
         "key_output_weights": ["key_output", "weight"],
         "scenario_weights": ["scenario", "weight"],
+        "generic_text_elements": ["generic_text_element", "value"]
     }
     assert result == expected_result
 
