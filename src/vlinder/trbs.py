@@ -15,9 +15,9 @@ class TheResponsibleBusinessSimulator:
     dependencies and calculate appreciations.
     """
 
-    def __init__(self, file_path, file_extension, name):
-        self.file_path = file_path
-        self.file_extension = file_extension
+    def __init__(self, name, file_path=None, file_extension=None):
+        self.file_path = file_path if file_path is not None else "Path(os.path.dirname(vl.__file__)) / 'data'"
+        self.file_extension = file_extension if file_extension is not None else 'xlsx'
         self.name = name
         self.input_dict = {}
         self.dataframe_dict = {}
