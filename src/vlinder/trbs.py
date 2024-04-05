@@ -2,11 +2,14 @@
 This module contains the TRBS class. This is the parent class that deals with anything related to a Responsible
 Business Simulator Case.
 """
+import vlinder as vl
 from vlinder.case_exporter import CaseExporter
 from vlinder.case_importer import CaseImporter
 from vlinder.evaluate import Evaluate
 from vlinder.appreciate import Appreciate
 from vlinder.visualize import Visualize
+import os
+from pathlib import Path
 
 
 class TheResponsibleBusinessSimulator:
@@ -16,7 +19,7 @@ class TheResponsibleBusinessSimulator:
     """
 
     def __init__(self, name, file_path=None, file_extension=None):
-        self.file_path = file_path if file_path is not None else "Path(os.path.dirname(vl.__file__)) / 'data'"
+        self.file_path = file_path if file_path is not None else Path(os.path.dirname(vl.__file__))/'data'
         self.file_extension = file_extension if file_extension is not None else 'xlsx'
         self.name = name
         self.input_dict = {}
