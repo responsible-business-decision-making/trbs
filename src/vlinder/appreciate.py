@@ -106,6 +106,7 @@ class Appreciate:
         """ ""
         for _, value_dict in self.output_dict.items():
             self.appreciate_single_scenario(value_dict)
+        self._apply_weights_scenario()
         print("Key output values have been processed | Appreciated, weighted & aggregated")
 
     @staticmethod
@@ -176,3 +177,41 @@ class Appreciate:
         weighted_appreciations = np.array(appreciations) * np.array(weights)
 
         return weighted_appreciations
+
+    def _calculate_scenario_weights(self, weight_dict):
+        """
+        This function ...
+        """
+        # ensure the appreciation are sorted the same way as the scenario weights
+        sorted_appreciations = [weight_dict[scenario] for scenario in self.input_dict["scenarios"]]
+        scenario_weights = self.input_dict['scenario_weight']
+
+        # Calculate scenario weighted appreciations: dmo_appr_scen * weight_scen / sum_scen_weights
+        scenario_weighted_appreciations = np.divide(np.multiply(scenario_weights, sorted_appreciations), sum(scenario_weights))
+        scenario_appreciation = sum(scenario_weighted_appreciations)
+
+        # return a calculation dictionary containing appreciation both per scenario as well as the sum
+        calc_dict = dict(zip(self.input_dict["scenarios"], scenario_weighted_appreciations))
+        calc_dict["scenario_appreciation"] = scenario_appreciation
+
+        return calc_dict
+
+    def _apply_weights_scenario(self):
+        """
+        This function applies the scenario weights to the decision_makers_option_appreciations
+        """
+        options = [(dmo, scenario) for dmo in self.input_dict['decision_makers_options'] for scenario in self.input_dict['scenarios']]
+        scenario_weight_dict = {}
+
+        last_dmo = None
+        weight_dict = {}
+        for dmo, scenario in options:
+            if last_dmo != dmo and weight_dict:
+                scenario_weight_dict[dmo] = self._calculate_scenario_weights(weight_dict)
+
+            last_dmo = dmo
+            weight_dict[scenario] = self.output_dict[scenario][dmo]['decision_makers_option_appreciation']
+
+        self._calculate_scenario_weights(weight_dict)
+        self.output_dict['_vlinder']= {'scenario_weight': scenario_weight_dict}
+

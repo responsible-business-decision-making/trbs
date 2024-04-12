@@ -140,6 +140,8 @@ class Visualize:
 
         # iterate until we are at the level where the 'key_data' can be found
         dict_for_iteration = self.outcomes.copy()
+        dict_for_iteration.pop('_vlinder')
+
         formatted_data = pd.DataFrame(index=range(self.options))
         while dim_level > 1:
             dim_values = []
