@@ -78,8 +78,9 @@ class TheResponsibleBusinessSimulator:
             self.visualizer = Visualize(self.output_dict, self._get_options())
         return self.visualizer.create_visual(visual_request, key, **kwargs)
 
-    def transform(self, output_path, requested_format):
+    def transform(self, requested_format, output_path=None):
         """This function deals with transforming a case to a new format."""
+        output_path = output_path if output_path is not None else Path.cwd() / "data"
         if not self.exporter:
             self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
         self.exporter.create_template_for_requested_format(requested_format)
