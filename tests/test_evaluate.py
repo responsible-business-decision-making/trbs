@@ -24,7 +24,7 @@ def fixture_evaluate_refugee():
     :return Evaluate(): an Evaluate class for Refugee
     """
 
-    case = TheResponsibleBusinessSimulator(Path.cwd() / "src/vlinder/data", "xlsx", "refugee")
+    case = TheResponsibleBusinessSimulator("refugee", Path.cwd() / "src/vlinder/data", "xlsx")
     case.build()
     return Evaluate(case.input_dict)
 
@@ -36,7 +36,7 @@ def fixture_evaluate_dsm():
     :return Evaluate(): an Evaluate class for DSM
     """
 
-    case = TheResponsibleBusinessSimulator(Path.cwd() / "src/vlinder/data", "xlsx", "DSM")
+    case = TheResponsibleBusinessSimulator("DSM", Path.cwd() / "src/vlinder/data")
     case.build()
     return Evaluate(case.input_dict)
 
@@ -48,7 +48,7 @@ def fixture_evaluate_izz():
     :return Evaluate(): an Evaluate class for IZZ
     """
 
-    case = TheResponsibleBusinessSimulator(Path.cwd() / "src/vlinder/data", "xlsx", "izz")
+    case = TheResponsibleBusinessSimulator("izz")
     case.build()
     return Evaluate(case.input_dict)
 

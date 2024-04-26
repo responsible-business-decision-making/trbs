@@ -1,7 +1,13 @@
+# pylint: disable=no-member
+
 """
 This module contains the TRBS class. This is the parent class that deals with anything related to a Responsible
 Business Simulator Case.
 """
+
+from pathlib import Path
+import os
+import vlinder as vl
 from vlinder.case_exporter import CaseExporter
 from vlinder.case_importer import CaseImporter
 from vlinder.evaluate import Evaluate
@@ -15,9 +21,9 @@ class TheResponsibleBusinessSimulator:
     dependencies and calculate appreciations.
     """
 
-    def __init__(self, file_path, file_extension, name):
-        self.file_path = file_path
-        self.file_extension = file_extension
+    def __init__(self, name, file_path=None, file_extension=None):
+        self.file_path = file_path if file_path is not None else Path(os.path.dirname(vl.__file__)) / "data"
+        self.file_extension = file_extension if file_extension is not None else "xlsx"
         self.name = name
         self.input_dict = {}
         self.dataframe_dict = {}
@@ -72,8 +78,9 @@ class TheResponsibleBusinessSimulator:
             self.visualizer = Visualize(self.output_dict, self._get_options())
         return self.visualizer.create_visual(visual_request, key, **kwargs)
 
-    def transform(self, output_path, requested_format):
+    def transform(self, requested_format, output_path=None):
         """This function deals with transforming a case to a new format."""
+        output_path = output_path if output_path is not None else Path.cwd() / "data"
         if not self.exporter:
             self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
         self.exporter.create_template_for_requested_format(requested_format)
