@@ -108,8 +108,8 @@ class Appreciate:
         stb_ind = args["key_output_smaller_the_better"]
 
         # Option 0A: values lie outside the boundaries. Return maximum or minimum based on STB
-        if value < start_and_end[0] or value > start_and_end[1]:
-            return stb_ind * (value < start_and_end[0]) * 100 + (1 - stb_ind) * (value > start_and_end[1]) * 100
+        if value <= start_and_end[0] or value >= start_and_end[1]:
+            return stb_ind * (value <= start_and_end[0]) * 100 + (1 - stb_ind) * (value >= start_and_end[1]) * 100
 
         # Option 0B: start and end value are the same --> indifferent so return 0
         if start_and_end[1] - start_and_end[0] < 1e-6:
