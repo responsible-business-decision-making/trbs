@@ -1,0 +1,79 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"generic_text_element",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"string"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "generic_text_element":"title_strategic_challenge",
+            "value":"Strategic Challenge"
+        },
+        {
+            "index":1,
+            "generic_text_element":"title_key_outputs",
+            "value":"Key outputs"
+        },
+        {
+            "index":2,
+            "generic_text_element":"title_dmo",
+            "value":"Options"
+        },
+        {
+            "index":3,
+            "generic_text_element":"title_scenarios",
+            "value":"Scenarios"
+        },
+        {
+            "index":4,
+            "generic_text_element":"title_comparison",
+            "value":"Comparisons of options"
+        },
+        {
+            "index":5,
+            "generic_text_element":"title_theme_weights",
+            "value":"Key output and theme weights"
+        },
+        {
+            "index":6,
+            "generic_text_element":"title_scenario_weights",
+            "value":"Scenario weights"
+        },
+        {
+            "index":7,
+            "generic_text_element":"text_strategic_challenge",
+            "value":"Describing strategic challenge that requires a decision"
+        },
+        {
+            "index":8,
+            "generic_text_element":"text_key_outputs",
+            "value":"Which indicators do you use to evaluate the impact of your decision(s)?"
+        },
+        {
+            "index":9,
+            "generic_text_element":"text_dmo",
+            "value":"Which options do you have to influence your impact?"
+        },
+        {
+            "index":10,
+            "generic_text_element":"text_scenarios",
+            "value":"Which uncertainty do you want to account for?"
+        }
+    ]
+}
