@@ -48,6 +48,8 @@ def test_build_template_validators(import_beerwiser_json):
     result = import_beerwiser_json._build_template_validators()
     expected_result = {
         "configurations": ["configuration", "value"],
+        "generic_text_elements": ["generic_text_element", "value"],
+        "case_text_elements": ["case_text_element", "value"],
         "key_outputs": [
             "key_output",
             "theme",
