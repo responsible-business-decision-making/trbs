@@ -310,3 +310,56 @@ def test_convert_to_numpy_arrays(import_beerwiser_json):
     result = import_beerwiser_json.input_dict
     expected_result = {"fixed_inputs": np.array(["A", "B", "C", "D"]), "fixed_input_value": np.array([3, 5, 2, 8])}
     assert all(np.array_equal(expected_result[key], result[key]) for key in result)
+
+
+@pytest.mark.parametrize(
+    "input_dataframe, expected_output",
+    [
+        (
+            {
+                "key_output_theme": ["People", "Planet", "Profit"],
+                "key_output_weight": [2, 1, 3],
+                "themes": ["Planet", "People", "Profit"],
+                "theme_weight": [1, 2, 3],
+            },
+            {
+                "key_output_theme": ["People", "Planet", "Profit"],
+                "key_output_weight": [2, 1, 3],
+                "themes": ["Planet", "People", "Profit"],
+                "theme_weight": [1, 2, 3],
+                "key_output_relative_weight": np.array([1, 2, 3]),
+            },
+        ),
+        (
+            {
+                "key_output_theme": ["Society", "Society", "Society", "Society", "Society", "Society", "Economy"],
+                "key_output_weight": [1, 1, 1, 1, 1, 1, 1],
+                "themes": ["Economy", "Society"],
+                "theme_weight": [1, 1],
+            },
+            {
+                "key_output_theme": ["Society", "Society", "Society", "Society", "Society", "Society", "Economy"],
+                "key_output_weight": [1, 1, 1, 1, 1, 1, 1],
+                "themes": ["Economy", "Society"],
+                "theme_weight": [1, 1],
+                "key_output_relative_weight": np.array(
+                    [0.16666667, 0.16666667, 0.16666667, 0.16666667, 0.16666667, 0.16666667, 1]  # 1 / 7 * 1 = 1/7
+                ),
+            },
+        ),
+    ],
+)
+def test_convert_to_relative_weights(import_beerwiser_json, input_dataframe, expected_output):
+    """
+    This function tests _convert_to_relative_weights to properly update the input dictionary.
+    Note: the file extension (here: json) is not relevant for this test, so only one needs to be tested
+    :param import_beerwiser_json: an CaseImporter class for the beerwiser case
+    """
+    import_beerwiser_json.input_dict = input_dataframe
+    import_beerwiser_json._convert_to_relative_weights()
+    result = import_beerwiser_json.input_dict
+    assert np.allclose(result["key_output_relative_weight"], expected_output["key_output_relative_weight"])
+    assert result["key_output_theme"] == expected_output["key_output_theme"]
+    assert result["key_output_weight"] == expected_output["key_output_weight"]
+    assert result["themes"] == expected_output["themes"]
+    assert result["theme_weight"] == expected_output["theme_weight"]
