@@ -20,6 +20,10 @@
         "pandas_version":"1.4.0"
     },
     "data":[
-
+        {
+            "index":0,
+            "configuration":"language",
+            "value":"EN"
+        }
     ]
 }
