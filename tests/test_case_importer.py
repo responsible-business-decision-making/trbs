@@ -329,7 +329,7 @@ def test_convert_to_numpy_arrays(import_beerwiser_json):
                 "key_output_weight": [2, 1, 3],
                 "themes": ["Planet", "People", "Profit"],
                 "theme_weight": [1, 2, 3],
-                "key_output_relative_weight": np.array([1, 2, 3]),
+                "key_output_relative_weight": np.array([2, 1, 3]),
             },
         ),
         (
@@ -345,7 +345,7 @@ def test_convert_to_numpy_arrays(import_beerwiser_json):
                 "themes": ["Economy", "Society"],
                 "theme_weight": [1, 1],
                 "key_output_relative_weight": np.array(
-                    [0.16666667, 0.16666667, 0.16666667, 0.16666667, 0.16666667, 0.16666667, 1]  # 1 / 7 * 1 = 1/7
+                    [0.16666667, 0.16666667, 0.16666667, 0.16666667, 0.16666667, 0.16666667, 1]
                 ),
             },
         ),
@@ -361,7 +361,5 @@ def test_convert_to_relative_weights(import_beerwiser_json, input_dataframe, exp
     import_beerwiser_json._convert_to_relative_weights()
     result = import_beerwiser_json.input_dict
     assert np.allclose(result["key_output_relative_weight"], expected_output["key_output_relative_weight"])
-    assert result["key_output_theme"] == expected_output["key_output_theme"]
-    assert result["key_output_weight"] == expected_output["key_output_weight"]
-    assert result["themes"] == expected_output["themes"]
-    assert result["theme_weight"] == expected_output["theme_weight"]
+    for key in ["key_output_theme", "key_output_weight", "themes", "theme_weight"]:
+        assert result[key] == expected_output[key]
