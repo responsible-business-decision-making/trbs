@@ -1,0 +1,840 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"destination",
+                "type":"string"
+            },
+            {
+                "name":"argument_1",
+                "type":"string"
+            },
+            {
+                "name":"argument_2",
+                "type":"string"
+            },
+            {
+                "name":"operator",
+                "type":"string"
+            },
+            {
+                "name":"maximum_effect",
+                "type":"number"
+            },
+            {
+                "name":"accessibility",
+                "type":"number"
+            },
+            {
+                "name":"probability_of_success",
+                "type":"number"
+            },
+            {
+                "name":"saturation_point",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "destination":"Current number of absent employees",
+            "argument_1":"Current number of employees",
+            "argument_2":"Current absenteeism %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":1,
+            "destination":"Costs of full-time absent employee",
+            "argument_1":"Number of workable days per year",
+            "argument_2":"Average costs of a day lost through absenteeism",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":2,
+            "destination":"Current absenteeism costs",
+            "argument_1":"Current number of absent employees",
+            "argument_2":"Costs of full-time absent employee",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":3,
+            "destination":"Current number of staff turnover",
+            "argument_1":"Current number of employees",
+            "argument_2":"Current staff turnover %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":4,
+            "destination":"Current staff turnover costs",
+            "argument_1":"Current number of staff turnover",
+            "argument_2":"Average costs of staff turnover",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":5,
+            "destination":"Current number of productive days per employee",
+            "argument_1":"Number of workable days per year",
+            "argument_2":"Current productivity %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":6,
+            "destination":"Current number of productive days",
+            "argument_1":"Current number of employees",
+            "argument_2":"Current number of productive days per employee",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":7,
+            "destination":"Current wage costs",
+            "argument_1":"Current number of employees",
+            "argument_2":"Average wage costs per employee",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":8,
+            "destination":"Investment per employee",
+            "argument_1":"Healthy eating",
+            "argument_2":"Leadership development",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":9,
+            "destination":"Investment per employee",
+            "argument_1":"Physical exercise",
+            "argument_2":"Physical strain reduction",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":10,
+            "destination":"Investment per employee",
+            "argument_1":"Psycho-social stress reduction",
+            "argument_2":"Salary increase",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":11,
+            "destination":"Investment per employee",
+            "argument_1":"Smoking reduction",
+            "argument_2":"Training and development",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":12,
+            "destination":"Investment per employee",
+            "argument_1":"Work-life balance",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":13,
+            "destination":"Share salary increase in total investment",
+            "argument_1":"Salary increase",
+            "argument_2":"Investment per employee",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":14,
+            "destination":"Share salary increase in total investment small enough",
+            "argument_1":"Share salary increase in total investment",
+            "argument_2":"Threshold salary increase effect",
+            "operator":"<=",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":15,
+            "destination":"Effective salary increase",
+            "argument_1":"Salary increase",
+            "argument_2":"Share salary increase in total investment small enough",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":16,
+            "destination":"Relative decrease in absenteeism % excluding uncertainty",
+            "argument_1":"Psycho-social stress reduction",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.33,
+            "accessibility":0.71,
+            "probability_of_success":0.2,
+            "saturation_point":180.0
+        },
+        {
+            "index":17,
+            "destination":"Relative decrease in absenteeism % excluding uncertainty",
+            "argument_1":"Physical strain reduction",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.3,
+            "accessibility":0.19,
+            "probability_of_success":0.5,
+            "saturation_point":200.0
+        },
+        {
+            "index":18,
+            "destination":"Relative decrease in absenteeism % excluding uncertainty",
+            "argument_1":"Physical exercise",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.04,
+            "accessibility":0.5,
+            "probability_of_success":0.25,
+            "saturation_point":125.0
+        },
+        {
+            "index":19,
+            "destination":"Relative decrease in absenteeism % excluding uncertainty",
+            "argument_1":"Smoking reduction",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.21,
+            "accessibility":0.232,
+            "probability_of_success":0.137,
+            "saturation_point":390.0
+        },
+        {
+            "index":20,
+            "destination":"Relative decrease in absenteeism % excluding uncertainty",
+            "argument_1":"Healthy eating",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.02,
+            "accessibility":0.92,
+            "probability_of_success":0.8,
+            "saturation_point":100.0
+        },
+        {
+            "index":21,
+            "destination":"Relative decrease in absenteeism % excluding uncertainty",
+            "argument_1":"Work-life balance",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.38,
+            "accessibility":0.24,
+            "probability_of_success":0.4,
+            "saturation_point":270.0
+        },
+        {
+            "index":22,
+            "destination":"Relative decrease in staff turnover % excluding uncertainty",
+            "argument_1":"Work-life balance",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.958,
+            "accessibility":0.24,
+            "probability_of_success":0.4,
+            "saturation_point":270.0
+        },
+        {
+            "index":23,
+            "destination":"Relative decrease in staff turnover % excluding uncertainty",
+            "argument_1":"Physical strain reduction",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.5,
+            "accessibility":0.19,
+            "probability_of_success":0.5,
+            "saturation_point":200.0
+        },
+        {
+            "index":24,
+            "destination":"Relative decrease in staff turnover % excluding uncertainty",
+            "argument_1":"Training and development",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.19,
+            "accessibility":0.57,
+            "probability_of_success":0.8,
+            "saturation_point":2000.0
+        },
+        {
+            "index":25,
+            "destination":"Relative decrease in staff turnover % excluding uncertainty",
+            "argument_1":"Effective salary increase",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.33,
+            "accessibility":0.65,
+            "probability_of_success":0.7,
+            "saturation_point":3600.0
+        },
+        {
+            "index":26,
+            "destination":"Relative decrease in staff turnover % excluding uncertainty",
+            "argument_1":"Leadership development",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.0,
+            "accessibility":0.73,
+            "probability_of_success":0.7,
+            "saturation_point":1500.0
+        },
+        {
+            "index":27,
+            "destination":"Relative increase in employee satisfaction excluding uncertainty",
+            "argument_1":"Physical strain reduction",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.57,
+            "accessibility":0.19,
+            "probability_of_success":0.5,
+            "saturation_point":200.0
+        },
+        {
+            "index":28,
+            "destination":"Relative increase in employee satisfaction excluding uncertainty",
+            "argument_1":"Training and development",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.39,
+            "accessibility":0.57,
+            "probability_of_success":0.8,
+            "saturation_point":2000.0
+        },
+        {
+            "index":29,
+            "destination":"Relative increase in employee satisfaction excluding uncertainty",
+            "argument_1":"Effective salary increase",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.1,
+            "accessibility":0.65,
+            "probability_of_success":0.7,
+            "saturation_point":3600.0
+        },
+        {
+            "index":30,
+            "destination":"Relative increase in employee satisfaction excluding uncertainty",
+            "argument_1":"Work-life balance",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.64,
+            "accessibility":0.24,
+            "probability_of_success":0.4,
+            "saturation_point":270.0
+        },
+        {
+            "index":31,
+            "destination":"Relative increase in employee satisfaction excluding uncertainty",
+            "argument_1":"Leadership development",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.22,
+            "accessibility":0.73,
+            "probability_of_success":0.7,
+            "saturation_point":1500.0
+        },
+        {
+            "index":32,
+            "destination":"Direct increase in productivity % excluding uncertainty",
+            "argument_1":"Psycho-social stress reduction",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.07,
+            "accessibility":0.71,
+            "probability_of_success":0.2,
+            "saturation_point":180.0
+        },
+        {
+            "index":33,
+            "destination":"Direct increase in productivity % excluding uncertainty",
+            "argument_1":"Physical exercise",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.1,
+            "accessibility":0.5,
+            "probability_of_success":0.25,
+            "saturation_point":125.0
+        },
+        {
+            "index":34,
+            "destination":"Direct increase in productivity % excluding uncertainty",
+            "argument_1":"Smoking reduction",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.25,
+            "accessibility":0.232,
+            "probability_of_success":0.137,
+            "saturation_point":390.0
+        },
+        {
+            "index":35,
+            "destination":"Relative decrease in absenteeism %",
+            "argument_1":"Relative decrease in absenteeism % excluding uncertainty",
+            "argument_2":"Relative effect intervention on absenteeism %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":36,
+            "destination":"Relative decrease in staff turnover %",
+            "argument_1":"Relative decrease in staff turnover % excluding uncertainty",
+            "argument_2":"Relative effect intervention on staff turnover %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":37,
+            "destination":"Relative increase in employee satisfaction",
+            "argument_1":"Relative increase in employee satisfaction excluding uncertainty",
+            "argument_2":"Relative effect intervention on employee satisfaction",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":38,
+            "destination":"Direct increase in productivity %",
+            "argument_1":"Direct increase in productivity % excluding uncertainty",
+            "argument_2":"Relative effect intervention on productivity %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":39,
+            "destination":"Indirect effect employee satisfaction on customer satisfaction including uncertainty",
+            "argument_1":"Indirect effect employee satisfaction on customer satisfaction",
+            "argument_2":"Relative effect employee satisfaction on customer satisfaction",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":40,
+            "destination":"Relative indirect increase in productivity % excluding uncertainty",
+            "argument_1":"Relative increase in employee satisfaction",
+            "argument_2":"Indirect effect employee satisfaction on productivity %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":41,
+            "destination":"Relative indirect increase in productivity %",
+            "argument_1":"Relative indirect increase in productivity % excluding uncertainty",
+            "argument_2":"Relative effect employee satisfaction on productivity %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":42,
+            "destination":"New absenteeism %",
+            "argument_1":"Current absenteeism %",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":43,
+            "destination":"New absenteeism %",
+            "argument_1":"Relative decrease in absenteeism %",
+            "argument_2":"Current absenteeism %",
+            "operator":"-*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":44,
+            "destination":"New staff turnover %",
+            "argument_1":"Current staff turnover %",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":45,
+            "destination":"New staff turnover %",
+            "argument_1":"Relative decrease in staff turnover %",
+            "argument_2":"Current staff turnover %",
+            "operator":"-*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":46,
+            "destination":"New employee satisfaction",
+            "argument_1":"Current employee satisfaction",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":47,
+            "destination":"New employee satisfaction",
+            "argument_1":"Relative increase in employee satisfaction",
+            "argument_2":"Current employee satisfaction",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":48,
+            "destination":"New productivity % after direct effect",
+            "argument_1":"Current productivity %",
+            "argument_2":"Direct increase in productivity %",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":49,
+            "destination":"New productivity %",
+            "argument_1":"New productivity % after direct effect",
+            "argument_2":0,
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":50,
+            "destination":"New productivity %",
+            "argument_1":"Relative indirect increase in productivity %",
+            "argument_2":"New productivity % after direct effect",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":51,
+            "destination":"New number of productive days per employee",
+            "argument_1":"New productivity %",
+            "argument_2":"Number of workable days per year",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":52,
+            "destination":"New number of employees",
+            "argument_1":"Current number of productive days",
+            "argument_2":"New number of productive days per employee",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":53,
+            "destination":"New number of absent employees",
+            "argument_1":"New number of employees",
+            "argument_2":"New absenteeism %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":54,
+            "destination":"New absenteeism costs",
+            "argument_1":"New number of absent employees",
+            "argument_2":"Costs of full-time absent employee",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":55,
+            "destination":"New number of staff turnover",
+            "argument_1":"New number of employees",
+            "argument_2":"New staff turnover %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":56,
+            "destination":"New staff turnover costs",
+            "argument_1":"New number of staff turnover",
+            "argument_2":"Average costs of staff turnover",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":57,
+            "destination":"New wage costs",
+            "argument_1":"New number of employees",
+            "argument_2":"Average wage costs per employee",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":58,
+            "destination":"Decrease in number of employees",
+            "argument_1":"Current number of employees",
+            "argument_2":"New number of employees",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":59,
+            "destination":"Total investment",
+            "argument_1":"Investment per employee",
+            "argument_2":"Current number of employees",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":60,
+            "destination":"Decrease in absenteeism costs",
+            "argument_1":"Current absenteeism costs",
+            "argument_2":"New absenteeism costs",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":61,
+            "destination":"Decrease in staff turnover costs",
+            "argument_1":"Current staff turnover costs",
+            "argument_2":"New staff turnover costs",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":62,
+            "destination":"Decrease in wage costs",
+            "argument_1":"Current wage costs",
+            "argument_2":"New wage costs",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":63,
+            "destination":"Decrease in absenteeism %",
+            "argument_1":"Current absenteeism %",
+            "argument_2":"New absenteeism %",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":64,
+            "destination":"Decrease in staff turnover %",
+            "argument_1":"Current staff turnover %",
+            "argument_2":"New staff turnover %",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":65,
+            "destination":"Increase in employee satisfaction",
+            "argument_1":"New employee satisfaction",
+            "argument_2":"Current employee satisfaction",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":66,
+            "destination":"Increase in customer satisfaction",
+            "argument_1":"Increase in employee satisfaction",
+            "argument_2":"Indirect effect employee satisfaction on customer satisfaction including uncertainty",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":67,
+            "destination":"Increase in production capacity",
+            "argument_1":"Decrease in number of employees",
+            "argument_2":"New number of productive days per employee",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":68,
+            "destination":"New customer satisfaction",
+            "argument_1":"Current customer satisfaction",
+            "argument_2":"Increase in customer satisfaction",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":69,
+            "destination":"Return on investment \u20ac",
+            "argument_1":"Decrease in absenteeism costs",
+            "argument_2":"Decrease in staff turnover costs",
+            "operator":"+",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":70,
+            "destination":"Return on investment \u20ac",
+            "argument_1":"Decrease in wage costs",
+            "argument_2":"Total investment",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":71,
+            "destination":"Return on investment %",
+            "argument_1":"Return on investment \u20ac",
+            "argument_2":"Total investment",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        }
+    ]
+}
