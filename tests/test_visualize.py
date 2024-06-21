@@ -9,9 +9,9 @@ The following functions are partly tested: _create_barchart (only errors), creat
 import pytest
 import numpy as np
 import pandas as pd
-from params import OUTPUT_DICT_GENERIC
+from params import OUTPUT_DICT_GENERIC, INPUT_DICT_BEERWISER
 from vlinder.visualize import Visualize, VisualizationError
-
+import random
 
 @pytest.fixture(name="test_outcomes")
 def fixture_visualize_outcomes():
@@ -19,7 +19,7 @@ def fixture_visualize_outcomes():
     This fixture initialises a Visualize class.
     :return: a Visualize class for a generic outcome dictionary
     """
-    return Visualize(OUTPUT_DICT_GENERIC, 2 * 3 * 3)
+    return Visualize(INPUT_DICT_BEERWISER, OUTPUT_DICT_GENERIC, 2 * 3 * 3, random.random())
 
 
 def test_validate_kwargs(test_outcomes):
