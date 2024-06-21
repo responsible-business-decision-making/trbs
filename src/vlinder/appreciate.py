@@ -106,6 +106,8 @@ class Appreciate:
         """ ""
         for _, value_dict in self.output_dict.items():
             self.appreciate_single_scenario(value_dict)
+        print("ben hiero")
+        self._apply_scenario_weights()
         print("Key output values have been processed | Appreciated, weighted & aggregated")
 
     @staticmethod
@@ -167,3 +169,16 @@ class Appreciate:
         weighted_appreciations = np.array(appreciations) * np.array(weights)
 
         return weighted_appreciations
+
+    def _apply_scenario_weights(self) -> None:
+        """
+        This function applies scenario weights to the decision makers' option appreciations
+        :return: None as results are stored within the output_dict
+        """
+        total_weight = sum(self.input_dict["scenario_weight"])
+
+        for scenario, weight in zip(self.input_dict["scenarios"], self.input_dict["scenario_weight"]):
+            for option in self.input_dict["decision_makers_options"]:
+                appreciation = self.output_dict[scenario][option]["decision_makers_option_appreciation"]
+                weighted_appreciation = appreciation * weight / total_weight
+                self.output_dict[scenario][option]["scenario_appreciations"] = weighted_appreciation
