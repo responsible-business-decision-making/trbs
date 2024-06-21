@@ -106,7 +106,6 @@ class Appreciate:
         """ ""
         for _, value_dict in self.output_dict.items():
             self.appreciate_single_scenario(value_dict)
-        print("ben hiero")
         self._apply_scenario_weights()
         print("Key output values have been processed | Appreciated, weighted & aggregated")
 
