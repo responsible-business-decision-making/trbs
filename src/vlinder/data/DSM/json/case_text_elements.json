@@ -1,0 +1,29 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"case_text_element",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"string"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "case_text_element":"strategic_challenge",
+            "value":"Royal DSM (DSM) is a global science-based company specializing in health, nutrition, and materials. By integrating its unique expertise in Life Sciences and Materials Sciences, DSM drives economic prosperity, environmental progress, and social advancements to create sustainable value for all stakeholders. DSM operates in global markets such as food and dietary supplements, personal care, animal feed, medical devices, automotive, paints, electrical and electronics, life protection, alternative energy, and bio-based materials.\n\nThis case explores DSM's decision-making process as the company aims to address climate change by reducing its environmental and carbon footprint through greenhouse gas emission reductions and increased energy efficiency. Their strategic challenge has been identified as determining how to source energy sustainably."
+        }
+    ]
+}

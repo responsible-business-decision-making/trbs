@@ -1,0 +1,98 @@
+destination;argument_1;argument_2;operator;maximum_effect;accessibility;probability_of_success;saturation_point
+Tertiary education completed Ukrainians;Education after 18;;squeezed *;0.47;1.0;0.71;13774010.72
+Sports and association exists;Sports and association;0;>;;;;
+Language and integration course exists;Language and integration course;0;>;;;;
+Employment exists;Employment;0;>;;;;
+Education exists;Education after 18;0;>;;;;
+Access to transport exists;Access to transport;0;>;;;;
+Check for interventions;Sports and association exists;Language and integration course exists;+;;;;
+Check for interventions;Employment exists;Education exists;+;;;;
+Check for interventions;Access to transport exists;0;+;;;;
+Jealousy effect;Check for interventions;0;>;;;;
+Jealousy effect Interventions;Jealousy effect;Effect intervention on jealousy;*;;;;
+Quality of life other refugees Interventions;Jealousy effect Interventions;Effect of jealousy on QoL on quality of life other refugees;*;;;;
+Quality of life inhabitants Interventions;Jealousy effect Interventions;Effect of jealousy on QoL on quality of life inhabitants;*;;;;
+Language acquisition Ukrainians Sports;Sports and association;;squeezed *;0.42;1.0;0.7;1630189.054
+Language acquisition Ukrainians Integration;Language and integration course;;squeezed *;0.65;1.0;0.7;7946938.756
+Language acquisition Ukrainians;Language acquisition Ukrainians Sports;Language acquisition Ukrainians Integration;+;;;;
+Employment effect reduced;Language and integration course;Min. investment in language and integration for full employment effect;<=;;;;
+Reduction employment effect conditional;Reduction employment effect;Employment effect reduced;*;;;;
+Unemployment reduction Ukrainians Employment;Employment;;squeezed *;0.68;1.0;0.6;8150945.272
+Unemployment reduction Ukrainians Employment;Unemployment reduction Ukrainians Employment;Reduction employment effect conditional;-*;;;;
+Unemployment reduction Ukrainians Language Acq;Language acquisition Ukrainians;Effect of language acquisition Ukrainians on unemployment reduction Ukrainians;*;;;;
+Unemployment reduction Ukrainians Education Compl;Tertiary education completed Ukrainians;Effect of tertiary education completed Ukrainians on unemployment reduction Ukrainians;*;;;;
+Umployment reduction Ukrainians Interventions;Unemployment reduction Ukrainians Employment;Unemployment reduction Ukrainians Language Acq;+;;;;
+Umployment reduction Ukrainians Interventions;Unemployment reduction Ukrainians Education Compl;0;+;;;;
+Increase in income Ukrainians Employment;Unemployment reduction Ukrainians Employment;Effect of unemployment reduction Ukrainians on income Ukrainians;*;;;;
+Increase in income Ukrainians Language Acq;Language acquisition Ukrainians;Effect of language acquisition Ukrainians on income Ukrainians;*;;;;
+Increase in income Ukrainians Education Compl;Tertiary education completed Ukrainians;Effect of tertiary education completed Ukrainians on income Ukrainians;*;;;;
+Increase in income Ukrainians;Increase in income Ukrainians Employment;Increase in income Ukrainians Language Acq;+;;;;
+Increase in income Ukrainians;Increase in income Ukrainians Education Compl;0;+;;;;
+Number of additional jobs Sports;Sports and association;Yearly salary sports and associations;/;;;;
+Number of additional jobs Integration;Language and integration course;Yearly salary language and integration;/;;;;
+Number of additional jobs Employment;Employment;Yearly salary employment creating and matching;/;;;;
+Number of additional jobs Education;Education after 18;Yearly salary education after 18;/;;;;
+Number of additional jobs;Number of additional jobs Sports;Number of additional jobs Integration;+;;;;
+Number of additional jobs;Number of additional jobs Employment;Number of additional jobs Education;+;;;;
+Number of additional jobs Ukrainians;Number of additional jobs;Effect of additional jobs on number of additional jobs Ukrainians;*;;;;
+Number of additional jobs other refugees;Number of additional jobs;Effect of additional jobs on number of additional jobs other refugees;*;;;;
+Number of additional jobs inhabitants;Number of additional jobs;Effect of additional jobs on number of additional jobs inhabitants;*;;;;
+Economic impact Investing;Sports and association;Language and integration course;+;;;;
+Economic impact Investing;Employment;Education after 18;+;;;;
+Unemployment reduction other refugees;Number of additional jobs other refugees;Number of other refugees workforce;/;;;;
+Increase in income other refugees;Unemployment reduction other refugees;Effect of unemployment reduction other refugees on income other refugees;*;;;;
+Quality of life other refugees Unemployment reduction;Unemployment reduction other refugees;Effect of unemployment reduction other refugees on QoL other refugees;*;;;;
+Unemployment reduction inhabitants;Number of additional jobs inhabitants;Number of inhabitants workforce;/;;;;
+Unemployment reduction Ukrainians;Umployment reduction Ukrainians Interventions;0;+;;;;
+Unemployment reduction Ukrainians;Number of additional jobs Ukrainians;Number of Ukrainian refugees workforce;/;;;;
+Quality of life Ukrainians Unemployment reduction;Unemployment reduction Ukrainians;Effect of unemployment reduction Ukrainians on QoL Ukrainians;*;;;;
+Change in number of employed Ukrainian refugees;Umployment reduction Ukrainians Interventions;Number of Ukrainian refugees workforce;*;;;;
+Economic impact Ukrainians;Change in number of employed Ukrainian refugees;Average yearly salary Ukrainians;*;;;;
+Economic impact Employment;Economic impact Ukrainians;0;+;;;;
+Economic impact social benefits Ukr 1;Number of additional jobs Ukrainians;Social benefits Ukrainian refugees;*;;;;
+Economic impact social benefits Ukr 2;Change in number of employed Ukrainian refugees;Social benefits Ukrainian refugees;*;;;;
+Economic impact social benefits Other refugees;Number of additional jobs other refugees;Social benefits other refugees;*;;;;
+Economic impact social benefits Inhabitants;Number of additional jobs inhabitants;Social benefits inhabitants;*;;;;
+Economic impact Social benefits;Economic impact social benefits Ukr 1;Economic impact social benefits Ukr 2;+;;;;
+Economic impact Social benefits;Economic impact social benefits Other refugees;Economic impact social benefits Inhabitants;+;;;;
+Economic impact;Economic impact Employment;Economic impact Investing;+;;;;
+Economic impact;Economic impact Social benefits;0;+;;;;
+Increase in income inhabitants;Unemployment reduction inhabitants;Effect of unemployment reduction inhabitants on income inhabitants;*;;;;
+Quality of life inhabitants Unemployment reduction;Unemployment reduction inhabitants;Effect of unemployment reduction inhabitants on QoL inhabitants;*;;;;
+Social cohesion Ukrainians Sports;Sports and association;;squeezed *;0.12;1.0;0.7;1630189.054
+Social cohesion Ukrainians Transport;Access to transport;;squeezed *;0.014;1.0;0.6;15216753.91
+Social cohesion Ukrainians Language Acq;Language acquisition Ukrainians;Effect of language acquisition Ukrainians on social cohesion Ukrainians;*;;;;
+Social cohesion Ukrainians;Social cohesion Ukrainians Sports;Social cohesion Ukrainians Transport;+;;;;
+Social cohesion Ukrainians;Social cohesion Ukrainians Language Acq;0;+;;;;
+Crime rate reduction;Social cohesion Ukrainians;Effect of social cohesion Ukrainians on crime rate reduction;*;;;;
+Crime rate reduction;Increase in income other refugees;Effect of income other refugees on crime rate;*;;;;
+Crime rate reduction;Increase in income Ukrainians;Effect of income Ukrainians on crime rate;*;;;;
+Personal safety Ukrainians Crime rate;Crime rate reduction;Effect of crime rate on personal safety Ukrainians;*;;;;
+Personal safety other refugees;Crime rate reduction;Effect of crime rate on personal safety other refugees;*;;;;
+Personal safety inhabitants;Crime rate reduction;Effect of crime rate on personal safety inhabitants;*;;;;
+Personal safety Ukrainians Education;Tertiary education completed Ukrainians;Effect of tertiary education completed Ukrainians on personal safety Ukrainians;*;;;;
+Personal safety Ukrainians;Personal safety Ukrainians Crime rate;Personal safety Ukrainians Education;+;;;;
+Health Ukrainians;Sports and association;;squeezed *;0.22;1.0;0.7;1630189.054
+Social participation Ukrainians;Access to transport;;squeezed *;0.537;1.0;0.6;15216753.91
+Financial security Ukrainians;Increase in income Ukrainians;Effect of income Ukrainians on financial security Ukrainians;*;;;;
+Financial security other refugees;Increase in income other refugees;Effect of income other refugees on financial security other refugees;*;;;;
+Financial security inhabitants;Increase in income inhabitants;Effect of income inhabitants on financial security inhabitants;*;;;;
+Social trust other refugees;Unemployment reduction other refugees;Effect of unemployment reduction other refugees on social trust other refugees;*;;;;
+Quality of life Ukrainians Health;Health Ukrainians;Effect of health Ukrainians on quality of life Ukrainians;*;;;;
+Quality of life Ukrainians Financial security;Financial security Ukrainians;Effect of financial security Ukrainians on quality of life Ukrainians;*;;;;
+Quality of life Ukrainians Personal safety;Personal safety Ukrainians;Effect of personal safety Ukrainians on quality of life Ukrainians;*;;;;
+Quality of life Ukrainians Social cohesion;Social cohesion Ukrainians;Effect of social cohesion Ukrainians on quality of life Ukrainians;*;;;;
+Quality of life Ukrainians Social participation;Social participation Ukrainians;Effect of social participation Ukrainians on quality of life Ukrainians;*;;;;
+Quality of life Ukrainians;Quality of life Ukrainians Unemployment reduction;Quality of life Ukrainians Social participation;+;;;;
+Quality of life Ukrainians;Quality of life Ukrainians Health;Quality of life Ukrainians Financial security;+;;;;
+Quality of life Ukrainians;Quality of life Ukrainians Personal safety;Quality of life Ukrainians Social cohesion;+;;;;
+Quality of life other refugees Financial security;Financial security other refugees;Effect of financial security other refugees on quality of life other refugees;*;;;;
+Quality of life other refugees Social trust;Social trust other refugees;Effect of social trust other refugees on quality of life other refugees;*;;;;
+Quality of life other refugees Personal safety;Personal safety other refugees;Effect of personal safety other refugees on quality of life other refugees;*;;;;
+Quality of life other refugees;Quality of life other refugees Interventions;Quality of life other refugees Unemployment reduction;+;;;;
+Quality of life other refugees;Quality of life other refugees Financial security;Quality of life other refugees Social trust;+;;;;
+Quality of life other refugees;Quality of life other refugees Personal safety;0;+;;;;
+Quality of life inhabitants Financial security;Financial security inhabitants;Effect of financial security inhabitants on quality of life inhabitants;*;;;;
+Quality of life inhabitants Personal safety;Personal safety inhabitants;Effect of personal safety inhabitants on quality of life inhabitants;*;;;;
+Quality of life inhabitants;Quality of life inhabitants Interventions;Quality of life inhabitants Unemployment reduction;+;;;;
+Quality of life inhabitants;Quality of life inhabitants Financial security;Quality of life inhabitants Personal safety;+;;;;

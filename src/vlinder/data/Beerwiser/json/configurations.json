@@ -1,0 +1,34 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"configuration",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"string"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "configuration":"use_theme_weights",
+            "value":0
+        },
+        {
+            "index":1,
+            "configuration":"language",
+            "value":"EN"
+        }
+    ]
+}

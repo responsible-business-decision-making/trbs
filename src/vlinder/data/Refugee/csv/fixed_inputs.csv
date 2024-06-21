@@ -1,0 +1,46 @@
+fixed_input;value
+Effect of unemployment reduction other refugees on income other refugees;0.81
+Effect of unemployment reduction Ukrainians on income Ukrainians;0.81
+Effect of unemployment reduction inhabitants on income inhabitants;0.37
+Effect of unemployment reduction other refugees on social trust other refugees;0.01
+Effect of unemployment reduction inhabitants on QoL inhabitants;0.266
+Effect of unemployment reduction other refugees on QoL other refugees;0.266
+Effect of unemployment reduction Ukrainians on QoL Ukrainians;0.266
+Effect of health Ukrainians on quality of life Ukrainians;1.12
+Effect of language acquisition Ukrainians on income Ukrainians;0.1549
+Effect of language acquisition Ukrainians on unemployment reduction Ukrainians;0.229
+Effect of language acquisition Ukrainians on social cohesion Ukrainians;0.022
+Effect of income Ukrainians on financial security Ukrainians;0.0073
+Effect of income other refugees on financial security other refugees;0.0073
+Effect of income other refugees on crime rate;0.26
+Effect of income Ukrainians on crime rate;0.26
+Effect of crime rate on personal safety Ukrainians;0.29
+Effect of crime rate on personal safety other refugees;0.29
+Effect of crime rate on personal safety inhabitants;0.29
+Effect of income inhabitants on financial security inhabitants;0.0041
+Effect of personal safety other refugees on quality of life other refugees;0.82
+Effect of personal safety Ukrainians on quality of life Ukrainians;0.82
+Effect of personal safety inhabitants on quality of life inhabitants;0.0912
+Effect of tertiary education completed Ukrainians on income Ukrainians;0.7
+Effect of tertiary education completed Ukrainians on personal safety Ukrainians;0.267
+Effect of tertiary education completed Ukrainians on unemployment reduction Ukrainians;0.158
+Effect of social cohesion Ukrainians on crime rate reduction;0.26
+Effect of social cohesion Ukrainians on quality of life Ukrainians;0.363
+Effect of social participation Ukrainians on quality of life Ukrainians;0.391
+Effect of social trust other refugees on quality of life other refugees;0.209
+Effect of financial security Ukrainians on quality of life Ukrainians;0.46
+Effect of financial security other refugees on quality of life other refugees;0.46
+Effect of financial security inhabitants on quality of life inhabitants;0.46
+Effect intervention on jealousy;1.0
+Effect of jealousy on QoL on quality of life other refugees;-0.05
+Effect of jealousy on QoL on quality of life inhabitants;-0.05
+Average yearly salary Ukrainians;20700.0
+Effect of additional jobs on number of additional jobs Ukrainians;0.061
+Effect of additional jobs on number of additional jobs other refugees;0.197
+Effect of additional jobs on number of additional jobs inhabitants;0.742
+Number of other refugees workforce;1532.0
+Number of inhabitants workforce;24000.0
+Number of Ukrainian refugees workforce;3105.0
+Social benefits Ukrainian refugees;3120.0
+Social benefits other refugees;3120.0
+Social benefits inhabitants;14352.0

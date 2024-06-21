@@ -1,0 +1,169 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"destination",
+                "type":"string"
+            },
+            {
+                "name":"argument_1",
+                "type":"string"
+            },
+            {
+                "name":"argument_2",
+                "type":"string"
+            },
+            {
+                "name":"operator",
+                "type":"string"
+            },
+            {
+                "name":"maximum_effect",
+                "type":"number"
+            },
+            {
+                "name":"accessibility",
+                "type":"number"
+            },
+            {
+                "name":"probability_of_success",
+                "type":"number"
+            },
+            {
+                "name":"saturation_point",
+                "type":"number"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "destination":"Accidents reduction %",
+            "argument_1":"Invest in training of employees",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.48,
+            "accessibility":0.95,
+            "probability_of_success":0.9,
+            "saturation_point":300000.0
+        },
+        {
+            "index":1,
+            "destination":"Water use reduction % when effective",
+            "argument_1":"Invest in water recycling",
+            "argument_2":null,
+            "operator":"squeezed *",
+            "maximum_effect":0.5,
+            "accessibility":1.0,
+            "probability_of_success":1.0,
+            "saturation_point":275000.0
+        },
+        {
+            "index":2,
+            "destination":"Water use reduction %",
+            "argument_1":"Water use reduction % when effective",
+            "argument_2":"Effectiveness water recycling",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":3,
+            "destination":"Accidents reduction",
+            "argument_1":"Current # accidents",
+            "argument_2":"Accidents reduction %",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":4,
+            "destination":"Water use reduction",
+            "argument_1":"Water use reduction %",
+            "argument_2":"Current water use",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":5,
+            "destination":"Production cost reduction $",
+            "argument_1":"Water use reduction",
+            "argument_2":"Water unit cost",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":6,
+            "destination":"Production cost reduction $",
+            "argument_1":"Accidents reduction",
+            "argument_2":"Cost of accident",
+            "operator":"*",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":7,
+            "destination":"Production cost reduction",
+            "argument_1":"Production cost reduction $",
+            "argument_2":"Current production cost",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":8,
+            "destination":"Cost of training per employee",
+            "argument_1":"Invest in training of employees",
+            "argument_2":"# employees",
+            "operator":"\/",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":9,
+            "destination":"New # accidents",
+            "argument_1":"Current # accidents",
+            "argument_2":"Accidents reduction",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        },
+        {
+            "index":10,
+            "destination":"New water use",
+            "argument_1":"Current water use",
+            "argument_2":"Water use reduction",
+            "operator":"-",
+            "maximum_effect":null,
+            "accessibility":null,
+            "probability_of_success":null,
+            "saturation_point":null
+        }
+    ]
+}

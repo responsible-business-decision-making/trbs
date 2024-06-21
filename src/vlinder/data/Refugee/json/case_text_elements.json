@@ -1,0 +1,29 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"case_text_element",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"string"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "case_text_element":"strategic_challenge",
+            "value":"The International Organisation for Migration (2016) counted 1,011,712 migrants and refugees that crossed the southern border of the European Union in 2015, which some have dubbed a \u2018refugee crisis\u2019. A distinction can be made between refugees and economic migrants. Economic migrants are, contrary to refugees, not forced to leave their country because of war or another humanitarian crisis, but move from their own country to a new country in order to find work or have a better standard of living. Europe currently has to cope with both. A (temporary) residence permit that grants asylum is generally only awarded to refugees. This permit is a ticket for integration in society, for work and education. The strategic challenge we face is determining how to accommodate refugees effectively."
+        }
+    ]
+}
