@@ -28,7 +28,18 @@ class Visualize:
         # for visualization purposes two digits is sufficient
         self.outcomes = round_all_dict_values(outcomes)
         self.options = options
-        self.colors = ["#D04A02", "#EB8C00", "#FFB600", "#295477", "#299D8F"]
+        self.colors = [
+            "#295477",
+            "#F3DD8C",
+            "#D04A02",
+            "#299D8F",
+            "#E72B33",
+            "#6A91B6",
+            "#EB8C00",
+            "#FFB600",
+            "#5CB9BD",
+            "#E27588",
+        ]
         self.available_visuals = {
             "table": self._create_table,
             "barchart": self._create_barchart,

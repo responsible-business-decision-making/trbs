@@ -15,6 +15,17 @@ from vlinder.appreciate import Appreciate
 from vlinder.visualize import Visualize
 
 
+def list_demo_cases(file_path=None):
+    """This function returns all demo cases that exist in the package"""
+    file_path = file_path or Path(os.path.dirname(vl.__file__)) / "data"
+
+    try:
+        case_names = [name for name in os.listdir(file_path) if (file_path / name).is_dir()]
+        return case_names
+    except FileNotFoundError:
+        raise FileNotFoundError(f"The directory {file_path} does not exist.")
+
+
 class TheResponsibleBusinessSimulator:
     """
     This class is the base class of an tRBS-case and contains all necessary information to import data, evaluate
