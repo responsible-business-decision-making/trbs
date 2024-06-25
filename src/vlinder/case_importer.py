@@ -20,7 +20,7 @@ class TemplateError(Exception):
         return f"Template Error: {self.message}"
 
 
-class CaseImporter:
+class CaseImporter:  # pylint: disable=too-few-public-methods
     """
     This class deals with import and validation of an RBS case, either as csv, xlsx or json.
     :param file_path: Path to folder that contains a folder structure of at least "name" - "file_format"
@@ -226,6 +226,26 @@ class CaseImporter:
             else:
                 self._convert_to_numpy_arrays(table, data)
 
+    def _convert_to_relative_weights(self) -> None:
+        """
+        This function calculates and assigns relative weights to key outputs based the associated theme weights.
+        """
+        unique_themes, theme_counts = np.unique(self.input_dict["key_output_theme"], return_counts=True)
+        theme_count_dict = dict(zip(unique_themes, theme_counts))
+        theme_weight_dict = dict(zip(self.input_dict["themes"], self.input_dict["theme_weight"]))
+
+        relative_weights = [
+            self.input_dict["key_output_weight"][i]
+            if theme_count_dict[theme] == 1
+            else (self.input_dict["key_output_weight"][i] / theme_count_dict[theme]) * theme_weight_dict[theme]
+            for i, theme in enumerate(self.input_dict["key_output_theme"])
+        ]
+
+        self.input_dict["key_output_relative_weight"] = np.array(relative_weights)
+
+    def _enrich_input_dict(self):
+        self._convert_to_relative_weights()
+
     def import_case(self) -> dict:
         """
         This function creates the input dictionary. It wraps other functions that deal with reading and validating
@@ -235,4 +255,5 @@ class CaseImporter:
         for table in self.validate_dict:
             self._create_dataframes_dict(table)
         self._create_input_dict()
+        self._enrich_input_dict()
         return self.input_dict, self.dataframes_dict

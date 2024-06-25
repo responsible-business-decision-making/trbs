@@ -1,2 +1,5 @@
+# pylint: disable=missing-module-docstring
 # package vlinder
-from vlinder.trbs import TheResponsibleBusinessSimulator
+from .trbs import list_demo_cases, TheResponsibleBusinessSimulator
+
+__all__ = ["list_demo_cases", "TheResponsibleBusinessSimulator"]
