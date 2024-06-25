@@ -175,3 +175,32 @@ def test_apply_weights(appreciate_beerwiser):
     rounded_result = [round(value, 2) for value in result]
     expected_result = [16.67, 8.29, 40.56]
     assert expected_result == rounded_result
+
+
+def test_apply_scenario_weights(appreciate_beerwiser):
+    """
+    This function tests _apply_scenario_weights to return the correct decision makers' option appreciations
+    :param appreciate_beerwiser: an Appreciate() class for Beerwiser
+    """
+    appreciate_beerwiser._apply_scenario_weights()
+    result = round_all_dict_values(appreciate_beerwiser.output_dict["Base case"]["Focus on training"])
+    expected_result = {
+        "key_outputs": {
+            "Accidents reduction": 17.44,
+            "Water use reduction": 1336363.64,
+            "Production cost reduction": 0.04,
+        },
+        "appreciations": {
+            "Accidents reduction": 100.0,
+            "Water use reduction": 1.95,
+            "Production cost reduction": 56.73,
+        },
+        "weighted_appreciations": {
+            "Accidents reduction": 33.33,
+            "Water use reduction": 0.33,
+            "Production cost reduction": 28.36,
+        },
+        "decision_makers_option_appreciation": 62.02,
+        "scenario_appreciations": 20.67,
+    }
+    assert result == expected_result
