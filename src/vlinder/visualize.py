@@ -7,6 +7,8 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from vlinder.utils import round_all_dict_values, number_formatter, get_values_from_target, check_list_content
+import dataframe_image as dfi
+from pandas.plotting import table
 
 
 class VisualizationError(Exception):
@@ -24,8 +26,9 @@ class VisualizationError(Exception):
 class Visualize:
     """This class deals with the creation of all graphs and tables"""
 
-    def __init__(self, outcomes, options):
+    def __init__(self, input_dict, outcomes, options, random_number):
         # for visualization purposes two digits is sufficient
+        self.input_dict = input_dict
         self.outcomes = round_all_dict_values(outcomes)
         self.options = options
         self.colors = [
@@ -49,8 +52,14 @@ class Visualize:
             "appreciations",
             "weighted_appreciations",
             "decision_makers_option_appreciation",
+            "key_outputs_theme",
+            "scenarios",
+            "fixed_inputs",
+            "decision_makers_options",
         ]
-        self.available_kwargs = ["scenario", "decision_makers_option", "stacked", "show_legend"]
+        self.available_kwargs = ["scenario", "decision_makers_option", "stacked", "show_legend", "save",
+                                 "number_iteration", "categorical", "input_variables"]
+        self.random_number = random_number
 
     def _validate_kwargs(self, **kwargs) -> None:
         """
@@ -101,12 +110,12 @@ class Visualize:
         """
         max_char_length = int(85 / len(title_list))
         truncated_list = [
-            f"{item[:(max_char_length-2)]}.." if len(item) > max_char_length else item for item in title_list
+            f"{item[:(max_char_length - 2)]}.." if len(item) > max_char_length else item for item in title_list
         ]
         return truncated_list
 
     @staticmethod
-    def _table_styler(styler: pd.DataFrame.style, table_name: str) -> pd.DataFrame.style:
+    def _table_styler(styler: pd.DataFrame.style, table_name: str, **kwargs) -> pd.DataFrame.style:
         """
         This function adds a coherent style for all generated tables
         :param styler: a Pandas styler object
@@ -118,9 +127,11 @@ class Visualize:
         cmap = mpl.colors.ListedColormap(cmap[:8, :-1])
 
         # style
-        styler.format(number_formatter)
+        if "categorical" not in kwargs:
+            styler.format(number_formatter)
         styler.set_caption(table_name)
-        styler.background_gradient(cmap=cmap, axis=1)
+        if "input_variables" not in kwargs:
+            styler.background_gradient(cmap=cmap, axis=1)
         return styler
 
     def _graph_styler(self, axis: mpl.axis, title: str, show_legend: bool) -> mpl.axis:
@@ -212,18 +223,78 @@ class Visualize:
         :param key: key of the values for the table
         :return: a styled table
         """
-        table_data = self._format_data_for_visual(key)
+        if key == "scenarios" or key == "fixed_inputs" or key == "decision_makers_options" \
+                or key == "key_outputs_theme":
+            dataframe = pd.DataFrame()
+            kwargs['input_variables'] = True
+            number_of_iter = kwargs.get('number_iteration', -1)
+            if key == "key_outputs_theme":
+                key = key[:-6]
+                dataframe[key] = self.input_dict[key]
+                key_value = key[:-1] + '_theme'
+                dataframe[key_value] = self.input_dict[key_value]
+                dataframe.set_index(key, inplace=True)
+                kwargs['categorical'] = True
+            elif key == "fixed_inputs":
+                if number_of_iter == -1:
+                    dataframe[key] = self.input_dict[key]
+                    key_value = key[:-1] + '_value'
+                    dataframe[key_value] = self.input_dict[key_value]
+                    dataframe.set_index(key, inplace=True)
+                else:
+                    dataframe[key] = self.input_dict[key][(number_of_iter * 10):
+                                                          ((number_of_iter * 10) + 10)]
+                    key_value = key[:-1] + '_value'
+                    dataframe[key_value] = self.input_dict[key_value][(number_of_iter * 10):
+                                                                      ((number_of_iter * 10) + 10)]
+                    dataframe.set_index(key, inplace=True)
+            elif key == "scenarios":
+                dataframe = self._create_table_n_col(
+                    dataframe, key, key[:-1] + '_value', "external_variable_inputs", "External variable input")
+            elif key == "decision_makers_options":
+                dataframe = self._create_table_n_col(
+                    dataframe, key, key[:-1] + '_value', "internal_variable_inputs", "Internal variable input")
+            table_name = f"Values of {self._str_snake_case_to_text(key)}"
+            dataframe = self._table_styler(dataframe.style, table_name, **kwargs)
+            if number_of_iter == -1:
+                name_table = '/table' + str(key)
+            else:
+                name_table = '/table' + str(key) + str(number_of_iter)
+            if "save" in kwargs:
+                dfi.export(dataframe, str(self.random_number) + name_table + '.png')
+            else:
+                return dataframe
+        else:
+            table_data = self._format_data_for_visual(key)
 
-        # Filter the data based on potentially provided arguments by the user.
-        table_data, name_str = self._apply_filters(table_data, **kwargs)
-        table_data = (
-            table_data.set_index(["scenario", key])
-            .pivot(columns="decision_makers_option", values="value")
-            .rename_axis((None, None))
-            .rename_axis(None, axis=1)
-        )
-        table_name = f"Values of {self._str_snake_case_to_text(key)}{name_str}"
-        return self._table_styler(table_data.style, table_name)
+            # Filter the data based on potentially provided arguments by the user.
+            table_data, name_str = self._apply_filters(table_data, **kwargs)
+            table_data = (
+                table_data.set_index(["scenario", key])
+                .pivot(columns="decision_makers_option", values="value")
+                .rename_axis((None, None))
+                .rename_axis(None, axis=1)
+            )
+            table_name = f"Values of {self._str_snake_case_to_text(key)}{name_str}"
+            return self._table_styler(table_data.style, table_name)
+
+    def _create_table_n_col(self, dataframe, col_names, col_values, row_names, left_col_header) -> pd.DataFrame:
+        """
+        This function makes it possible to iterate over all cells in a table
+        :param data: empty dataframe
+        :param col_names: column names of a table
+        :param col_values: values in the columns
+        :param row_names: names of all the values in the left column
+        :param left_col_header: header of left column of a table
+        """
+        input_info_col_names = self.input_dict[col_names]
+        input_info_col_values = self.input_dict[col_values]
+
+        dataframe[left_col_header] = self.input_dict[row_names]
+        for col in range(0, len(input_info_col_names)):
+            dataframe[input_info_col_names[col]] = input_info_col_values[col]
+        dataframe.set_index(left_col_header, inplace=True)
+        return dataframe
 
     def _create_barchart(self, key: str, **kwargs) -> None:
         """
@@ -244,7 +315,10 @@ class Visualize:
         axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5))
         self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
 
-        plt.show()
+        if "save" in kwargs:
+            plt.savefig(str(self.random_number) + '/figure.png', bbox_inches='tight')
+        else:
+            plt.show()
 
     def create_visual(self, visual_request: str, key: str, **kwargs):
         """

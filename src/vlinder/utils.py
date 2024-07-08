@@ -17,7 +17,8 @@ def round_all_dict_values(my_dict: dict, digits: int = 2) -> dict:
         elif isinstance(value, list):
             rounded_dict[key] = [round(val, digits) for val in value]
         else:
-            rounded_dict[key] = round(value, digits)
+            if not isinstance(value, str):
+                rounded_dict[key] = round(value, digits)
     return rounded_dict
 
 
@@ -46,9 +47,9 @@ def number_formatter(number: float) -> str:
     :return: formatted string, ending with M, K, or two digits (depending on number size)
     """
     if abs(number) >= 1e6:
-        return f"{number/1e6:.1f}M"
+        return f"{number / 1e6:.1f}M"
     if abs(number) >= 1e3:
-        return f"{number/1e3:.1f}K"
+        return f"{number / 1e3:.1f}K"
     return f"{number:.2f}"
 
 
