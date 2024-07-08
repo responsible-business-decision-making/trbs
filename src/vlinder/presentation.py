@@ -10,6 +10,8 @@ class PDF(FPDF):
         self.ln(10)
 
     def chapter_subtitle(self, subtitle):
+        subtitle = subtitle.replace("‘", "'")
+        subtitle = subtitle.replace("’", "'")
         self.set_font(family='Arial', size=12)
         self.set_text_color(0, 0, 0)
         self.multi_cell(0, 10, subtitle, 0, 'L')
