@@ -109,14 +109,16 @@ class TheResponsibleBusinessSimulator:
             print("First .build() a case to import data")
         elif len(self.output_dict) == 0:
             print("First .evaluate() a case to calculate key output values")
-        elif 'appreciations' not in \
-                self.output_dict[self.input_dict['scenarios'][0]][self.input_dict['decision_makers_options'][0]]:
+        elif (
+            "appreciations"
+            not in self.output_dict[self.input_dict["scenarios"][0]][self.input_dict["decision_makers_options"][0]]
+        ):
             print("First .appreciate() a case to process key output values")
         else:
             ready = True
         return ready
 
-    def make_report(self, output_path, scenario, orientation='Portrait'):
+    def make_report(self, output_path, scenario, orientation="Portrait"):
         """This function deals with transforming a case to a Report.
         :param output_path: desired location of the report
         :param scenario: the selected scenario of the case
@@ -124,7 +126,8 @@ class TheResponsibleBusinessSimulator:
         """
         if self._check_steps_completed():
             if not self.report:
-                self.report = MakeReport(output_path, self.name, self.input_dict, self.output_dict, self.visualize
-                                         , self.random)
+                self.report = MakeReport(
+                    output_path, self.name, self.input_dict, self.output_dict, self.visualize, self.random
+                )
             location_powerpoint = self.report.create_report(output_path, scenario, orientation)
             print(location_powerpoint)

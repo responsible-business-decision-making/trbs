@@ -6,9 +6,9 @@ import pandas as pd
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from vlinder.utils import round_all_dict_values, number_formatter, get_values_from_target, check_list_content
 import dataframe_image as dfi
-from pandas.plotting import table
+from vlinder.utils import round_all_dict_values, number_formatter, get_values_from_target, check_list_content
+
 
 
 class VisualizationError(Exception):
@@ -57,8 +57,16 @@ class Visualize:
             "fixed_inputs",
             "decision_makers_options",
         ]
-        self.available_kwargs = ["scenario", "decision_makers_option", "stacked", "show_legend", "save",
-                                 "number_iteration", "categorical", "input_variables"]
+        self.available_kwargs = [
+            "scenario",
+            "decision_makers_option",
+            "stacked",
+            "show_legend",
+            "save",
+            "number_iteration",
+            "categorical",
+            "input_variables",
+        ]
         self.random_number = random_number
 
     def _validate_kwargs(self, **kwargs) -> None:
@@ -223,45 +231,46 @@ class Visualize:
         :param key: key of the values for the table
         :return: a styled table
         """
-        if key == "scenarios" or key == "fixed_inputs" or key == "decision_makers_options" \
-                or key == "key_outputs_theme":
+        if key in ["scenarios", "fixed_inputs", "decision_makers_options", "key_outputs_theme"]:
             dataframe = pd.DataFrame()
-            kwargs['input_variables'] = True
-            number_of_iter = kwargs.get('number_iteration', -1)
+            kwargs["input_variables"] = True
+            number_of_iter = kwargs.get("number_iteration", -1)
             if key == "key_outputs_theme":
                 key = key[:-6]
                 dataframe[key] = self.input_dict[key]
-                key_value = key[:-1] + '_theme'
+                key_value = key[:-1] + "_theme"
                 dataframe[key_value] = self.input_dict[key_value]
                 dataframe.set_index(key, inplace=True)
-                kwargs['categorical'] = True
+                kwargs["categorical"] = True
             elif key == "fixed_inputs":
                 if number_of_iter == -1:
                     dataframe[key] = self.input_dict[key]
-                    key_value = key[:-1] + '_value'
+                    key_value = key[:-1] + "_value"
                     dataframe[key_value] = self.input_dict[key_value]
                     dataframe.set_index(key, inplace=True)
                 else:
-                    dataframe[key] = self.input_dict[key][(number_of_iter * 10):
-                                                          ((number_of_iter * 10) + 10)]
-                    key_value = key[:-1] + '_value'
-                    dataframe[key_value] = self.input_dict[key_value][(number_of_iter * 10):
-                                                                      ((number_of_iter * 10) + 10)]
+                    dataframe[key] = self.input_dict[key][(number_of_iter * 10): ((number_of_iter * 10) + 10)]
+                    key_value = key[:-1] + "_value"
+                    dataframe[key_value] = self.input_dict[key_value][
+                        (number_of_iter * 10): ((number_of_iter * 10) + 10)
+                    ]
                     dataframe.set_index(key, inplace=True)
             elif key == "scenarios":
                 dataframe = self._create_table_n_col(
-                    dataframe, key, key[:-1] + '_value', "external_variable_inputs", "External variable input")
+                    dataframe, key, key[:-1] + "_value", "external_variable_inputs", "External variable input"
+                )
             elif key == "decision_makers_options":
                 dataframe = self._create_table_n_col(
-                    dataframe, key, key[:-1] + '_value', "internal_variable_inputs", "Internal variable input")
+                    dataframe, key, key[:-1] + "_value", "internal_variable_inputs", "Internal variable input"
+                )
             table_name = f"Values of {self._str_snake_case_to_text(key)}"
             dataframe = self._table_styler(dataframe.style, table_name, **kwargs)
             if number_of_iter == -1:
-                name_table = '/table' + str(key)
+                name_table = "/table" + str(key)
             else:
-                name_table = '/table' + str(key) + str(number_of_iter)
+                name_table = "/table" + str(key) + str(number_of_iter)
             if "save" in kwargs:
-                dfi.export(dataframe, str(self.random_number) + name_table + '.png')
+                dfi.export(dataframe, str(self.random_number) + name_table + ".png")
             else:
                 return dataframe
         else:
@@ -316,7 +325,7 @@ class Visualize:
         self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
 
         if "save" in kwargs:
-            plt.savefig(str(self.random_number) + '/figure.png', bbox_inches='tight')
+            plt.savefig(str(self.random_number) + "/figure.png", bbox_inches="tight")
         else:
             plt.show()
 

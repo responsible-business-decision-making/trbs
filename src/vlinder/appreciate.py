@@ -106,7 +106,7 @@ class Appreciate:
         """ ""
         for _, value_dict in self.output_dict.items():
             self.appreciate_single_scenario(value_dict)
-        self.output_dict = self._best_dmo_calculator()
+        self._best_dmo_calculator()
         self._apply_scenario_weights()
         print("Key output values have been processed | Appreciated, weighted & aggregated")
 
@@ -183,18 +183,17 @@ class Appreciate:
                 weighted_appreciation = appreciation * weight / total_weight
                 self.output_dict[scenario][option]["scenario_appreciations"] = weighted_appreciation
 
-    def _best_dmo_calculator(self) -> dict:
+    def _best_dmo_calculator(self) -> None:
         """
-       This function calculates the sum of all weighted appreciations per DMO and return the highest sum
-       :return: An updated output_dict with the best DMO option based on weighted appreciation for all scenarios
-       """
-        for scenario in self.input_dict['scenarios']:
+        This function calculates the sum of all weighted appreciations per DMO and return the highest sum
+        :return: An updated output_dict with the best DMO option based on weighted appreciation for all scenarios
+        """
+        for scenario in self.input_dict["scenarios"]:
             max_sum = 0
-            best_option = ''
+            best_option = ""
             for dmo in self.output_dict[scenario].keys():
-                sum_dmo = sum(self.output_dict[scenario][dmo]['weighted_appreciations'].values())
+                sum_dmo = sum(self.output_dict[scenario][dmo]["weighted_appreciations"].values())
                 if sum_dmo > max_sum:
                     max_sum = sum_dmo
                     best_option = dmo
-            self.output_dict[scenario]['highest_weighted_dmo'] = best_option
-        return self.output_dict
+            self.output_dict[scenario]["highest_weighted_dmo"] = best_option

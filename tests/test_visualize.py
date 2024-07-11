@@ -6,12 +6,13 @@ Therefore, an arbitrary outcome dictionary is used in these unit tests.
 The following functions are skipped: _table_styler, _graph_styler, _create_table (returns styler class),
 The following functions are partly tested: _create_barchart (only errors), create_visuals (only errors)
 """
+import random
 import pytest
 import numpy as np
 import pandas as pd
 from params import OUTPUT_DICT_GENERIC, INPUT_DICT_BEERWISER
 from vlinder.visualize import Visualize, VisualizationError
-import random
+
 
 
 @pytest.fixture(name="test_outcomes")
