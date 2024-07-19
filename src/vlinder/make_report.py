@@ -7,8 +7,7 @@ import shutil
 import cv2
 from pathlib import Path
 from datetime import datetime
-from vlinder.presentation import PDF
-
+from vlinder.report import PDF
 
 
 class MakeReport:
@@ -28,8 +27,8 @@ class MakeReport:
 
     def determine_position_images(self, orientation, image):
         """
-        This function gives the possibility to place images at the right places which the desired orientation
-        :param orientation: the desired orientation for PDF format; there is a choice between Portrait of Landscape
+        This function gives the possibility to place images at the desired position
+        :param orientation: the desired orientation for PDF format; there is a choice between Portrait or Landscape
         :param image: information about the image
         :return: the right position
         """
@@ -54,17 +53,17 @@ class MakeReport:
             text_element = "generic_text_element"
         if "title_" + target in self.input_dict[text_element + "s"]:
             if str(
-                self.input_dict[text_element + "_value"][
-                    list(self.input_dict[text_element + "s"]).index("title_" + target)
-                ]
-            ) != str("nan"):
-                text = (
                     self.input_dict[text_element + "_value"][
                         list(self.input_dict[text_element + "s"]).index("title_" + target)
                     ]
-                    + scenario
-                    + pos_series
-                    + key_output
+            ) != str("nan"):
+                text = (
+                        self.input_dict[text_element + "_value"][
+                            list(self.input_dict[text_element + "s"]).index("title_" + target)
+                        ]
+                        + scenario
+                        + pos_series
+                        + key_output
                 )
             else:
                 text = "Not defined in template"
@@ -81,9 +80,9 @@ class MakeReport:
 
         if "strategic_challenge" in self.input_dict["case_text_elements"]:
             if str(
-                self.input_dict["case_text_element_value"][
-                    list(self.input_dict["case_text_elements"]).index("strategic_challenge")
-                ]
+                    self.input_dict["case_text_element_value"][
+                        list(self.input_dict["case_text_elements"]).index("strategic_challenge")
+                    ]
             ) != str("nan"):
                 text = self.input_dict["case_text_element_value"][
                     list(self.input_dict["case_text_elements"]).index("strategic_challenge")
@@ -97,7 +96,7 @@ class MakeReport:
     def make_introduction(self, target) -> str:
         """
         This function adds an introduction to a slide
-        :param target: the desired slide where the title is wanted
+        :param target: the desired slide where the introduction is wanted
         :return: the desired introduction
         """
 
@@ -107,9 +106,9 @@ class MakeReport:
             text_element = "generic_text_element"
         if "intro_" + target in self.input_dict[text_element + "s"]:
             if str(
-                self.input_dict[text_element + "_value"][
-                    list(self.input_dict[text_element + "s"]).index("intro_" + target)
-                ]
+                    self.input_dict[text_element + "_value"][
+                        list(self.input_dict[text_element + "s"]).index("intro_" + target)
+                    ]
             ) != str("nan"):
                 text = self.input_dict[text_element + "_value"][
                     list(self.input_dict[text_element + "s"]).index("intro_" + target)
@@ -125,16 +124,18 @@ class MakeReport:
         """
         This function present different visualisation on different slides in a PDF format
         :param scenario: the desired scenario which is used in the visualisations
-        :param orientation: the desired orientation for PDF format; there is a choice between Portrait of Landscape
-        :return: the created Presentation
+        :param orientation: the desired orientation for PDF format; there is a choice between Portrait or Landscape
+        :return: the created report
         """
+        # Make a new directory which is very unlikely that it will be on your computer
         os.mkdir(str(self.random_number))
         rgb = [0, 0, 120]
         pdf = PDF(orientation=orientation)
         pdf.set_title("Report of the " + self.name + " case")
-
+        # Create title page
         pdf.add_page()
-        pdf.titlepage_title("Report of the " + self.name + " case", rgb)
+        pdf.title_page_title("Report of the " + self.name + " case", rgb)
+        # Search for a logo. if yes, place in the middle of the slide
         if os.path.exists("logos/" + self.name + ".jpeg"):
             image = cv2.imread("logos/" + self.name + ".jpeg")
             max_image, width_image, x_pos = self.determine_position_images(orientation, image)
@@ -142,12 +143,13 @@ class MakeReport:
                 pdf.image("logos/" + self.name + ".jpeg", x=25, y=50, w=width_image)
             else:
                 pdf.image("logos/" + self.name + ".jpeg", x=x_pos, y=50)
-        pdf.titlepage_subtitle("Responsible business decision making \n" + str(datetime.now().date()))
+        pdf.title_page_subtitle("Responsible business decision making \n" + str(datetime.now().date()))
+        # Create Strategic Challenge page
         pdf.add_page()
         pdf.chapter_title("Strategic Challenge", rgb)
         pdf.chapter_subtitle(self.make_strategic_challenge())
         pdf.footer_page(self.name, orientation)
-
+        # Create Input variables pages
         for input_tables in ["key_outputs_theme", "decision_makers_options", "scenarios"]:
             pdf.add_page()
             self.visualize("table", input_tables, save=True)
@@ -155,6 +157,7 @@ class MakeReport:
                 input_tables = "key_outputs"
             pdf.chapter_title(self.make_title(input_tables), rgb)
             pdf.chapter_subtitle(self.make_introduction(input_tables))
+            # Search for the right table related to the input_table and place it in the middle of the slide
             image = cv2.imread(str(self.random_number) + "/table" + input_tables + ".png")
             max_image, width_image, x_pos = self.determine_position_images(orientation, image)
             if image.shape[1] > max_image:
@@ -164,6 +167,7 @@ class MakeReport:
             pdf.footer_page(self.name, orientation)
 
         for input_tables in ["fixed_inputs"]:
+            # If there are more than 10 fixed inputs it will generate a maximum of 10 per slide
             number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
             for number_iteration in range(0, number_of_iterations):
                 pdf.add_page()
@@ -196,7 +200,7 @@ class MakeReport:
                         y=50,
                     )
                 pdf.footer_page(self.name, orientation)
-
+        # Create output slide with the weighted appreciations
         pdf.add_page()
         pdf.chapter_title(
             "The decision maker option '"
@@ -218,17 +222,17 @@ class MakeReport:
         This function saves the created report out of the function make_slides at the desired location
         :param scenario: the desired scenario which is used in the visualisations
         :param path: the desired location where the report is saved
-        :param orientation: the desired orientation for PDF format; there is a choice between Portrait of Landscape
-        :return: the text where the PowerPoint is saved
+        :param orientation: the desired orientation for PDF format; there is a choice between Portrait or Landscape
+        :return: a success message including the location of the report
         """
         date_year = str(datetime.now().strftime("%Y-%m-%d"))
-        date_hour = str(datetime.now().strftime("%Hh%Mm%Ss"))
+        date_hour = str(datetime.now().strftime("%H:%M:%S"))
 
         pdf = self.make_slides_pdf(scenario, orientation)
-        filename = "tRBS_" + self.name + f'_{date_year + "_" + date_hour}.pdf'
+        filename = "Report " + self.name + " tRBS " + f'{date_year + " " + date_hour}.pdf'
         pdf.output(str(path) + "/" + filename)
-        text_finished = "The PDF presentation is generated and located at " + str(path) + "/" + filename
-        # Remove the folder which contains the files for the presentation
+        text_finished = "The PDF report is generated and located at " + str(path) + "/" + filename
+        # Remove the folder which contains the files for the report
         shutil.rmtree(str(self.random_number), ignore_errors=True)
 
         return text_finished

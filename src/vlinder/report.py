@@ -16,13 +16,13 @@ class PDF(FPDF):
         self.multi_cell(0, 10, subtitle, 0, "L")
         self.ln(10)
 
-    def titlepage_title(self, title, rgb):
+    def title_page_title(self, title, rgb):
         self.set_font("Arial", "B", 22)
         self.set_text_color(rgb[0], rgb[1], rgb[2])
         self.multi_cell(0, 10, title, 0, "C")
         self.ln(10)
 
-    def titlepage_subtitle(self, subtitle):
+    def title_page_subtitle(self, subtitle):
         self.set_font(family="Arial", size=12)
         self.set_text_color(0, 0, 0)
         self.multi_cell(0, 10, subtitle, 0, "C")

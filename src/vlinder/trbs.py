@@ -129,5 +129,5 @@ class TheResponsibleBusinessSimulator:
                 self.report = MakeReport(
                     output_path, self.name, self.input_dict, self.output_dict, self.visualize, self.random
                 )
-            location_powerpoint = self.report.create_report(output_path, scenario, orientation)
-            print(location_powerpoint)
+            location_report = self.report.create_report(output_path, scenario, orientation)
+            print(location_report)
