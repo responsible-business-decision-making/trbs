@@ -26,7 +26,7 @@ class VisualizationError(Exception):
 class Visualize:
     """This class deals with the creation of all graphs and tables"""
 
-    def __init__(self, input_dict, outcomes, options, random_number):
+    def __init__(self, input_dict, outcomes, options):
         # for visualization purposes two digits is sufficient
         self.input_dict = input_dict
         self.outcomes = round_all_dict_values(outcomes)
@@ -67,7 +67,6 @@ class Visualize:
             "categorical",
             "input_variables",
         ]
-        self.random_number = random_number
 
     def _validate_kwargs(self, **kwargs) -> None:
         """
@@ -270,7 +269,7 @@ class Visualize:
             else:
                 name_table = "/table" + str(key) + str(number_of_iter)
             if "save" in kwargs:
-                dfi.export(dataframe, str(self.random_number) + name_table + ".png")
+                dfi.export(dataframe, "images" + name_table + ".png")
             else:
                 return dataframe
         else:
@@ -325,7 +324,7 @@ class Visualize:
         self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
 
         if "save" in kwargs:
-            plt.savefig(str(self.random_number) + "/figure.png", bbox_inches="tight")
+            plt.savefig("images" + "/figure.png", bbox_inches="tight")
         else:
             plt.show()
 

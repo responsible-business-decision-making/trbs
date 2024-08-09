@@ -15,7 +15,7 @@ class MakeReport:
     This class deals with the transformation into a different format and export of output of an RBS case.
     """
 
-    def __init__(self, output_path, name, input_dict, output_dict, visualize, random_number):
+    def __init__(self, output_path, name, input_dict, output_dict, visualize):
         self.output_path = Path(output_path)
         self.folder_name = ""
         self.name = name
@@ -23,7 +23,6 @@ class MakeReport:
         self.output_dict = output_dict
         self.page_number = 1
         self.visualize = visualize
-        self.random_number = random_number
 
     def determine_position_images(self, orientation, image):
         """
@@ -127,8 +126,8 @@ class MakeReport:
         :param orientation: the desired orientation for PDF format; there is a choice between Portrait or Landscape
         :return: the created report
         """
-        # Make a new directory which is very unlikely that it will be on your computer
-        os.mkdir(str(self.random_number))
+        # Make a temp directory for the images needed for the report
+        os.mkdir("images")
         rgb = [0, 0, 120]
         pdf = PDF(orientation=orientation)
         pdf.set_title("Report of the " + self.name + " case")
@@ -158,12 +157,12 @@ class MakeReport:
             pdf.chapter_title(self.make_title(input_tables), rgb)
             pdf.chapter_subtitle(self.make_introduction(input_tables))
             # Search for the right table related to the input_table and place it in the middle of the slide
-            image = cv2.imread(str(self.random_number) + "/table" + input_tables + ".png")
+            image = cv2.imread("images" + "/table" + input_tables + ".png")
             max_image, width_image, x_pos = self.determine_position_images(orientation, image)
             if image.shape[1] > max_image:
-                pdf.image(str(self.random_number) + "/table" + input_tables + ".png", x=25, y=60, w=width_image)
+                pdf.image("images" + "/table" + input_tables + ".png", x=25, y=60, w=width_image)
             else:
-                pdf.image(str(self.random_number) + "/table" + input_tables + ".png", x=x_pos, y=60)
+                pdf.image("images" + "/table" + input_tables + ".png", x=x_pos, y=60)
             pdf.footer_page(self.name, orientation)
 
         for input_tables in ["fixed_inputs"]:
@@ -184,18 +183,18 @@ class MakeReport:
                     pdf.chapter_title(self.make_title(input_tables), rgb)
                 pdf.chapter_subtitle(self.make_introduction(input_tables))
                 self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
-                image = cv2.imread(str(self.random_number) + "/table" + input_tables + str(number_iteration) + ".png")
+                image = cv2.imread("images" + "/table" + input_tables + str(number_iteration) + ".png")
                 max_image, width_image, x_pos = self.determine_position_images(orientation, image)
                 if image.shape[1] > max_image:
                     pdf.image(
-                        str(self.random_number) + "/table" + input_tables + str(number_iteration) + ".png",
+                        "images" + "/table" + input_tables + str(number_iteration) + ".png",
                         x=25,
                         y=50,
                         w=width_image,
                     )
                 else:
                     pdf.image(
-                        str(self.random_number) + "/table" + input_tables + str(number_iteration) + ".png",
+                        "images" + "/table" + input_tables + str(number_iteration) + ".png",
                         x=x_pos,
                         y=50,
                     )
@@ -211,9 +210,9 @@ class MakeReport:
         )
         self.visualize("barchart", "weighted_appreciations", scenario=scenario, stacked=True, save=True)
         if orientation == "Portrait":
-            pdf.image(str(self.random_number) + "/figure.png", x=25, y=50, w=150)
+            pdf.image("images" + "/figure.png", x=25, y=50, w=150)
         else:
-            pdf.image(str(self.random_number) + "/figure.png", x=25, y=50, w=250)
+            pdf.image("images" + "/figure.png", x=25, y=50, w=250)
         pdf.footer_page(self.name, orientation)
         return pdf
 
@@ -233,6 +232,6 @@ class MakeReport:
         pdf.output(str(path) + "/" + filename)
         text_finished = "The PDF report is generated and located at " + str(path) + "/" + filename
         # Remove the folder which contains the files for the report
-        shutil.rmtree(str(self.random_number), ignore_errors=True)
+        shutil.rmtree("images", ignore_errors=True)
 
         return text_finished

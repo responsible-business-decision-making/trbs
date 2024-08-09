@@ -6,7 +6,6 @@ Therefore, an arbitrary outcome dictionary is used in these unit tests.
 The following functions are skipped: _table_styler, _graph_styler, _create_table (returns styler class),
 The following functions are partly tested: _create_barchart (only errors), create_visuals (only errors)
 """
-import random
 import pytest
 import numpy as np
 import pandas as pd
@@ -21,7 +20,7 @@ def fixture_visualize_outcomes():
     This fixture initialises a Visualize class.
     :return: a Visualize class for a generic outcome dictionary
     """
-    return Visualize(INPUT_DICT_BEERWISER, OUTPUT_DICT_GENERIC, 2 * 3 * 3, random.random())
+    return Visualize(INPUT_DICT_BEERWISER, OUTPUT_DICT_GENERIC, 2 * 3 * 3)
 
 
 def test_validate_kwargs(test_outcomes):

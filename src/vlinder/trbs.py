@@ -14,7 +14,6 @@ from vlinder.evaluate import Evaluate
 from vlinder.appreciate import Appreciate
 from vlinder.visualize import Visualize
 from vlinder.make_report import MakeReport
-import random
 
 
 def list_demo_cases(file_path=None):
@@ -44,7 +43,6 @@ class TheResponsibleBusinessSimulator:
         self.visualizer = None
         self.exporter = None
         self.report = None
-        self.random = random.random()
 
     def __str__(self):
         input_data_formatted = (
@@ -90,7 +88,7 @@ class TheResponsibleBusinessSimulator:
         """This function deals with the visualizations of the outcomes"""
         # Set a Visualize class only if this has not yet been initialised.
         if not self.visualizer:
-            self.visualizer = Visualize(self.input_dict, self.output_dict, self._get_options(), self.random)
+            self.visualizer = Visualize(self.input_dict, self.output_dict, self._get_options())
         return self.visualizer.create_visual(visual_request, key, **kwargs)
 
     def transform(self, requested_format, output_path=None):
@@ -127,7 +125,7 @@ class TheResponsibleBusinessSimulator:
         if self._check_steps_completed():
             if not self.report:
                 self.report = MakeReport(
-                    output_path, self.name, self.input_dict, self.output_dict, self.visualize, self.random
+                    output_path, self.name, self.input_dict, self.output_dict, self.visualize
                 )
             location_report = self.report.create_report(output_path, scenario, orientation)
             print(location_report)
