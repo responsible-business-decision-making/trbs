@@ -10,10 +10,14 @@ from datetime import datetime
 from fpdf import FPDF
 
 
-# from vlinder.report import PDF
-
-
 def chapter_title(pdf, title, rgb):
+    """
+    This function makes it possible to add a title to a chapter in a pdf
+    :param pdf: the pdf where we want to apply the function on
+    :param title: the title text
+    :param rgb: the desired color in 3 number format
+    :return: the updated pdf
+    """
     pdf.set_font("Arial", "B", 16)
     pdf.set_text_color(rgb[0], rgb[1], rgb[2])
     pdf.multi_cell(0, 10, title, 0, "C")
@@ -22,6 +26,12 @@ def chapter_title(pdf, title, rgb):
 
 
 def chapter_subtitle(pdf, subtitle):
+    """
+    This function makes it possible to add a subtitle to a chapter in a pdf
+    :param pdf: the pdf where we want to apply the function on
+    :param subtitle: the subtitle text
+    :return: the updated pdf
+    """
     subtitle = subtitle.replace("‘", "'")
     subtitle = subtitle.replace("’", "'")
     pdf.set_font(family="Arial", size=12)
@@ -32,6 +42,13 @@ def chapter_subtitle(pdf, subtitle):
 
 
 def title_page_title(pdf, title, rgb):
+    """
+    This function makes it possible to add a title to a title page in a pdf
+    :param pdf: the pdf where we want to apply the function on
+    :param title: the title text
+    :param rgb: the desired color in 3 number format
+    :return: the updated pdf
+    """
     pdf.set_font("Arial", "B", 22)
     pdf.set_text_color(rgb[0], rgb[1], rgb[2])
     pdf.multi_cell(0, 10, title, 0, "C")
@@ -40,6 +57,12 @@ def title_page_title(pdf, title, rgb):
 
 
 def title_page_subtitle(pdf, subtitle):
+    """
+    This function makes it possible to add a subtitle to a title page in a pdf
+    :param pdf: the pdf where we want to apply the function on
+    :param subtitle: the subtitle text
+    :return: the updated pdf
+    """
     pdf.set_font(family="Arial", size=12)
     pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(0, 10, subtitle, 0, "C")
@@ -48,6 +71,13 @@ def title_page_subtitle(pdf, subtitle):
 
 
 def footer_page(pdf, name, orientation):
+    """
+    This function makes it possible to add a footer to a pdf, with desired text
+    :param pdf: the pdf where we want to apply the function on
+    :param name: the name of a case
+    :param orientation: the orientation used for the pdf, i.e. Portrait or Landscape
+    :return: the updated pdf
+    """
     if orientation == "Portrait":
         pdf.set_y(250)
     else:
