@@ -7,7 +7,56 @@ import shutil
 import cv2
 from pathlib import Path
 from datetime import datetime
-from vlinder.report import PDF
+from fpdf import FPDF
+
+
+# from vlinder.report import PDF
+
+
+def chapter_title(pdf, title, rgb):
+    pdf.set_font("Arial", "B", 16)
+    pdf.set_text_color(rgb[0], rgb[1], rgb[2])
+    pdf.multi_cell(0, 10, title, 0, "C")
+    pdf.ln(10)
+    return pdf
+
+
+def chapter_subtitle(pdf, subtitle):
+    subtitle = subtitle.replace("‘", "'")
+    subtitle = subtitle.replace("’", "'")
+    pdf.set_font(family="Arial", size=12)
+    pdf.set_text_color(0, 0, 0)
+    pdf.multi_cell(0, 10, subtitle, 0, "L")
+    pdf.ln(10)
+    return pdf
+
+
+def title_page_title(pdf, title, rgb):
+    pdf.set_font("Arial", "B", 22)
+    pdf.set_text_color(rgb[0], rgb[1], rgb[2])
+    pdf.multi_cell(0, 10, title, 0, "C")
+    pdf.ln(10)
+    return pdf
+
+
+def title_page_subtitle(pdf, subtitle):
+    pdf.set_font(family="Arial", size=12)
+    pdf.set_text_color(0, 0, 0)
+    pdf.multi_cell(0, 10, subtitle, 0, "C")
+    pdf.ln(10)
+    return pdf
+
+
+def footer_page(pdf, name, orientation):
+    if orientation == "Portrait":
+        pdf.set_y(250)
+    else:
+        pdf.set_y(175)
+    pdf.set_font("Arial", "I", 8)
+    pdf.set_text_color(0, 0, 0)
+    pdf.cell(0, 10, name, 0, 0, "L")
+    pdf.cell(0, 10, f"Page {pdf.page_no()}", 0, 0, "R")
+    return pdf
 
 
 class MakeReport:
@@ -129,11 +178,11 @@ class MakeReport:
         # Make a temp directory for the images needed for the report
         os.mkdir("images")
         rgb = [0, 0, 120]
-        pdf = PDF(orientation=orientation)
+        pdf = FPDF(orientation=orientation)
         pdf.set_title("Report of the " + self.name + " case")
         # Create title page
         pdf.add_page()
-        pdf.title_page_title("Report of the " + self.name + " case", rgb)
+        pdf = title_page_title(pdf, "Report of the " + self.name + " case", rgb)
         # Search for a logo. if yes, place in the middle of the slide
         if os.path.exists("logos/" + self.name + ".jpeg"):
             image = cv2.imread("logos/" + self.name + ".jpeg")
@@ -142,20 +191,20 @@ class MakeReport:
                 pdf.image("logos/" + self.name + ".jpeg", x=25, y=50, w=width_image)
             else:
                 pdf.image("logos/" + self.name + ".jpeg", x=x_pos, y=50)
-        pdf.title_page_subtitle("Responsible business decision making \n" + str(datetime.now().date()))
+        pdf = title_page_subtitle(pdf, "Responsible business decision making \n" + str(datetime.now().date()))
         # Create Strategic Challenge page
         pdf.add_page()
-        pdf.chapter_title("Strategic Challenge", rgb)
-        pdf.chapter_subtitle(self.make_strategic_challenge())
-        pdf.footer_page(self.name, orientation)
+        pdf = chapter_title(pdf, "Strategic Challenge", rgb)
+        pdf = chapter_subtitle(pdf, self.make_strategic_challenge())
+        pdf = footer_page(pdf, self.name, orientation)
         # Create Input variables pages
         for input_tables in ["key_outputs_theme", "decision_makers_options", "scenarios"]:
             pdf.add_page()
             self.visualize("table", input_tables, save=True)
             if input_tables == "key_outputs_theme":
                 input_tables = "key_outputs"
-            pdf.chapter_title(self.make_title(input_tables), rgb)
-            pdf.chapter_subtitle(self.make_introduction(input_tables))
+            pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
+            pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
             # Search for the right table related to the input_table and place it in the middle of the slide
             image = cv2.imread("images" + "/table" + input_tables + ".png")
             max_image, width_image, x_pos = self.determine_position_images(orientation, image)
@@ -163,7 +212,7 @@ class MakeReport:
                 pdf.image("images" + "/table" + input_tables + ".png", x=25, y=60, w=width_image)
             else:
                 pdf.image("images" + "/table" + input_tables + ".png", x=x_pos, y=60)
-            pdf.footer_page(self.name, orientation)
+            pdf = footer_page(pdf, self.name, orientation)
 
         for input_tables in ["fixed_inputs"]:
             # If there are more than 10 fixed inputs it will generate a maximum of 10 per slide
@@ -171,17 +220,17 @@ class MakeReport:
             for number_iteration in range(0, number_of_iterations):
                 pdf.add_page()
                 if number_of_iterations > 1:
-                    pdf.chapter_title(
-                        self.make_title(input_tables)
-                        + " "
-                        + str(number_iteration + 1)
-                        + "/"
-                        + str(number_of_iterations),
-                        rgb,
-                    )
+                    pdf = chapter_title(pdf,
+                                        self.make_title(input_tables)
+                                        + " "
+                                        + str(number_iteration + 1)
+                                        + "/"
+                                        + str(number_of_iterations),
+                                        rgb,
+                                        )
                 else:
-                    pdf.chapter_title(self.make_title(input_tables), rgb)
-                pdf.chapter_subtitle(self.make_introduction(input_tables))
+                    pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
+                pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
                 self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
                 image = cv2.imread("images" + "/table" + input_tables + str(number_iteration) + ".png")
                 max_image, width_image, x_pos = self.determine_position_images(orientation, image)
@@ -198,22 +247,22 @@ class MakeReport:
                         x=x_pos,
                         y=50,
                     )
-                pdf.footer_page(self.name, orientation)
+                pdf = footer_page(pdf, self.name, orientation)
         # Create output slide with the weighted appreciations
         pdf.add_page()
-        pdf.chapter_title(
-            "The decision maker option '"
-            + self.output_dict[scenario]["highest_weighted_dmo"]
-            + "' has the highest weighted appreciations for scenario: "
-            + scenario,
-            rgb,
-        )
+        pdf = chapter_title(pdf,
+                            "The decision maker option '"
+                            + self.output_dict[scenario]["highest_weighted_dmo"]
+                            + "' has the highest weighted appreciations for scenario: "
+                            + scenario,
+                            rgb,
+                            )
         self.visualize("barchart", "weighted_appreciations", scenario=scenario, stacked=True, save=True)
         if orientation == "Portrait":
             pdf.image("images" + "/figure.png", x=25, y=50, w=150)
         else:
             pdf.image("images" + "/figure.png", x=25, y=50, w=250)
-        pdf.footer_page(self.name, orientation)
+        pdf = footer_page(pdf, self.name, orientation)
         return pdf
 
     def create_report(self, path, scenario, orientation) -> str:
