@@ -129,6 +129,8 @@ class MakeReport:
             text_element = "case_text_element"
         else:
             text_element = "generic_text_element"
+        if target == "decision_makers_options":
+            target = "dmo"
         if "title_" + target in self.input_dict[text_element + "s"]:
             if str(
                     self.input_dict[text_element + "_value"][
