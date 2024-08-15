@@ -310,6 +310,9 @@ class MakeReport:
 
         pdf = self.make_slides_pdf(scenario, orientation)
         filename = "Report " + self.name + " tRBS " + f'{date_year + " " + date_hour}.pdf'
+        # Make a folder if it does not exist already
+        if not os.path.exists(path):
+            path.mkdir()
         pdf.output(str(path) + "/" + filename)
         text_finished = "The PDF report is generated and located at " + str(path) + "/" + filename
         # Remove the folder which contains the files for the report
