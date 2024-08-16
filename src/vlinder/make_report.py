@@ -297,7 +297,7 @@ class MakeReport:
         pdf = footer_page(pdf, self.name, orientation)
         return pdf
 
-    def create_report(self, path, scenario, orientation) -> str:
+    def create_report(self, scenario, orientation, path) -> str:
         """
         This function saves the created report out of the function make_slides at the desired location
         :param scenario: the desired scenario which is used in the visualisations
