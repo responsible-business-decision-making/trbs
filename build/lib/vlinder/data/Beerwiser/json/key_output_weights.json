@@ -1,0 +1,39 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"key_output",
+                "type":"string"
+            },
+            {
+                "name":"weight",
+                "type":"integer"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "key_output":"Water use reduction",
+            "weight":1
+        },
+        {
+            "index":1,
+            "key_output":"Accidents reduction",
+            "weight":2
+        },
+        {
+            "index":2,
+            "key_output":"Production cost reduction",
+            "weight":3
+        }
+    ]
+}

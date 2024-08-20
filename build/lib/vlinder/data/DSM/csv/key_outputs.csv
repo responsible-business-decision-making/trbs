@@ -1,0 +1,10 @@
+key_output;theme;monetary;smaller_the_better;linear;automatic;start;end;threshold
+CAPEX;Profit;0;1;0;1;-41400000;30000000.0;
+Energy cost;Profit;0;1;1;1;5734800;8389800.0;
+RE %;Planet;0;0;0;1;0;0.1;
+Carbon footprint reduction;Planet;0;0;0;1;0;3988.399999999994;
+Actual carbon emission;Planet;0;1;0;1;39884;39884.0;
+Increase in employee engagement score;People;0;0;0;1;0;1.73;
+Increase in employee recommendation rate;People;0;0;0;1;0;1.1244999999999998;
+Increase in Net Promotor Score;People;0;0;0;1;0;0.17300000000000001;
+Increase in brand value;People;0;0;0;1;0;845540.7999999988;

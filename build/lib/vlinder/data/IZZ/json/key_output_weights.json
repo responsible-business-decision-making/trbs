@@ -1,0 +1,69 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"key_output",
+                "type":"string"
+            },
+            {
+                "name":"weight",
+                "type":"integer"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "key_output":"Decrease in absenteeism %",
+            "weight":1
+        },
+        {
+            "index":1,
+            "key_output":"Decrease in staff turnover %",
+            "weight":1
+        },
+        {
+            "index":2,
+            "key_output":"Increase in customer satisfaction",
+            "weight":1
+        },
+        {
+            "index":3,
+            "key_output":"Increase in employee satisfaction",
+            "weight":1
+        },
+        {
+            "index":4,
+            "key_output":"Decrease in absenteeism costs",
+            "weight":1
+        },
+        {
+            "index":5,
+            "key_output":"Decrease in staff turnover costs",
+            "weight":1
+        },
+        {
+            "index":6,
+            "key_output":"Decrease in wage costs",
+            "weight":1
+        },
+        {
+            "index":7,
+            "key_output":"Increase in production capacity",
+            "weight":1
+        },
+        {
+            "index":8,
+            "key_output":"Total investment",
+            "weight":1
+        }
+    ]
+}

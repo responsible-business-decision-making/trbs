@@ -1,0 +1,7 @@
+external_variable_input;scenario;value
+Cost of accident;Base case;15000.0
+Effectiveness water recycling;Base case;0.98
+Cost of accident;Optimistic;12000.0
+Effectiveness water recycling;Optimistic;1.0
+Cost of accident;Pessimistic;20000.0
+Effectiveness water recycling;Pessimistic;0.9

@@ -1,0 +1,7 @@
+internal_variable_input;decision_makers_option;value
+Invest in training of employees;Focus on water recycling;50000
+Invest in water recycling;Focus on water recycling;250000
+Invest in training of employees;Focus on training;250000
+Invest in water recycling;Focus on training;50000
+Invest in training of employees;Equal spread;150000
+Invest in water recycling;Equal spread;150000

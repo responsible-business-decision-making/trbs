@@ -1,0 +1,174 @@
+{
+    "schema":{
+        "fields":[
+            {
+                "name":"index",
+                "type":"integer"
+            },
+            {
+                "name":"generic_text_element",
+                "type":"string"
+            },
+            {
+                "name":"value",
+                "type":"string"
+            }
+        ],
+        "primaryKey":[
+            "index"
+        ],
+        "pandas_version":"1.4.0"
+    },
+    "data":[
+        {
+            "index":0,
+            "generic_text_element":"title_strategic_challenge",
+            "value":"Strategic challenge"
+        },
+        {
+            "index":1,
+            "generic_text_element":"title_key_outputs",
+            "value":"Key outputs"
+        },
+        {
+            "index":2,
+            "generic_text_element":"title_dmo",
+            "value":"Options"
+        },
+        {
+            "index":3,
+            "generic_text_element":"title_scenarios",
+            "value":"Scenarios"
+        },
+        {
+            "index":4,
+            "generic_text_element":"title_comparison_dmo",
+            "value":"Strategic priorities"
+        },
+        {
+            "index":5,
+            "generic_text_element":"title_comparison_scenario",
+            "value":"Risk appetite"
+        },
+        {
+            "index":6,
+            "generic_text_element":"title_fixed_inputs",
+            "value":"Fixed inputs"
+        },
+        {
+            "index":7,
+            "generic_text_element":"title_dependency_graph",
+            "value":"Dependency graph"
+        },
+        {
+            "index":8,
+            "generic_text_element":"title_weighted_graph",
+            "value":"Resulting appreciations of different DMOs for scenario: "
+        },
+        {
+            "index":9,
+            "generic_text_element":"text_strategic_challenge",
+            "value":"The strategic challenge that requires a decision"
+        },
+        {
+            "index":10,
+            "generic_text_element":"text_key_outputs",
+            "value":"The indicators used to evaluate the impact of your decision"
+        },
+        {
+            "index":11,
+            "generic_text_element":"text_dmo",
+            "value":"The options you have to influence your impact"
+        },
+        {
+            "index":12,
+            "generic_text_element":"text_scenarios",
+            "value":"The uncertainty you want to account for"
+        },
+        {
+            "index":13,
+            "generic_text_element":"text_comparison_dmo",
+            "value":"Evaluate options by assessing strategic priorities"
+        },
+        {
+            "index":14,
+            "generic_text_element":"text_comparison_scenario",
+            "value":"Evaluate options by assessing risk appetite"
+        },
+        {
+            "index":15,
+            "generic_text_element":"intro_key_outputs",
+            "value":"The outputs upon which the decision makers will base their decision. Key outputs are often referred to as KPIs. Key outputs are grouped into themes."
+        },
+        {
+            "index":16,
+            "generic_text_element":"intro_decision_makers_options",
+            "value":"Decision makers options are formulated by assigning a single value to all internal variable inputs. These inputs can be formulated and determined by the decision makers."
+        },
+        {
+            "index":17,
+            "generic_text_element":"intro_scenarios",
+            "value":"Each external variable input can be thought of as a single aspect of external uncertainty affecting the outcome of the decision in scope. A scenario is defined by assigning a single value to all external variable inputs."
+        },
+        {
+            "index":18,
+            "generic_text_element":"intro_fixed_inputs",
+            "value":"The inputs which only takes one value for all scenarios."
+        },
+        {
+            "index":19,
+            "generic_text_element":"intro_dependency_graph",
+            "value":null
+        },
+        {
+            "index":20,
+            "generic_text_element":"intro_weighted_graph",
+            "value":null
+        },
+        {
+            "index":21,
+            "generic_text_element":"header_theme",
+            "value":"Theme"
+        },
+        {
+            "index":22,
+            "generic_text_element":"header_key_outputs",
+            "value":"Key output"
+        },
+        {
+            "index":23,
+            "generic_text_element":"graph_title_dmo",
+            "value":"Appreciations per option for scenario"
+        },
+        {
+            "index":24,
+            "generic_text_element":"graph_y_label_dmo",
+            "value":"Appreciation"
+        },
+        {
+            "index":25,
+            "generic_text_element":"graph_text_dmo",
+            "value":"The chart below shows the weighted appreciations per option, where key outputs are grouped into themes. The used theme weights are displayed in the pie chart on the right, showing the relative weights of all key outputs belonging to that theme. Use the dropdown menu to navigate through the various scenarios."
+        },
+        {
+            "index":26,
+            "generic_text_element":"table_text_dmo",
+            "value":"The table below shows the key output values per option, based on the selected scenario. The option with the highest weighted appreciation is highlighted."
+        },
+        {
+            "index":27,
+            "generic_text_element":"graph_text_scenarios",
+            "value":"The chart below shows the weighted appreciations per option, grouped into scenarios. The used scenario weights are displayed in the pie chart on the right."
+        },
+        {
+            "index":28,
+            "generic_text_element":"graph_title_scenarios",
+            "value":"Appreciations per scenario"
+        },
+        {
+            "index":29,
+            "generic_text_element":"graph_y_label_scenarios",
+            "value":"Appreciation"
+        }
+    ]
+}

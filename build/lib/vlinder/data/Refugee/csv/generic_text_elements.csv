@@ -1,0 +1,31 @@
+generic_text_element;value
+title_strategic_challenge;Strategic challenge
+title_key_outputs;Key outputs
+title_dmo;Options
+title_scenarios;Scenarios
+title_comparison_dmo;Strategic priorities
+title_comparison_scenario;Risk appetite
+title_fixed_inputs;Fixed inputs
+title_dependency_graph;Dependency graph
+title_weighted_graph;Resulting appreciations of different DMOs for scenario: 
+text_strategic_challenge;The strategic challenge that requires a decision
+text_key_outputs;The indicators used to evaluate the impact of your decision
+text_dmo;The options you have to influence your impact
+text_scenarios;The uncertainty you want to account for
+text_comparison_dmo;Evaluate options by assessing strategic priorities
+text_comparison_scenario;Evaluate options by assessing risk appetite
+intro_key_outputs;The outputs upon which the decision makers will base their decision. Key outputs are often referred to as KPIs. Key outputs are grouped into themes.
+intro_decision_makers_options;Decision makers options are formulated by assigning a single value to all internal variable inputs. These inputs can be formulated and determined by the decision makers.
+intro_scenarios;Each external variable input can be thought of as a single aspect of external uncertainty affecting the outcome of the decision in scope. A scenario is defined by assigning a single value to all external variable inputs.
+intro_fixed_inputs;The inputs which only takes one value for all scenarios.
+intro_dependency_graph;
+intro_weighted_graph;
+header_theme;Theme
+header_key_outputs;Key output
+graph_title_dmo;Appreciations per option for scenario
+graph_y_label_dmo;Appreciation
+graph_text_dmo;The chart below shows the weighted appreciations per option, where key outputs are grouped into themes. The used theme weights are displayed in the pie chart on the right, showing the relative weights of all key outputs belonging to that theme. Use the dropdown menu to navigate through the various scenarios.
+table_text_dmo;The table below shows the key output values per option, based on the selected scenario. The option with the highest weighted appreciation is highlighted.
+graph_text_scenarios;The chart below shows the weighted appreciations per option, grouped into scenarios. The used scenario weights are displayed in the pie chart on the right.
+graph_title_scenarios;Appreciations per scenario
+graph_y_label_scenarios;Appreciation
