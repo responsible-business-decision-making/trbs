@@ -10,7 +10,6 @@ import dataframe_image as dfi
 from vlinder.utils import round_all_dict_values, number_formatter, get_values_from_target, check_list_content
 
 
-
 class VisualizationError(Exception):
     """
     This class deals with the error handling of the Visualize class
@@ -248,10 +247,10 @@ class Visualize:
                     dataframe[key_value] = self.input_dict[key_value]
                     dataframe.set_index(key, inplace=True)
                 else:
-                    dataframe[key] = self.input_dict[key][(number_of_iter * 10): ((number_of_iter * 10) + 10)]
+                    dataframe[key] = self.input_dict[key][(number_of_iter * 10) : ((number_of_iter * 10) + 10)]
                     key_value = key[:-1] + "_value"
                     dataframe[key_value] = self.input_dict[key_value][
-                        (number_of_iter * 10): ((number_of_iter * 10) + 10)
+                        (number_of_iter * 10) : ((number_of_iter * 10) + 10)
                     ]
                     dataframe.set_index(key, inplace=True)
             elif key == "scenarios":
@@ -299,8 +298,8 @@ class Visualize:
         input_info_col_values = self.input_dict[col_values]
 
         dataframe[left_col_header] = self.input_dict[row_names]
-        for col in range(0, len(input_info_col_names)):
-            dataframe[input_info_col_names[col]] = input_info_col_values[col]
+        for row, col in enumerate(input_info_col_names):
+            dataframe[input_info_col_names[row]] = input_info_col_values[row]
         dataframe.set_index(left_col_header, inplace=True)
         return dataframe
 

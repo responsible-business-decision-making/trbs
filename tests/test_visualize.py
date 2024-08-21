@@ -13,7 +13,6 @@ from params import OUTPUT_DICT_GENERIC, INPUT_DICT_BEERWISER
 from vlinder.visualize import Visualize, VisualizationError
 
 
-
 @pytest.fixture(name="test_outcomes")
 def fixture_visualize_outcomes():
     """

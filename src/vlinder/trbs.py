@@ -7,6 +7,7 @@ Business Simulator Case.
 
 from pathlib import Path
 import os
+import matplotlib
 import vlinder as vl
 from vlinder.case_exporter import CaseExporter
 from vlinder.case_importer import CaseImporter
@@ -116,16 +117,17 @@ class TheResponsibleBusinessSimulator:
             ready = True
         return ready
 
-    def make_report(self, scenario, orientation="Portrait", output_path=Path(str(Path.cwd())+'/reports/')):
+    def make_report(self, scenario, orientation="Portrait", output_path=Path(str(Path.cwd()) + "/reports/")):
         """This function deals with transforming a case to a Report.
         :param output_path: desired location of the report
         :param scenario: the selected scenario of the case
         :param orientation: the desired orientation for PDF format; there is a choice between Portrait of Landscape
         """
         if self._check_steps_completed():
+            # Do not show the graphs in notebook when making a report
+            matplotlib.pyplot.ioff()
             if not self.report:
-                self.report = MakeReport(
-                    output_path, self.name, self.input_dict, self.output_dict, self.visualize
-                )
+                self.report = MakeReport(output_path, self.name, self.input_dict, self.output_dict, self.visualize)
+
             location_report = self.report.create_report(scenario, orientation, output_path)
             print(location_report)

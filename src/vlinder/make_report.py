@@ -4,9 +4,9 @@ This file contains two functions which make a report of the information performe
 
 import os
 import shutil
-import cv2
 from pathlib import Path
 from datetime import datetime
+import cv2
 from fpdf import FPDF
 
 
@@ -89,6 +89,20 @@ def footer_page(pdf, name, orientation):
     return pdf
 
 
+def determine_position_images(orientation, image):
+    """
+    This function gives the possibility to place images at the desired position
+    :param orientation: the desired orientation for PDF format; there is a choice between Portrait or Landscape
+    :param image: information about the image
+    :return: the right position
+    """
+    if orientation == "Landscape":
+        max_image, width_image, x_pos = 800, 250, 150 - image.shape[1] / 5.32
+    else:
+        max_image, width_image, x_pos = 500, 150, 100 - image.shape[1] / 6.3
+    return max_image, width_image, x_pos
+
+
 class MakeReport:
     """
     This class deals with the transformation into a different format and export of output of an RBS case.
@@ -102,19 +116,6 @@ class MakeReport:
         self.output_dict = output_dict
         self.page_number = 1
         self.visualize = visualize
-
-    def determine_position_images(self, orientation, image):
-        """
-        This function gives the possibility to place images at the desired position
-        :param orientation: the desired orientation for PDF format; there is a choice between Portrait or Landscape
-        :param image: information about the image
-        :return: the right position
-        """
-        if orientation == "Landscape":
-            max_image, width_image, x_pos = 800, 250, 150 - image.shape[1] / 5.32
-        else:
-            max_image, width_image, x_pos = 500, 150, 100 - image.shape[1] / 6.3
-        return max_image, width_image, x_pos
 
     def make_title(self, target, scenario="", pos_series="", key_output="") -> str:
         """
@@ -133,17 +134,17 @@ class MakeReport:
             target = "dmo"
         if "title_" + target in self.input_dict[text_element + "s"]:
             if str(
+                self.input_dict[text_element + "_value"][
+                    list(self.input_dict[text_element + "s"]).index("title_" + target)
+                ]
+            ) != str("nan"):
+                text = (
                     self.input_dict[text_element + "_value"][
                         list(self.input_dict[text_element + "s"]).index("title_" + target)
                     ]
-            ) != str("nan"):
-                text = (
-                        self.input_dict[text_element + "_value"][
-                            list(self.input_dict[text_element + "s"]).index("title_" + target)
-                        ]
-                        + scenario
-                        + pos_series
-                        + key_output
+                    + scenario
+                    + pos_series
+                    + key_output
                 )
             else:
                 text = "Not defined in template"
@@ -160,9 +161,9 @@ class MakeReport:
 
         if "strategic_challenge" in self.input_dict["case_text_elements"]:
             if str(
-                    self.input_dict["case_text_element_value"][
-                        list(self.input_dict["case_text_elements"]).index("strategic_challenge")
-                    ]
+                self.input_dict["case_text_element_value"][
+                    list(self.input_dict["case_text_elements"]).index("strategic_challenge")
+                ]
             ) != str("nan"):
                 text = self.input_dict["case_text_element_value"][
                     list(self.input_dict["case_text_elements"]).index("strategic_challenge")
@@ -186,9 +187,9 @@ class MakeReport:
             text_element = "generic_text_element"
         if "intro_" + target in self.input_dict[text_element + "s"]:
             if str(
-                    self.input_dict[text_element + "_value"][
-                        list(self.input_dict[text_element + "s"]).index("intro_" + target)
-                    ]
+                self.input_dict[text_element + "_value"][
+                    list(self.input_dict[text_element + "s"]).index("intro_" + target)
+                ]
             ) != str("nan"):
                 text = self.input_dict[text_element + "_value"][
                     list(self.input_dict[text_element + "s"]).index("intro_" + target)
@@ -218,7 +219,7 @@ class MakeReport:
         # Search for a logo. if yes, place in the middle of the slide
         if os.path.exists("logos/" + self.name + ".jpeg"):
             image = cv2.imread("logos/" + self.name + ".jpeg")
-            max_image, width_image, x_pos = self.determine_position_images(orientation, image)
+            max_image, width_image, x_pos = determine_position_images(orientation, image)
             if image.shape[1] > max_image:
                 pdf.image("logos/" + self.name + ".jpeg", x=25, y=50, w=width_image)
             else:
@@ -239,7 +240,7 @@ class MakeReport:
             pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
             # Search for the right table related to the input_table and place it in the middle of the slide
             image = cv2.imread("images" + "/table" + input_tables + ".png")
-            max_image, width_image, x_pos = self.determine_position_images(orientation, image)
+            max_image, width_image, x_pos = determine_position_images(orientation, image)
             if image.shape[1] > max_image:
                 pdf.image("images" + "/table" + input_tables + ".png", x=25, y=60, w=width_image)
             else:
@@ -252,20 +253,21 @@ class MakeReport:
             for number_iteration in range(0, number_of_iterations):
                 pdf.add_page()
                 if number_of_iterations > 1:
-                    pdf = chapter_title(pdf,
-                                        self.make_title(input_tables)
-                                        + " "
-                                        + str(number_iteration + 1)
-                                        + "/"
-                                        + str(number_of_iterations),
-                                        rgb,
-                                        )
+                    pdf = chapter_title(
+                        pdf,
+                        self.make_title(input_tables)
+                        + " "
+                        + str(number_iteration + 1)
+                        + "/"
+                        + str(number_of_iterations),
+                        rgb,
+                    )
                 else:
                     pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
                 pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
                 self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
                 image = cv2.imread("images" + "/table" + input_tables + str(number_iteration) + ".png")
-                max_image, width_image, x_pos = self.determine_position_images(orientation, image)
+                max_image, width_image, x_pos = determine_position_images(orientation, image)
                 if image.shape[1] > max_image:
                     pdf.image(
                         "images" + "/table" + input_tables + str(number_iteration) + ".png",
@@ -282,13 +284,14 @@ class MakeReport:
                 pdf = footer_page(pdf, self.name, orientation)
         # Create output slide with the weighted appreciations
         pdf.add_page()
-        pdf = chapter_title(pdf,
-                            "The decision maker option '"
-                            + self.output_dict[scenario]["highest_weighted_dmo"]
-                            + "' has the highest weighted appreciations for scenario: "
-                            + scenario,
-                            rgb,
-                            )
+        pdf = chapter_title(
+            pdf,
+            "The decision maker option '"
+            + self.output_dict[scenario]["highest_weighted_dmo"]
+            + "' has the highest weighted appreciations for scenario: "
+            + scenario,
+            rgb,
+        )
         self.visualize("barchart", "weighted_appreciations", scenario=scenario, stacked=True, save=True)
         if orientation == "Portrait":
             pdf.image("images" + "/figure.png", x=25, y=50, w=150)
