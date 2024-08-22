@@ -7,12 +7,14 @@ Business Simulator Case.
 
 from pathlib import Path
 import os
+import matplotlib
 import vlinder as vl
 from vlinder.case_exporter import CaseExporter
 from vlinder.case_importer import CaseImporter
 from vlinder.evaluate import Evaluate
 from vlinder.appreciate import Appreciate
 from vlinder.visualize import Visualize
+from vlinder.make_report import MakeReport
 
 
 def list_demo_cases(file_path=None):
@@ -41,6 +43,7 @@ class TheResponsibleBusinessSimulator:
         self.output_dict = {}
         self.visualizer = None
         self.exporter = None
+        self.report = None
 
     def __str__(self):
         input_data_formatted = (
@@ -86,7 +89,7 @@ class TheResponsibleBusinessSimulator:
         """This function deals with the visualizations of the outcomes"""
         # Set a Visualize class only if this has not yet been initialised.
         if not self.visualizer:
-            self.visualizer = Visualize(self.output_dict, self._get_options())
+            self.visualizer = Visualize(self.input_dict, self.output_dict, self._get_options())
         return self.visualizer.create_visual(visual_request, key, **kwargs)
 
     def transform(self, requested_format, output_path=None):
@@ -95,3 +98,36 @@ class TheResponsibleBusinessSimulator:
         if not self.exporter:
             self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
         self.exporter.create_template_for_requested_format(requested_format)
+
+    def _check_steps_completed(self) -> bool:
+        """This function checks whether all steps are performed.
+        :return: boolean which indicates if all steps are performed
+        """
+        ready = False
+        if len(self.input_dict) == 0:
+            print("First .build() a case to import data")
+        elif len(self.output_dict) == 0:
+            print("First .evaluate() a case to calculate key output values")
+        elif (
+            "appreciations"
+            not in self.output_dict[self.input_dict["scenarios"][0]][self.input_dict["decision_makers_options"][0]]
+        ):
+            print("First .appreciate() a case to process key output values")
+        else:
+            ready = True
+        return ready
+
+    def make_report(self, scenario, orientation="Portrait", output_path=Path(str(Path.cwd()) + "/reports/")):
+        """This function deals with transforming a case to a Report.
+        :param output_path: desired location of the report
+        :param scenario: the selected scenario of the case
+        :param orientation: the desired orientation for PDF format; there is a choice between Portrait of Landscape
+        """
+        if self._check_steps_completed():
+            # Do not show the graphs in notebook when making a report
+            matplotlib.pyplot.ioff()
+            if not self.report:
+                self.report = MakeReport(output_path, self.name, self.input_dict, self.output_dict, self.visualize)
+
+            location_report = self.report.create_report(scenario, orientation, output_path)
+            print(location_report)
