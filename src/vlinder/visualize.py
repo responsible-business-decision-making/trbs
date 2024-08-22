@@ -77,7 +77,7 @@ class Visualize:
             if argument not in self.available_kwargs:
                 raise VisualizationError(f"Invalid argument '{argument}'")
 
-    def _find_dimension_level(self, my_dict: dict, target_key: str, level: int = 1):
+    def _find_dimension_level(self, my_dict: dict, target_key: str, level: int = 1) -> int or None:
         """
         This recursive function returns the dimension level (level of nesting) for a given dictionary and target key.
         For example in dictionary {A: {B: {C: 1.23, ..}, ..}, ..}. 'A' is nested at level 1, B at level 2 & C level 3.
