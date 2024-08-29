@@ -11,7 +11,7 @@
             },
             {
                 "name":"value",
-                "type":"integer"
+                "type":"string"
             }
         ],
         "primaryKey":[
@@ -22,8 +22,8 @@
     "data":[
         {
             "index":0,
-            "configuration":"use_theme_weights",
-            "value":0
+            "configuration":"language",
+            "value":"EN"
         }
     ]
 }
