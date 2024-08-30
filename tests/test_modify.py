@@ -3,7 +3,6 @@
 This module contains all tests for the modify method in the trbs.py file
 """
 import pytest
-from pathlib import Path
 import numpy as np
 from src.vlinder.trbs import TheResponsibleBusinessSimulator
 
