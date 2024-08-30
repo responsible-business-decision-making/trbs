@@ -140,6 +140,7 @@ def test_check_data_columns_error(import_beerwiser_json):
     expected_result = "Template Error: column(s) 'decision_makers_option' are missing for 'decision_makers_options'"
     assert str(template_error.value) == expected_result
 
+
 def test_check_case_text_element(import_beerwiser_json):
     """
     This function tests _check_case_text_element to raise a warning when the case text element is not provided.
@@ -148,10 +149,11 @@ def test_check_case_text_element(import_beerwiser_json):
     """
 
     with warnings.catch_warnings(record=True) as warning_case:
-        import_beerwiser_json._check_case_text_element(pd.DataFrame({'case_text_element': ['strategic_challenge'],
-        'value': [np.nan]}))
+        import_beerwiser_json._check_case_text_element(
+            pd.DataFrame({"case_text_element": ["strategic_challenge"], "value": [np.nan]})
+        )
 
-    expected_result = 'Warning: No case text element entered'
+    expected_result = "Warning: No case text element entered"
     assert str(warning_case[0].message) == expected_result
 
 

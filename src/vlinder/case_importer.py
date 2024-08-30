@@ -74,9 +74,12 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         return to_check.drop(columns=extra_cols)
 
     def _check_case_text_element(self, case_text):
-        if pd.isna(case_text['value'].iloc[0]) == True or isinstance(case_text['value'].iloc[0], (int, float)) or any(
-                char.isalpha() for char in str(case_text['value'].iloc[0])) == False:
-            warnings.warn('Warning: No case text element entered')
+        if (
+            pd.isna(case_text["value"].iloc[0]) is True
+            or isinstance(case_text["value"].iloc[0], (int, float))
+            or any(char.isalpha() for char in str(case_text["value"].iloc[0])) is False
+        ):
+            warnings.warn("Warning: No case text element entered")
 
     def _create_dataframes_dict(self, table: str) -> None:
         """
@@ -89,7 +92,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
             raise TemplateError(f"Sheet '{table}' is missing") from missing_table
 
         table_data = self._check_data_columns(table_data, table)
-        if table == 'case_text_elements':
+        if table == "case_text_elements":
             self._check_case_text_element(table_data)
         self.dataframes_dict[table] = table_data
 
