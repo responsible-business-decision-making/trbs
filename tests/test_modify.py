@@ -23,7 +23,7 @@ def test_modify(arg, expected_result):
     :param arg: the list to be checked
     :param expected_result: the expected content of this list
     """
-    case = TheResponsibleBusinessSimulator(Path.cwd() / "src/vlinder/data", "xlsx", "beerwiser")
+    case = TheResponsibleBusinessSimulator("beerwiser")
     case.build()    
     case.modify(arg[0], arg[1], arg[2])
     master_key = arg[0].split('_weight')[0] + 's'
