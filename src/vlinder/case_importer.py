@@ -74,10 +74,13 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         return to_check.drop(columns=extra_cols)
 
     def _check_case_text_element(self, case_text):
+        """
+        This function checks if the case text element is filled in
+        """
         if (
-            pd.isna(case_text["value"].iloc[0]) is True
+            pd.isna(case_text["value"].iloc[0])
             or isinstance(case_text["value"].iloc[0], (int, float))
-            or any(char.isalpha() for char in str(case_text["value"].iloc[0])) is False
+            or bool(any(char.isalpha() for char in str(case_text["value"].iloc[0]))) is False
         ):
             warnings.warn("Warning: No case text element entered")
 
