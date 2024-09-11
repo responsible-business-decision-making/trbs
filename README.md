@@ -1,18 +1,22 @@
-# Model: the Responsible Business Simulator
+# 🦋 Vlinder 
 
-Welcome to the open-source GitHub repository of the Responsible Business Simulator (tRBS) model based on the book. This model is available in Python package vlinder.
+Welcome to the open-source GitHub repository of the Responsible Business Simulator (tRBS) model based on the book. 
+This model is available in Python package vlinder. The name vlinder means "butterfly" in Dutch. It symbolizes 
+the transformation of _trbs_, pronounced quickly as _trups_ (= caterpillar in Dutch), and the ability to see things 
+from a new perspective, much like how the package helps users transform raw data into insightful decision making.
+
+## 🔗 This repository
 This repo allows users to understand the framework and interact with the model, providing the opportunity to experiment, 
 evaluate, and collaborate. The tRBS model is designed to simulate the impact of business decisions on sustainability 
 and social responsibility. By open-sourcing the code, we promote transparency and invite contributions from 
 researchers and practitioners.
 
-## In this repository
-This repository contains 
-- A **Jupyter notebook** to work with the model in an interactive way
-- The **core functions** of the tRBS model
-- The following demo cases: beerwiser, DSM, IZZ and refugee case
+Amongst others, it contains: 
+- A **Jupyter notebook** demo that showcases the most important functions of the vlinder package
+- All **core functionality** of the Responsible Business Simulator model
+- A variety of demo cases that can be found [here](https://github.com/responsible-business-decision-making/trbs/tree/main/src/vlinder/data)
 
-## Local set-up
+## 💻 Local set-up
 
 **Step 1:** Connect with the repository. If you either need to set-up git and/or 
 authenticate with GitHub, see [GitHub's manual](https://docs.github.com/en/get-started/quickstart/set-up-git).
@@ -40,98 +44,15 @@ pre-commit install
 jupyter notebook
 ```
 
-**Step 5:** Import Path in Jupyter notebook to retrieve input data of the cases.
-```
-from pathlib import Path
-```
+### That's all! 🎉 ###
+You're now able to play around with the `vlinder_demo` notebook.
 
-**Step 6:** Import theResponsibleBusinessSimulator model from the core folder.
-```
-from core.trbs import TheResponsibleBusinessSimulator
-```
+## 🔗 Contributing
 
-**Step 7:** Retrieve the path of the data folder. This folder contains the input data of the cases.
-```
-path = Path.cwd() / 'data'
-```
+Please refer to the [CONTRIBUTING.MD](https://github.com/responsible-business-decision-making/trbs/blob/main/CONTRIBUTING.md)
+document on how you can help developing vlinder
 
-**Step 8:** Specify the file format of the input data and the case you want to investigate. By default we use Beerwiser case in xlsx format.
-```
-file_format = 'xlsx'
-name = 'beerwiser'
-```
-
-**Step 9:** Call the Responsible Business Simulator to investigate the case.
-```
-case = TheResponsibleBusinessSimulator(path, file_format, name)
-```
-
-**(optional) A1:** Create a new branch if you want to work on a new feature, bug or case.
-```
-git checkout -b 'NAME-OF-YOUR-BRANCH'
-```
-
-**(optional) A2:** Run all `pytest` tests in the `/model` folder.
-```
-cd model
-python -m pytest
-```
-
-## Vlinder package set-up
-
-**Step 1:** Install required dependencies via pip install.
-```
-pip install pandas
-pip install numpy
-pip install openpyxl
-pip install matplotlib
-pip install xlsxwriter
-```
-
-**Step 2:** Install package vlinder.
-```
-pip install vlinder
-```
-
-**Step 3:** Install Jupyter notebook to work with the model in an interactive way.
-```
-pip install notebook
-```
-
-**Step 4:** Open the Jupyter notebook.
-```
-jupyter notebook
-```
-
-**Step 5:** Import required packages in Jupyter notebook to retrieve input data of the cases.
-```
-import os
-from pathlib import Path
-```
-
-**Step 6:** Import package vlinder (abbreviated as vl) in Jupyter notebook.
-```
-import vlinder as vl
-from vlinder import *
-```
-
-**Step 7:** Retrieve the path of the data folder from the package. This folder contains the input data of the cases.
-```
-path = Path(os.path.dirname(vlinder.__file__)) / 'data'
-```
-
-**Step 8:** Specify the file format of the input data and the case you want to investigate. By default we use Beerwiser case in xlsx format.
-```
-file_format = 'xlsx'
-name = 'beerwiser'
-```
-
-**Step 9:** Call the Responsible Business Simulator to investigate the case.
-```
-case = TheResponsibleBusinessSimulator(path, file_format, name)
-```
-
-## Code of Conduct
-- Be kind
-- Be welcoming
-- Don't be a jerk
+## 📖 Code of Conduct
+- 😃 Be kind
+- 🤗 Be welcoming
+- ❌ Don't be a jerk
