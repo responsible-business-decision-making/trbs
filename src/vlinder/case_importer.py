@@ -73,6 +73,18 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
             warnings.warn(f"column(s) '{', '.join(extra_cols)}' are not used for '{table}'")
         return to_check.drop(columns=extra_cols)
 
+    @staticmethod
+    def _check_case_text_element(case_text):
+        """
+        This function checks if the case text element is filled in
+        """
+        if (
+            pd.isna(case_text["value"].iloc[0])
+            or isinstance(case_text["value"].iloc[0], (int, float))
+            or bool(any(char.isalpha() for char in str(case_text["value"].iloc[0]))) is False
+        ):
+            warnings.warn("Warning: No case text element entered")
+
     def _create_dataframes_dict(self, table: str) -> None:
         """
         This function add a pd.DataFrame to the dataframes_dict
@@ -82,7 +94,10 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
             table_data = self.importers[self.extension](table)
         except (ValueError, FileNotFoundError) as missing_table:
             raise TemplateError(f"Sheet '{table}' is missing") from missing_table
+
         table_data = self._check_data_columns(table_data, table)
+        if table == "case_text_elements":
+            self._check_case_text_element(table_data)
         self.dataframes_dict[table] = table_data
 
     def _convert_to_numpy_arrays_2d(self, table: str, data: pd.DataFrame) -> None:
