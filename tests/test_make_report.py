@@ -11,7 +11,10 @@ from vlinder.visualize import Visualize
 
 
 def visualize(visual_request, key, **kwargs):
-    """This function deals with the visualizations of the outcomes"""
+    """
+    This fixture initialises a Visualization class.
+    :return: a Visualization class for the Beerwiser outcome dictionary
+    """
     visualizer = Visualize(INPUT_DICT_BEERWISER, OUTPUT_DICT_BEERWISER, 3 * 3 * 3)
     return visualizer.create_visual(visual_request, key, **kwargs)
 
@@ -20,7 +23,7 @@ def visualize(visual_request, key, **kwargs):
 def fixture_make_report_outcomes():
     """
     This fixture initialises a MakeReport class.
-    :return: a MakeReport class for a generic outcome dictionary
+    :return: a MakeReport class for a Beerwiser dictionary
     """
     return MakeReport(
         output_path="output_path",
@@ -91,6 +94,6 @@ def test_create_report(
     :param orientation: the selected orientation
     """
     result = test_outcomes_report.create_report(scenario=scenario, orientation=orientation, path=output_path)
-    # Remove the folder which contains the files for the report
+    # Remove the folder which contains test_report
     shutil.rmtree("test_reports", ignore_errors=True)
     assert "test_reports/" in result
