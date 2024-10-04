@@ -15,7 +15,7 @@ from vlinder.case_exporter import CaseExporter
 from vlinder.case_importer import CaseImporter
 from vlinder.evaluate import Evaluate
 from vlinder.appreciate import Appreciate
-from vlinder.visualize import Visualize
+from vlinder.visualize import Visualize, DependencyGraph
 from vlinder.make_report import MakeReport
 
 
@@ -100,7 +100,7 @@ class TheResponsibleBusinessSimulator:
         if not self.exporter:
             self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
         self.exporter.create_template_for_requested_format(requested_format)
-        
+
     def modify(self, input_dict_key, element_key, new_value):
         """
         This function changes the value of one of the inputs in the input_dict.
@@ -135,6 +135,11 @@ class TheResponsibleBusinessSimulator:
         else:
             ready = True
         return ready
+
+    def dependency_graph(self):
+        """This function deals with creating the dependency tree"""
+        dependency_tree = DependencyGraph(self.input_dict)
+        return dependency_tree
 
     def make_report(self, scenario, orientation="Portrait", output_path=Path(str(Path.cwd()) + "/reports/")):
         """This function deals with transforming a case to a Report.

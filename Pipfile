@@ -15,6 +15,10 @@ xlsxwriter = "~=3.1.2"
 dataframe-image = "~=0.2.3"
 fpdf2 = "~=2.7.9"
 opencv-python = "~=4.10.0.84"
+networkx = "~=3.2.1"
+pyvis = "~=0.3.2"
+selenium = "~=4.25.0"
+webdriver_manaer "~=4.0.2"
 
 [dev-packages]
 

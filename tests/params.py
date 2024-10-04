@@ -136,9 +136,6 @@ INPUT_DICT_BEERWISER = {
     "theme_weight": np.array([2, 1, 3]),
     "key_output_weight": np.array([2.0, 1.0, 3.0]),
     "scenario_weight": np.array([2.0, 1.0, 3.0]),
-    "case_text_elements": ["title_test", "strategic_challenge", "intro_test"],
-    "case_text_element_value": ["test_title", "nan", "test_intro"],
-    "generic_text_elements": [],
 }
 
 # Generic output dictionary that is not related to a particular case

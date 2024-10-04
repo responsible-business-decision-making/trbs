@@ -8,6 +8,7 @@ from pathlib import Path
 from datetime import datetime
 import cv2
 from fpdf import FPDF
+from vlinder.visualize import DependencyGraph
 
 
 def chapter_title(pdf, title, rgb):
@@ -18,7 +19,7 @@ def chapter_title(pdf, title, rgb):
     :param rgb: the desired color in 3 number format
     :return: the updated pdf
     """
-    pdf.set_font("helvetica", "B", 16)
+    pdf.set_font("Arial", "B", 16)
     pdf.set_text_color(rgb[0], rgb[1], rgb[2])
     pdf.multi_cell(0, 10, title, 0, "C")
     pdf.ln(10)
@@ -34,7 +35,7 @@ def chapter_subtitle(pdf, subtitle):
     """
     subtitle = subtitle.replace("‘", "'")
     subtitle = subtitle.replace("’", "'")
-    pdf.set_font(family="helvetica", size=12)
+    pdf.set_font(family="Arial", size=12)
     pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(0, 10, subtitle, 0, "L")
     pdf.ln(10)
@@ -49,7 +50,7 @@ def title_page_title(pdf, title, rgb):
     :param rgb: the desired color in 3 number format
     :return: the updated pdf
     """
-    pdf.set_font("helvetica", "B", 22)
+    pdf.set_font("Arial", "B", 22)
     pdf.set_text_color(rgb[0], rgb[1], rgb[2])
     pdf.multi_cell(0, 10, title, 0, "C")
     pdf.ln(10)
@@ -63,7 +64,7 @@ def title_page_subtitle(pdf, subtitle):
     :param subtitle: the subtitle text
     :return: the updated pdf
     """
-    pdf.set_font(family="helvetica", size=12)
+    pdf.set_font(family="Arial", size=12)
     pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(0, 10, subtitle, 0, "C")
     pdf.ln(10)
@@ -82,10 +83,10 @@ def footer_page(pdf, name, orientation):
         pdf.set_y(250)
     else:
         pdf.set_y(175)
-    pdf.set_font("helvetica", "I", 8)
+    pdf.set_font("Arial", "I", 8)
     pdf.set_text_color(0, 0, 0)
-    pdf.cell(w=0, h=10, text=name, border=0, align="L")
-    pdf.cell(w=0, h=10, text=f"Page {pdf.page_no()}", border=0, align="R")
+    pdf.cell(0, 10, name, 0, 0, "L")
+    pdf.cell(0, 10, f"Page {pdf.page_no()}", 0, 0, "R")
     return pdf
 
 
@@ -209,7 +210,8 @@ class MakeReport:
         :return: the created report
         """
         # Make a temp directory for the images needed for the report
-        os.mkdir("images")
+        if not os.path.exists("images"):
+            os.mkdir("images")
         rgb = [0, 0, 120]
         pdf = FPDF(orientation=orientation)
         pdf.set_title("Report of the " + self.name + " case")
@@ -281,6 +283,18 @@ class MakeReport:
                         x=x_pos,
                         y=50,
                     )
+                pdf = footer_page(pdf, self.name, orientation)
+        # Create for every key_output a dependencygraph slide
+        for key_output in self.input_dict["key_outputs"]:
+            pdf.add_page()
+            pdf = chapter_title(pdf, "The dependency graph for the key output :" + key_output, rgb)
+
+            dep = DependencyGraph(self.input_dict)
+            dep.draw_graph(selected_ko=key_output, save=True)
+            if orientation == "Portrait":
+                pdf.image("images/keyoutput_" + key_output + ".png", x=5, y=50, w=200)
+            else:
+                pdf.image("images/keyoutput_" + key_output + ".png", x=25, y=50, w=250)
                 pdf = footer_page(pdf, self.name, orientation)
         # Create output slide with the weighted appreciations
         pdf.add_page()
