@@ -18,7 +18,7 @@ from vlinder.case_exporter import CaseExporter
 from vlinder.case_importer import CaseImporter
 from vlinder.evaluate import Evaluate
 from vlinder.appreciate import Appreciate
-from vlinder.visualize import Visualize
+from vlinder.visualize import Visualize, DependencyGraph
 from vlinder.make_report import MakeReport
 from vlinder.optimize import Optimize
 
@@ -144,6 +144,11 @@ class TheResponsibleBusinessSimulator:
         else:
             ready = True
         return ready
+
+    def dependency_graph(self):
+        """This function deals with creating the dependency tree"""
+        dependency_tree = DependencyGraph(self.input_dict)
+        return dependency_tree
 
     def make_report(self, scenario, orientation="Landscape", output_path=Path(str(Path.cwd()) + "/reports/")):
         """This function deals with transforming a case to a Report.
