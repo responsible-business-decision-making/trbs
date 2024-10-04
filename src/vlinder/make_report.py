@@ -8,6 +8,7 @@ from pathlib import Path
 from datetime import datetime
 from PIL import Image
 from fpdf import FPDF
+from vlinder.visualize import DependencyGraph
 
 
 def chapter_title(pdf, title, rgb):
@@ -300,6 +301,19 @@ class MakeReport:
                 width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
                 # Add the image to the PDF with the appropriate size and position
                 pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
+                pdf = footer_page(pdf, self.name, orientation)
+
+        # Create for every key_output a dependencygraph slide
+        for key_output in self.input_dict["key_outputs"]:
+            pdf.add_page()
+            pdf = chapter_title(pdf, "The dependency graph for the key output :" + key_output, rgb)
+
+            dep = DependencyGraph(self.input_dict)
+            dep.draw_graph(selected_ko=key_output, save=True)
+            if orientation == "Portrait":
+                pdf.image("images/keyoutput_" + key_output + ".png", x=5, y=50, w=200)
+            else:
+                pdf.image("images/keyoutput_" + key_output + ".png", x=25, y=50, w=250)
                 pdf = footer_page(pdf, self.name, orientation)
 
         # Create output slide with the weighted appreciations
