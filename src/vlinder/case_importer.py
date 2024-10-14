@@ -2,6 +2,8 @@
 This module contains the CaseImporter() class. This class deals with importing and validating an RBS case.
 """
 from pathlib import Path
+from glob import glob
+import os
 import warnings
 import pandas as pd
 import numpy as np
@@ -27,7 +29,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
     """
 
     def __init__(self, file_path, name, extension):
-        self.path_base = Path(file_path) / name / extension
+        self.path_base = Path(file_path) / os.path.basename(glob(os.path.join(Path(file_path / name)))[0]) / extension
         self.file_path = file_path
         self.name = name
         self.extension = extension
