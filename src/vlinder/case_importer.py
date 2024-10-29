@@ -29,9 +29,9 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
     """
 
     def __init__(self, file_path, name, extension):
-        self.path_base = Path(file_path) / os.path.basename(glob(os.path.join(Path(file_path / name)))[0]) / extension
+        self.path_base = Path(file_path) / name / extension
         self.file_path = file_path
-        self.name = name
+        self.name = os.path.splitext(os.listdir(self.path_base)[0])[0]
         self.extension = extension
         self.importers = {
             "csv": lambda table: pd.read_csv(self.path_base / f"{table}.csv", sep=";"),
