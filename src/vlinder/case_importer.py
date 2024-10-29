@@ -2,7 +2,6 @@
 This module contains the CaseImporter() class. This class deals with importing and validating an RBS case.
 """
 from pathlib import Path
-from glob import glob
 import os
 import warnings
 import pandas as pd
