@@ -44,6 +44,46 @@
             "index":4,
             "fixed_input":"Water unit cost",
             "value":0.05
+        },
+        {
+            "index":5,
+            "fixed_input":"AR_me",
+            "value":0.48
+        },
+        {
+            "index":6,
+            "fixed_input":"AR_acc",
+            "value":0.95
+        },
+        {
+            "index":7,
+            "fixed_input":"AR_pos",
+            "value":0.9
+        },
+        {
+            "index":8,
+            "fixed_input":"AR_sp",
+            "value":300000.0
+        },
+        {
+            "index":9,
+            "fixed_input":"WURWE_me",
+            "value":0.5
+        },
+        {
+            "index":10,
+            "fixed_input":"WURWE_acc",
+            "value":1.0
+        },
+        {
+            "index":11,
+            "fixed_input":"WURWE_pos",
+            "value":1.0
+        },
+        {
+            "index":12,
+            "fixed_input":"WURWE_sp",
+            "value":275000.0
         }
     ]
 }

@@ -4,3 +4,11 @@ Current # accidents;51.0
 Current production cost;7500000.0
 Current water use;15000000.0
 Water unit cost;0.05
+AR_me;0.48
+AR_acc;0.95
+AR_pos;0.9
+AR_sp;300000.0
+WURWE_me;0.5
+WURWE_acc;1.0
+WURWE_pos;1.0
+WURWE_sp;275000.0

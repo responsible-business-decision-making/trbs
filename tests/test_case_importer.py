@@ -69,10 +69,6 @@ def test_build_template_validators(import_beerwiser_json):
             "argument_1",
             "argument_2",
             "operator",
-            "maximum_effect",
-            "accessibility",
-            "probability_of_success",
-            "saturation_point",
         ],
         "theme_weights": ["theme", "weight"],
         "key_output_weights": ["key_output", "weight"],
@@ -260,10 +256,6 @@ def test_convert_to_ordered_dependencies(import_beerwiser_json):
             "argument_1": ["tech", "love", "education", "law", "5", "money"],
             "argument_2": ["", "", "law", "tech", "money", "love"],
             "operator": np.full(6, "N/A"),
-            "maximum_effect": np.full(6, "N/A"),
-            "accessibility": np.full(6, "N/A"),
-            "probability_of_success": np.full(6, "N/A"),
-            "saturation_point": np.full(6, "N/A"),
         }
     )
     # compare
@@ -277,10 +269,6 @@ def test_convert_to_ordered_dependencies(import_beerwiser_json):
         "argument_1": np.array(["5", "money", "tech", "love", "education", "law"], dtype=object),
         "argument_2": np.array(["money", "love", "", "", "law", "tech"], dtype=object),
         "operator": np.full(6, "N/A", dtype=object),
-        "maximum_effect": np.full(6, "N/A", dtype=object),
-        "accessibility": np.full(6, "N/A", dtype=object),
-        "probability_of_success": np.full(6, "N/A", dtype=object),
-        "saturation_point": np.full(6, "N/A", dtype=object),
         "hierarchy": np.array([1, 1, 2, 2, 3, 3]),
         "dependencies_order": np.array([4, 5, 0, 1, 2, 3]),
     }
