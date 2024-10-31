@@ -654,6 +654,10 @@ class DependencyGraph:
                 }
             },
         }
+
+        if not os.path.exists(Path(str(Path.cwd()) + "/reports/")):
+            Path(str(Path.cwd()) + "/reports/").mkdir()
+
         net.save_graph("reports/" + selected_ko + "_graph.html")
 
         # Make a screenshot of the graph if save == true, otherwise open a tab and show the graph
