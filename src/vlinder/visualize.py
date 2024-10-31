@@ -631,7 +631,7 @@ class DependencyGraph:
                 }
             },
         }
-        net.save_graph("reports/" + selected_ko + "_graph.html")
+        net.save_graph("reports/" + selected_ko + "_graph")
 
         # Make a screenshot of the graph if save == true, otherwise open a tab and show the graph
         if save is True:
