@@ -2,6 +2,7 @@
 This module contains the CaseImporter() class. This class deals with importing and validating an RBS case.
 """
 from pathlib import Path
+import os
 import warnings
 import pandas as pd
 import numpy as np
@@ -29,7 +30,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
     def __init__(self, file_path, name, extension):
         self.path_base = Path(file_path) / name / extension
         self.file_path = file_path
-        self.name = name
+        self.name = os.path.splitext(os.listdir(self.path_base)[0])[0]
         self.extension = extension
         self.importers = {
             "csv": lambda table: pd.read_csv(self.path_base / f"{table}.csv", sep=";"),
