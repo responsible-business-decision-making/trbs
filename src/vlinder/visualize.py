@@ -635,7 +635,7 @@ class DependencyGraph:
         if not os.path.exists(Path(str(Path.cwd()) + "/reports/")):
             Path(str(Path.cwd()) + "/reports/").mkdir()
 
-        net.save_graph("reports/" + selected_ko + "_graph.html")
+        net.save_graph("reports/" + selected_ko.replace(" ", "_") + "_graph.html")
 
         # Make a screenshot of the graph if save == true, otherwise open a tab and show the graph
         if save is True:
@@ -646,7 +646,13 @@ class DependencyGraph:
 
             # Open de browser met Selenium
             driver = webdriver.Chrome(service=service, options=options)
-            driver.get("file://" + str(Path.cwd()) + "/graph.html")
+
+            # Maak een absoluut pad naar het bestand
+            bestandspad = Path("reports") / f"{selected_ko.replace(' ', '_')}_graph.html"
+            bestandspad_url = bestandspad.resolve().as_uri()
+
+            # Gebruik het absolute pad in driver.get()
+            driver.get(bestandspad_url)
 
             # Geef de pagina wat tijd om volledig te laden
             time.sleep(2)  # Wacht bijvoorbeeld 2 seconden (dit kan aangepast worden)
