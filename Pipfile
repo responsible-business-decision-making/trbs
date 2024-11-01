@@ -18,8 +18,8 @@ opencv-python = "~=4.10.0.84"
 networkx = "~=3.2.1"
 pyvis = "~=0.3.2"
 webdriver-manager = "~=4.0.2"
-networkx = "~=3.4"
 selenium = "~=4.25.0"
+networkx = "==3.2"
 
 [dev-packages]
 
