@@ -9,7 +9,6 @@ pre-commit = "~=3.3.3"
 pandas = "~=2.0.3"
 numpy = "~=1.25.0"
 openpyxl = "~=3.1.2"
-pytest = "~=7.4.0"
 matplotlib = "~=3.7.2"
 xlsxwriter = "~=3.1.2"
 dataframe-image = "~=0.2.3"
@@ -17,8 +16,8 @@ fpdf2 = "~=2.7.9"
 opencv-python = "~=4.10.0.84"
 pyvis = "~=0.3.2"
 webdriver-manager = "~=4.0.2"
-selenium = "~=4.25.0"
 networkx = "~=3.2"
+selenium = "~=4.26.1"
 
 [dev-packages]
 

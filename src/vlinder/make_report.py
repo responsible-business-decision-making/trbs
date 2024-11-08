@@ -19,7 +19,7 @@ def chapter_title(pdf, title, rgb):
     :param rgb: the desired color in 3 number format
     :return: the updated pdf
     """
-    pdf.set_font("Arial", "B", 16)
+    pdf.set_font("helvetica", "B", 16)
     pdf.set_text_color(rgb[0], rgb[1], rgb[2])
     pdf.multi_cell(0, 10, title, 0, "C")
     pdf.ln(10)
@@ -35,7 +35,7 @@ def chapter_subtitle(pdf, subtitle):
     """
     subtitle = subtitle.replace("‘", "'")
     subtitle = subtitle.replace("’", "'")
-    pdf.set_font(family="Arial", size=12)
+    pdf.set_font(family="helvetica", size=12)
     pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(0, 10, subtitle, 0, "L")
     pdf.ln(10)
@@ -50,7 +50,7 @@ def title_page_title(pdf, title, rgb):
     :param rgb: the desired color in 3 number format
     :return: the updated pdf
     """
-    pdf.set_font("Arial", "B", 22)
+    pdf.set_font("helvetica", "B", 22)
     pdf.set_text_color(rgb[0], rgb[1], rgb[2])
     pdf.multi_cell(0, 10, title, 0, "C")
     pdf.ln(10)
@@ -64,7 +64,7 @@ def title_page_subtitle(pdf, subtitle):
     :param subtitle: the subtitle text
     :return: the updated pdf
     """
-    pdf.set_font(family="Arial", size=12)
+    pdf.set_font(family="helvetica", size=12)
     pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(0, 10, subtitle, 0, "C")
     pdf.ln(10)
@@ -83,7 +83,7 @@ def footer_page(pdf, name, orientation):
         pdf.set_y(250)
     else:
         pdf.set_y(175)
-    pdf.set_font("Arial", "I", 8)
+    pdf.set_font("helvetica", "I", 8)
     pdf.set_text_color(0, 0, 0)
     pdf.cell(0, 10, name, 0, 0, "L")
     pdf.cell(0, 10, f"Page {pdf.page_no()}", 0, 0, "R")
