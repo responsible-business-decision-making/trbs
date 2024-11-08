@@ -687,4 +687,4 @@ class DependencyGraph:
             # Sluit de Selenium-browser
             driver.quit()
         elif save is False:
-            os.system('open "reports/' + selected_ko + '_graph.html"')  # pylint: disable=no-member
+            os.system("open 'reports/" + f"{selected_ko.replace(' ', '_')}_graph.html'")
