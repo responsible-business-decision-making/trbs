@@ -64,6 +64,5 @@ New employee recommendation rate;New employee engagement score;Engaged employee 
 New employee recommendation rate;New employee disengagement score;Disengaged employee recommendation rate;*;;;;
 Increase in employee recommendation rate;New employee recommendation rate;Current employee recommendation rate;-;;;;
 ICP condition;Internal carbon price;0;>;;;;
-New Net Promotor Score;ICP condition;Effect of using an internal carbon price on employee engagement;*;;;;
-New Net Promotor Score;0;Effect of employee engagement on customer satisfaction;*;;;;
-New Net Promotor Score;0;Current Net Promotor Score;+;;;;
+Increase in Net Promotor Score;ICP condition;Effect of using an internal carbon price on employee engagement;*;;;;
+Increase in Net Promotor Score;0;Effect of employee engagement on customer satisfaction;*;;;;

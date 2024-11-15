@@ -139,7 +139,7 @@ INPUT_DICT_BEERWISER = {
     "case_text_elements": ["title_test", "strategic_challenge", "intro_test"],
     "case_text_element_value": ["test_title", "nan", "test_intro"],
     "generic_text_elements": [],
-    "hierarchy": np.array([1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 7])
+    "hierarchy": np.array([1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 7, 10, 13])
 }
 
 # Generic output dictionary that is not related to a particular case
