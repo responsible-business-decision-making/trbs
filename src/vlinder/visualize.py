@@ -655,10 +655,10 @@ class DependencyGraph:
             },
         }
 
-        if not os.path.exists(Path(str(Path.cwd()) + "/reports/")):
-            Path(str(Path.cwd()) + "/reports/").mkdir()
+        if not os.path.exists(Path(str(Path.cwd()) + "/reports/dependency_graphs")):
+            Path(str(Path.cwd()) + "/reports/dependency_graphs").mkdir()
 
-        net.save_graph("reports/" + selected_ko.replace(" ", "_") + "_graph.html")
+        net.save_graph("reports/dependency_graphs/" + selected_ko.replace(" ", "_") + "_graph.html")
 
         # Make a screenshot of the graph if save == true, otherwise open a tab and show the graph
         if save is True:
@@ -671,7 +671,7 @@ class DependencyGraph:
             driver = webdriver.Chrome(service=service, options=options)
 
             # Maak een absoluut pad naar het bestand
-            bestandspad = Path("reports") / f"{selected_ko.replace(' ', '_')}_graph.html"
+            bestandspad = Path("reports/dependency_graphs") / f"{selected_ko.replace(' ', '_')}_graph.html"
             bestandspad_url = bestandspad.resolve().as_uri()
 
             # Gebruik het absolute pad in driver.get()
@@ -687,4 +687,4 @@ class DependencyGraph:
             # Sluit de Selenium-browser
             driver.quit()
         elif save is False:
-            os.system("open 'reports/" + f"{selected_ko.replace(' ', '_')}_graph.html'")
+            os.system("open 'reports/dependency_graphs/" + f"{selected_ko.replace(' ', '_')}_graph.html'")
