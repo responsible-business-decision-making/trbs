@@ -49,7 +49,7 @@ INPUT_DICT_BEERWISER = {
     "intermediate_unit": np.array(["%", "%", "%", "$", "$", "hl/year", "#/year"], dtype=object),
     "intermediate_minimum": np.array([np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan]),
     "intermediate_maximum": np.array([np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan]),
-    "dependencies": np.array([0, 1, 8, 9, 11, 2, 3, 4, 6, 10, 5, 12, 7]),
+    "dependencies_order": np.array([0, 1, 8, 9, 11, 2, 3, 4, 6, 10, 5, 12, 7]),
     "destination": np.array(
         [
             "Accidents reduction %",
@@ -139,6 +139,7 @@ INPUT_DICT_BEERWISER = {
     "case_text_elements": ["title_test", "strategic_challenge", "intro_test"],
     "case_text_element_value": ["test_title", "nan", "test_intro"],
     "generic_text_elements": [],
+    "hierarchy": np.array([1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 7, 10, 13])
 }
 
 # Generic output dictionary that is not related to a particular case
