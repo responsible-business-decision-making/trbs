@@ -9,6 +9,7 @@ from vlinder.utils import (
     number_formatter,
     check_numeric,
     check_list_content,
+    suppress_print,
 )
 
 
@@ -114,3 +115,28 @@ def test_check_list_content(arg, expected_result):
     """
     result = check_list_content(arg)
     assert result == expected_result
+
+
+@suppress_print
+def function_with_print(value):
+    """
+    This function prints a message and then returns the input value multiplied by 2.
+    The print statement is suppressed due to the suppress_print decorator.
+    """
+    print("This print statement should be suppressed.")
+    return value * 2
+
+
+def test_suppress_print_output(capsys):
+    """
+    This test ensures that the suppress_print decorator correctly suppresses
+    the output of print statements in the function.
+    """
+    result = function_with_print(5)
+
+    assert result == 10
+
+    # Check that there is no output in stdout
+    captured = capsys.readouterr()
+    assert captured.out == ""  # There should be no output
+    assert captured.err == ""  # There should be no mistakes in stderr

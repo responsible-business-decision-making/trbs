@@ -1,7 +1,7 @@
 # pylint: disable=no-member
 
 """
-This module contains the TRBS class. This is the parent class that deals with anything related to a Responsible
+This module contains the tRBS class. This is the parent class that deals with anything related to a Responsible
 Business Simulator Case.
 """
 
@@ -9,7 +9,6 @@ from pathlib import Path
 import os
 import numpy as np
 import matplotlib
-
 import vlinder as vl
 from vlinder.case_exporter import CaseExporter
 from vlinder.case_importer import CaseImporter
@@ -17,6 +16,7 @@ from vlinder.evaluate import Evaluate
 from vlinder.appreciate import Appreciate
 from vlinder.visualize import Visualize
 from vlinder.make_report import MakeReport
+from vlinder.optimize import Optimize
 
 
 def list_demo_cases(file_path=None):
@@ -26,8 +26,8 @@ def list_demo_cases(file_path=None):
     try:
         case_names = [name for name in os.listdir(file_path) if (file_path / name).is_dir()]
         return case_names
-    except FileNotFoundError:
-        raise FileNotFoundError(f"The directory {file_path} does not exist.")
+    except FileNotFoundError as error:
+        raise FileNotFoundError(f"The directory {file_path} does not exist.") from error
 
 
 class TheResponsibleBusinessSimulator:
@@ -76,6 +76,7 @@ class TheResponsibleBusinessSimulator:
         case_import = CaseImporter(self.file_path, self.name, self.file_extension)
         self.input_dict, self.dataframe_dict = case_import.import_case()
 
+    # pylint: disable=W0511
     # TODO: param what to evaluate: single scenario = None, single dmo = None
     def evaluate(self):
         """This function deals with the evaluation of all dependencies"""
@@ -90,8 +91,7 @@ class TheResponsibleBusinessSimulator:
     def visualize(self, visual_request, key, **kwargs):
         """This function deals with the visualizations of the outcomes"""
         # Set a Visualize class only if this has not yet been initialised.
-        if not self.visualizer:
-            self.visualizer = Visualize(self.input_dict, self.output_dict, self._get_options())
+        self.visualizer = Visualize(self.input_dict, self.output_dict, self._get_options())
         return self.visualizer.create_visual(visual_request, key, **kwargs)
 
     def transform(self, requested_format, output_path=None):
@@ -100,7 +100,7 @@ class TheResponsibleBusinessSimulator:
         if not self.exporter:
             self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
         self.exporter.create_template_for_requested_format(requested_format)
-        
+
     def modify(self, input_dict_key, element_key, new_value):
         """
         This function changes the value of one of the inputs in the input_dict.
@@ -150,3 +150,14 @@ class TheResponsibleBusinessSimulator:
 
             location_report = self.report.create_report(scenario, orientation, output_path)
             print(location_report)
+
+    def optimize(self, case_name, scenario, **kwargs):
+        """This function deals with finding the optimal distribution of decision maker options."""
+        case_optimizer = Optimize(self.input_dict, self.output_dict)
+        self.input_dict = case_optimizer.optimize(
+            scenario, kwargs.get("new_dmo_name", "Optimized DMO"), kwargs.get("max_combinations", 60000)
+        )
+        new_case_name = kwargs.get("new_case_name", None)
+        if new_case_name is None:
+            new_case_name = case_name + "- Optimized"
+        self.name = new_case_name
