@@ -1,4 +1,5 @@
 # pylint: disable=no-member
+# pylint: disable=W0511
 
 """
 This module contains the tRBS class. This is the parent class that deals with anything related to a Responsible
@@ -9,6 +10,7 @@ from pathlib import Path
 import os
 import numpy as np
 import matplotlib
+
 import vlinder as vl
 from vlinder.case_exporter import CaseExporter
 from vlinder.case_importer import CaseImporter
@@ -76,7 +78,6 @@ class TheResponsibleBusinessSimulator:
         case_import = CaseImporter(self.file_path, self.name, self.file_extension)
         self.input_dict, self.dataframe_dict = case_import.import_case()
 
-    # pylint: disable=W0511
     # TODO: param what to evaluate: single scenario = None, single dmo = None
     def evaluate(self):
         """This function deals with the evaluation of all dependencies"""
