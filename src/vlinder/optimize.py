@@ -175,7 +175,7 @@ class Optimize:
 
         return best_dmo, best_appreciated_value
 
-    def optimize(self, scenario, tmp_opt_dmo_name, max_combinations):
+    def optimize_single_scenario(self, scenario, tmp_opt_dmo_name, max_combinations):
         """
         Wrapper function that performs the full grid search optimization process.
         It retrieves values, calculates the step size, generates valid combinations,

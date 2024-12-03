@@ -26,7 +26,7 @@ def test_optimize_name(optimize_beerwiser):
     in case when the optimized DMO name is not already in the input dict.
     :param optimize_beerwiser: an Optimize() class for Beerwiser
     """
-    optimize_beerwiser.optimize("Base case", "Equal spread", max_combinations=60000)
+    optimize_beerwiser.optimize_single_scenario("Base case", "Equal spread", max_combinations=60000)
     result = optimize_beerwiser.input_dict
 
     count_dictionaries = get_values_from_target(result, "decision_makers_options")[0].size
@@ -141,7 +141,7 @@ def test_optimize(optimize_beerwiser):
     This function tests the wrapper function .optimize() that performs the full optimization process
     :param optimize_beerwiser: an Optimize() class for Beerwiser
     """
-    optimize_beerwiser.optimize("Base case", "Optimized DMO", max_combinations=60000)
+    optimize_beerwiser.optimize_single_scenario("Base case", "Optimized DMO", max_combinations=60000)
     result = optimize_beerwiser.input_dict
 
     count_dictionaries = get_values_from_target(result, "decision_makers_options")[0].size
@@ -172,7 +172,7 @@ def test_optimizer_already_optimal(optimize_beerwiser_aleady_optimal):
     but you have already found the Mt. Everest.
     :param optimize_beerwiser_aleady_optimal: an Optimize() class for Beerwiser
     """
-    optimize_beerwiser_aleady_optimal.optimize("Base case", "Optimized DMO", max_combinations=60000)
+    optimize_beerwiser_aleady_optimal.optimize_single_scenario("Base case", "Optimized DMO", max_combinations=60000)
     result = optimize_beerwiser_aleady_optimal.input_dict
 
     result_best_dmo = result["decision_makers_option_value"][

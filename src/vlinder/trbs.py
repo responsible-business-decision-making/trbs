@@ -152,13 +152,13 @@ class TheResponsibleBusinessSimulator:
             location_report = self.report.create_report(scenario, orientation, output_path)
             print(location_report)
 
-    def optimize(self, case_name, scenario, **kwargs):
+    def optimize(self, scenario, **kwargs):
         """This function deals with finding the optimal distribution of decision maker options."""
         case_optimizer = Optimize(self.input_dict, self.output_dict)
-        self.input_dict = case_optimizer.optimize(
+        self.input_dict = case_optimizer.optimize_single_scenario(
             scenario, kwargs.get("new_dmo_name", "Optimized DMO"), kwargs.get("max_combinations", 60000)
         )
         new_case_name = kwargs.get("new_case_name", None)
         if new_case_name is None:
-            new_case_name = case_name + "- Optimized"
+            new_case_name = self.name + "- Optimized"
         self.name = new_case_name
