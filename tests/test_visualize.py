@@ -9,7 +9,7 @@ The following functions are partly tested: _create_barchart (only errors), creat
 import pytest
 import numpy as np
 import pandas as pd
-from params import OUTPUT_DICT_GENERIC, INPUT_DICT_BEERWISER
+from .params import OUTPUT_DICT_GENERIC, INPUT_DICT_BEERWISER
 from vlinder.visualize import Visualize, VisualizationError
 
 
