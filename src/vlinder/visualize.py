@@ -55,7 +55,7 @@ class Visualize:
             "scenarios",
             "fixed_inputs",
             "decision_makers_options",
-            "scenario_appreciations"
+            "scenario_appreciations",
         ]
         self.available_kwargs = [
             "scenario",
