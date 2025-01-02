@@ -55,6 +55,7 @@ class Visualize:
             "scenarios",
             "fixed_inputs",
             "decision_makers_options",
+            "scenario_appreciations"
         ]
         self.available_kwargs = [
             "scenario",
@@ -310,7 +311,7 @@ class Visualize:
         :return: a plotted barchart
         """
         dims = self._find_dimension_level(self.outcomes, key)
-        if dims > 2 and "scenario" not in kwargs:
+        if dims > 2 and "scenario" not in kwargs and not ("stacked" in kwargs and key == "scenario_appreciations"):
             raise VisualizationError(f"Too many dimensions ({dims}). Please specify a scenario")
         stacked = kwargs["stacked"] if "stacked" in kwargs else True
         show_legend = kwargs["show_legend"] if "show_legend" in kwargs else True
