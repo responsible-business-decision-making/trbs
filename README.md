@@ -1,18 +1,44 @@
-# Model: the Responsible Business Simulator
+# 🦋 Vlinder 
 
-Welcome to the open-source GitHub repository of the Responsible Business Simulator (tRBS) model based on the book. This model is available in Python package vlinder.
+Welcome to the open-source GitHub repository of the Responsible Business Simulator (tRBS) model based on the book 
+Roobeek, A; Swart, J.J.B. de; Plas, M. van der (2023), Responsible Business Decision Making – 
+Strategic Impact Through Data and Dialogue, KoganPage, that can be found [here](https://www.koganpage.com/product/responsible-business-decision-making-9781398612280). 
+This model is available in Python package vlinder. The name vlinder means "butterfly" in Dutch. It symbolizes 
+the transformation of _trbs_, pronounced quickly as _trups_ (= caterpillar in Dutch), and the ability to see things 
+from a new perspective, much like how the package helps users transform raw data into insightful decision making.
+
+## 🔗 This repository
 This repo allows users to understand the framework and interact with the model, providing the opportunity to experiment, 
-evaluate, and collaborate. The tRBS model is designed to simulate the impact of business decisions on sustainability 
+evaluate, and collaborate. The tRBS model is designed to simulate the impact of business decisions on financial performance, sustainability 
 and social responsibility. By open-sourcing the code, we promote transparency and invite contributions from 
 researchers and practitioners.
 
-## In this repository
-This repository contains 
-- A **Jupyter notebook** to work with the model in an interactive way
-- The **core functions** of the tRBS model
-- The following demo cases: beerwiser, DSM, IZZ and refugee case
+Amongst others, this repo contains: 
+- A **[Jupyter notebook](https://github.com/responsible-business-decision-making/trbs/blob/vlinder_demo.ipynb)** demo that showcases the most important functions of the vlinder package
+- All **core functionality** of the Responsible Business Simulator model
+- A variety of demo cases that can be found [here](https://github.com/responsible-business-decision-making/trbs/tree/main/src/vlinder/data)
 
-## Local set-up
+## 💻 Working with the vlinder package via the **[Jupyter notebook](https://github.com/responsible-business-decision-making/trbs/blob/vlinder_demo.ipynb)**
+
+Here we assume that you just want to install and import the vlinder package from Python Package Index and work with
+the predefined Jupyter notebook **vlinder_demo.ipynb**. This means that you are not interested in the source code 
+within the vlinder package.
+To purpose of **vlinder_demo.ipynb** is to to illustrate the working of the vlinder package.
+This file is the only file from this repository that you need for this use case.
+There are many environments in which you may run Jupyter notebooks. In this example, we use using Google's free 
+environment called Colaboratory. Note that a Google account is needed to access this environment. 
+
+**Step 1:** Open Google's Colabotary by clicking on **[this](https://colab.research.google.com/)**.
+
+**Step 2:** Choose "Open notebook -> GitHub" and enter **[this](https://github.com/responsible-business-decision-making/trbs/blob/vlinder_demo.ipynb)** url.
+
+**Step 3:** Run the notebook by selecting "Run all" from the "Runtime" menu to see the results for the beerwiser case.
+
+**Step 4:** (Optional) Adjust the notebook to see, e.g., results of other demo cases. 
+
+## 💻 Local set-up (working directly with the underlying code of the vlinder package)
+
+Here we assume that you want to contribute to the vlinder package by adjusting or and enriching its code base.
 
 **Step 1:** Connect with the repository. If you either need to set-up git and/or 
 authenticate with GitHub, see [GitHub's manual](https://docs.github.com/en/get-started/quickstart/set-up-git).
@@ -20,8 +46,8 @@ authenticate with GitHub, see [GitHub's manual](https://docs.github.com/en/get-s
 git clone https://github.com/responsible-business-decision-making/trbs.git
 ```
 
-**Step 2:** Move inside the `trbs`-folder and install all required dependencies with ```pipenv```. You might need to install ```pipenv``` if you have
-not used this before. 
+**Step 2:** Move inside the `trbs`-folder and install all required dependencies with ```pipenv```. 
+You might need to install ```pipenv``` if you have not used this before. 
 ```
 cd trbs
 pip install pipenv
@@ -40,98 +66,15 @@ pre-commit install
 jupyter notebook
 ```
 
-**Step 5:** Import Path in Jupyter notebook to retrieve input data of the cases.
-```
-from pathlib import Path
-```
+### That's all! 🎉 ###
+You're now able to play around with the `vlinder_demo` notebook.
 
-**Step 6:** Import theResponsibleBusinessSimulator model from the core folder.
-```
-from core.trbs import TheResponsibleBusinessSimulator
-```
+## 🔗 Contributing
 
-**Step 7:** Retrieve the path of the data folder. This folder contains the input data of the cases.
-```
-path = Path.cwd() / 'data'
-```
+Please refer to the [CONTRIBUTING.MD](https://github.com/responsible-business-decision-making/trbs/blob/main/CONTRIBUTING.md)
+document for further guidance no how you can help developing vlinder
 
-**Step 8:** Specify the file format of the input data and the case you want to investigate. By default we use Beerwiser case in xlsx format.
-```
-file_format = 'xlsx'
-name = 'beerwiser'
-```
-
-**Step 9:** Call the Responsible Business Simulator to investigate the case.
-```
-case = TheResponsibleBusinessSimulator(path, file_format, name)
-```
-
-**(optional) A1:** Create a new branch if you want to work on a new feature, bug or case.
-```
-git checkout -b 'NAME-OF-YOUR-BRANCH'
-```
-
-**(optional) A2:** Run all `pytest` tests in the `/model` folder.
-```
-cd model
-python -m pytest
-```
-
-## Vlinder package set-up
-
-**Step 1:** Install required dependencies via pip install.
-```
-pip install pandas
-pip install numpy
-pip install openpyxl
-pip install matplotlib
-pip install xlsxwriter
-```
-
-**Step 2:** Install package vlinder.
-```
-pip install vlinder
-```
-
-**Step 3:** Install Jupyter notebook to work with the model in an interactive way.
-```
-pip install notebook
-```
-
-**Step 4:** Open the Jupyter notebook.
-```
-jupyter notebook
-```
-
-**Step 5:** Import required packages in Jupyter notebook to retrieve input data of the cases.
-```
-import os
-from pathlib import Path
-```
-
-**Step 6:** Import package vlinder (abbreviated as vl) in Jupyter notebook.
-```
-import vlinder as vl
-from vlinder import *
-```
-
-**Step 7:** Retrieve the path of the data folder from the package. This folder contains the input data of the cases.
-```
-path = Path(os.path.dirname(vlinder.__file__)) / 'data'
-```
-
-**Step 8:** Specify the file format of the input data and the case you want to investigate. By default we use Beerwiser case in xlsx format.
-```
-file_format = 'xlsx'
-name = 'beerwiser'
-```
-
-**Step 9:** Call the Responsible Business Simulator to investigate the case.
-```
-case = TheResponsibleBusinessSimulator(path, file_format, name)
-```
-
-## Code of Conduct
-- Be kind
-- Be welcoming
-- Don't be a jerk
+## 📖 Code of Conduct
+- 😃 Be kind
+- 🤗 Be welcoming
+- ❌ Don't be a jerk

@@ -2,9 +2,34 @@
 This file contains the Appreciate class that deals with the calculation of appreciations.
 """
 import math
+import warnings
 import pandas as pd
 import numpy as np
 from vlinder.utils import get_values_from_target
+
+
+class AppreciationError(Exception):
+    """
+    This class deals with the error handling of our appreciate calculations.
+    """
+
+    def __init__(self, message):  # ignore warning about super-init | pylint: disable=W0231
+        self.message = message
+
+    def __str__(self):
+        return f"Appreciation Error: {self.message}"
+
+
+class AppreciationWarning(UserWarning):
+    """
+    This class deals with the error handling of our appreciate calculations.
+    """
+
+    def __init__(self, message):  # ignore warning about super-init | pylint: disable=W0231
+        self.message = message
+
+    def __str__(self):
+        return f"Appreciation Warning: {self.message}"
 
 
 class Appreciate:
@@ -15,7 +40,6 @@ class Appreciate:
         self.output_dict = output_dict
         self.start_and_end_points = self._get_start_and_end_points()
 
-    # TODO: monetary values
     def _get_start_and_end_points(self) -> dict:
         """
         This function obtains the minimum and maximum values of the calculated key_output values, over ALL scenarios
@@ -28,6 +52,48 @@ class Appreciate:
 
         for key_output in values_as_df.columns:
             boundaries[key_output] = [values_as_df[key_output].min(), values_as_df[key_output].max()]
+
+        # Change the boundries to max and min key output value provides by the user if key_output_automatic = 0
+
+        for i in range(len(self.input_dict["key_output_automatic"])):
+            # Give error message when start or end piont are NOT given by user while key_output_automatic = 0
+            if self.input_dict["key_output_automatic"][i] == 0 and (
+                np.isnan(self.input_dict["key_output_start"][i]) or np.isnan(self.input_dict["key_output_end"][i])
+            ):
+                raise AppreciationError(
+                    "key_output_start and/or key_output_end is NOT provided while key_output_automatic = 0"
+                )
+
+            # Give warning message when start or end piont are given by user while key_output_automatic = 1
+            if self.input_dict["key_output_automatic"][i] == 1 and (
+                ~np.isnan(self.input_dict["key_output_start"][i]) or ~np.isnan(self.input_dict["key_output_end"][i])
+            ):
+                warnings.warn(
+                    "key_output_start and/or key_output_end is provided while key_output_automatic = 1",
+                    AppreciationWarning,
+                )
+
+        indices_automatic = [i for i, x in enumerate(self.input_dict["key_output_automatic"]) if x == 0]
+        key_output_start_automatic = self.input_dict["key_output_start"][indices_automatic].tolist()
+        key_output_end_automatic = self.input_dict["key_output_end"][indices_automatic].tolist()
+        selected_key_output_automatic = self.input_dict["key_outputs"][indices_automatic].tolist()
+
+        for index, _ in enumerate(selected_key_output_automatic):
+            boundaries[selected_key_output_automatic[index]] = [
+                key_output_start_automatic[index],
+                key_output_end_automatic[index],
+            ]
+
+        # For monetary key outputs, use all monetary key output values to determine the start and end point
+        indices_monetary = [i for i, x in enumerate(self.input_dict["key_output_monetary"]) if x == 1]
+        selected_key_output_monetary = self.input_dict["key_outputs"][indices_monetary].tolist()
+
+        all_values = []
+        for key in selected_key_output_monetary:
+            all_values.extend(boundaries[key])
+
+        for index, _ in enumerate(selected_key_output_monetary):
+            boundaries[selected_key_output_monetary[index]] = [min(all_values), max(all_values)]
 
         return boundaries
 
@@ -42,8 +108,8 @@ class Appreciate:
         stb_ind = args["key_output_smaller_the_better"]
 
         # Option 0A: values lie outside the boundaries. Return maximum or minimum based on STB
-        if value < start_and_end[0] or value > start_and_end[1]:
-            return stb_ind * (value < start_and_end[0]) * 100 + (1 - stb_ind) * (value > start_and_end[1]) * 100
+        if value <= start_and_end[0] or value >= start_and_end[1]:
+            return stb_ind * (value <= start_and_end[0]) * 100 + (1 - stb_ind) * (value >= start_and_end[1]) * 100
 
         # Option 0B: start and end value are the same --> indifferent so return 0
         if start_and_end[1] - start_and_end[0] < 1e-6:
@@ -91,7 +157,6 @@ class Appreciate:
         """
         This function calculates the appreciation values, both weighted as well as unweighted for the key outputs for a
         given scenario and ALL decision makers options. Results are stored within the output_dict.
-        :param scenario: given scenario
         :param value_dict_in: dictionary corresponding with given scenario
         :return: None as results are stored within the output_dict
         """
@@ -106,6 +171,7 @@ class Appreciate:
         """ ""
         for _, value_dict in self.output_dict.items():
             self.appreciate_single_scenario(value_dict)
+        self._calculate_best_dmo()
         self._apply_scenario_weights()
         print("Key output values have been processed | Appreciated, weighted & aggregated")
 
@@ -181,3 +247,18 @@ class Appreciate:
                 appreciation = self.output_dict[scenario][option]["decision_makers_option_appreciation"]
                 weighted_appreciation = appreciation * weight / total_weight
                 self.output_dict[scenario][option]["scenario_appreciations"] = weighted_appreciation
+
+    def _calculate_best_dmo(self) -> None:
+        """
+        This function calculates the sum of all weighted appreciations per DMO and return the highest sum
+        :return: None as results are stored within the output_dict
+        """
+        for scenario in self.input_dict["scenarios"]:
+            max_sum = 0
+            best_option = ""
+            for dmo in self.output_dict[scenario].keys():
+                sum_dmo = sum(self.output_dict[scenario][dmo]["weighted_appreciations"].values())
+                if sum_dmo > max_sum:
+                    max_sum = sum_dmo
+                    best_option = dmo
+            self.output_dict[scenario]["highest_weighted_dmo"] = best_option

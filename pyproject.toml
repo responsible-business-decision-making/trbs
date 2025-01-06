@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "vlinder"
-version = "1.1.2"
+version = "1.2.1"
 authors = [
   {name="Vlinder team"},
 ]
@@ -17,11 +17,14 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-"pandas",
-"numpy",
-"openpyxl",
-"matplotlib",
-"xlsxwriter",
+    "pandas",
+    "numpy",
+    "openpyxl",
+    "matplotlib",
+    "xlsxwriter",
+    "dataframe_image",
+    "fpdf2",
+    "opencv-python"
 ]
 
 [tool.setuptools]
