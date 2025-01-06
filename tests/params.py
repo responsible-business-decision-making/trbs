@@ -84,19 +84,9 @@ INPUT_DICT_BEERWISER = {
             "Appreciation",
         ]
     ),
-    "case_text_elements": np.array(["strategic_challenge"]),
+    "case_text_elements": np.array(["title_test", "strategic_challenge", "intro_test"]),
     "case_text_element_value": np.array(
-        [
-            "Like other brewers, Beerwiser uses a significant amount of water during the heating process and for "
-            "cleaning bottles and kegs. On average, Beerwiser uses five pints of water to produce one pint of beer. "
-            "In comparison, competitors such as Heineken and Carlsberg used 4.8 and 3.3 pints of water per pint of "
-            "beer, respectively, in 2012 (Appleyard, n.d.). Additionally, injuries among brewery workers reported "
-            "to the Bureau of Labor Statistics have been increasing, rising from 160 in 2011 to 530 in "
-            "2014 (Roth, 2016). This issue is also present at our brewery. The strategic challenge we face is "
-            "determining which investments will lead to a more sustainable brewing process. We aim to create "
-            "transparency for our key stakeholders regarding the potential value to our organization from reducing "
-            "water consumption and workplace accidents."
-        ]
+        ["test_title", "nan", "test_intro"]
     ),
     "key_outputs": np.array(["Accidents reduction", "Water use reduction", "Production cost reduction"]),
     "key_output_theme": np.array(["People", "Planet", "Profit"]),
