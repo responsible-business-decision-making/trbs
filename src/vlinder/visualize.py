@@ -63,7 +63,6 @@ class Visualize:
             "show_legend",
             "save",
             "number_iteration",
-            "categorical",
             "input_variables",
         ]
 
@@ -77,7 +76,7 @@ class Visualize:
             if argument not in self.available_kwargs:
                 raise VisualizationError(f"Invalid argument '{argument}'")
 
-    def _find_dimension_level(self, my_dict: dict, target_key: str, level: int = 1) -> int or None:
+    def _find_dimension_level(self, my_dict: dict, target_key: str, level: int = 1):
         """
         This recursive function returns the dimension level (level of nesting) for a given dictionary and target key.
         For example in dictionary {A: {B: {C: 1.23, ..}, ..}, ..}. 'A' is nested at level 1, B at level 2 & C level 3.
@@ -132,9 +131,10 @@ class Visualize:
         cmap = mpl.cm.Blues(np.linspace(0, 1, 30))
         cmap = mpl.colors.ListedColormap(cmap[:8, :-1])
 
-        # style
-        if "categorical" not in kwargs:
-            styler.format(number_formatter)
+        # Apply number formatting only to numeric columns
+        numeric_columns = styler.data.select_dtypes(include=[np.number]).columns
+        styler.format({col: number_formatter for col in numeric_columns})
+
         styler.set_caption(table_name)
         if "input_variables" not in kwargs:
             styler.background_gradient(cmap=cmap, axis=1)
@@ -238,21 +238,17 @@ class Visualize:
                 dataframe[key] = self.input_dict[key]
                 key_value = key[:-1] + "_theme"
                 dataframe[key_value] = self.input_dict[key_value]
-                dataframe.set_index(key, inplace=True)
-                kwargs["categorical"] = True
             elif key == "fixed_inputs":
                 if number_of_iter == -1:
                     dataframe[key] = self.input_dict[key]
                     key_value = key[:-1] + "_value"
                     dataframe[key_value] = self.input_dict[key_value]
-                    dataframe.set_index(key, inplace=True)
                 else:
                     dataframe[key] = self.input_dict[key][(number_of_iter * 10) : ((number_of_iter * 10) + 10)]
                     key_value = key[:-1] + "_value"
                     dataframe[key_value] = self.input_dict[key_value][
                         (number_of_iter * 10) : ((number_of_iter * 10) + 10)
                     ]
-                    dataframe.set_index(key, inplace=True)
             elif key == "scenarios":
                 dataframe = self._create_table_n_col(
                     dataframe, key, key[:-1] + "_value", "external_variable_inputs", "External variable input"
@@ -262,18 +258,15 @@ class Visualize:
                     dataframe, key, key[:-1] + "_value", "internal_variable_inputs", "Internal variable input"
                 )
             table_name = f"Values of {self._str_snake_case_to_text(key)}"
-            dataframe = self._table_styler(dataframe.style, table_name, **kwargs)
+            styled_df = self._table_styler(dataframe.style, table_name, **kwargs)
             if number_of_iter == -1:
                 name_table = "/table" + str(key)
             else:
                 name_table = "/table" + str(key) + str(number_of_iter)
             if "save" in kwargs:
-                dfi.export(dataframe, "images" + name_table + ".png")
-            else:
-                return dataframe
+                dfi.export(styled_df, "images" + name_table + ".png", table_conversion="matplotlib")
         else:
             table_data = self._format_data_for_visual(key)
-
             # Filter the data based on potentially provided arguments by the user.
             table_data, name_str = self._apply_filters(table_data, **kwargs)
             table_data = (
@@ -283,7 +276,8 @@ class Visualize:
                 .rename_axis(None, axis=1)
             )
             table_name = f"Values of {self._str_snake_case_to_text(key)}{name_str}"
-            return self._table_styler(table_data.style, table_name)
+            styled_df = self._table_styler(table_data.style, table_name)
+        return styled_df
 
     def _create_table_n_col(self, dataframe, col_names, col_values, row_names, left_col_header) -> pd.DataFrame:
         """
@@ -298,10 +292,18 @@ class Visualize:
         input_info_col_values = self.input_dict[col_values]
 
         dataframe[left_col_header] = self.input_dict[row_names]
-        for row, col in enumerate(input_info_col_names):
-            dataframe[input_info_col_names[row]] = input_info_col_values[row]
-        dataframe.set_index(left_col_header, inplace=True)
+        for row in enumerate(input_info_col_names):
+            dataframe[input_info_col_names[row[0]]] = input_info_col_values[row[0]]
         return dataframe
+
+    def map_values(self, dmo):
+        """
+        This function maps the decision_makers_option to the corresponding theme
+        :param dmo: name of the decision_makers_option
+        :return: the corresponding theme
+        """
+        index = np.where(self.input_dict["key_outputs"] == dmo)[0][0]
+        return self.input_dict["key_output_theme"][index]
 
     def _create_barchart(self, key: str, **kwargs) -> None:
         """
@@ -317,10 +319,31 @@ class Visualize:
 
         appreciations = self._format_data_for_visual(key)
         bar_data, name_str = self._apply_filters(appreciations, drop_used=True, **kwargs)
-        rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
-        bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
-        axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5))
-        self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
+        if key == "decision_makers_option_appreciation":
+            rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
+            bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
+            axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5))
+            self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
+        else:
+            # Apply the function to the "weighted_appreciations" column and add as new column
+            bar_data["themes"] = bar_data[key].apply(self.map_values)
+
+            # Create a dictionary to map themes to colors
+            unique_themes = bar_data["themes"].unique()
+            # give each decision makers options belonging to the same theme, the same color
+            theme_colors = {theme: self.colors[i % len(self.colors)] for i, theme in enumerate(unique_themes)}
+
+            # Map the colors to the themes
+            bar_colors = bar_data["themes"].map(theme_colors)
+
+            rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
+            bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
+            axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=bar_colors, figsize=(10, 5))
+            # Add border to each bar
+            for patch in axis.patches:
+                patch.set_edgecolor("white")
+                patch.set_linewidth(1)
+            self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
 
         if "save" in kwargs:
             plt.savefig("images" + "/figure.png", bbox_inches="tight")

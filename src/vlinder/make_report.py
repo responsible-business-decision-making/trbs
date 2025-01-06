@@ -6,7 +6,7 @@ import os
 import shutil
 from pathlib import Path
 from datetime import datetime
-import cv2
+from PIL import Image
 from fpdf import FPDF
 
 
@@ -84,8 +84,8 @@ def footer_page(pdf, name, orientation):
         pdf.set_y(175)
     pdf.set_font("helvetica", "I", 8)
     pdf.set_text_color(0, 0, 0)
-    pdf.cell(w=0, h=10, text=name, border=0, align="L")
-    pdf.cell(w=0, h=10, text=f"Page {pdf.page_no()}", border=0, align="R")
+    pdf.cell(0, 10, name, 0, 0, "L")
+    pdf.cell(0, 0, f"Page {pdf.page_no()}", 0, 0, "R")
     return pdf
 
 
@@ -96,11 +96,32 @@ def determine_position_images(orientation, image):
     :param image: information about the image
     :return: the right position
     """
+    # Define the maximum dimensions for the image based on the orientation
     if orientation == "Landscape":
-        max_image, width_image, x_pos = 800, 250, 150 - image.shape[1] / 5.32
+        max_image_width = 180  # Example value, adjust as needed
+        max_image_height = 150  # Example value, adjust as needed
     else:
-        max_image, width_image, x_pos = 500, 150, 100 - image.shape[1] / 6.3
-    return max_image, width_image, x_pos
+        max_image_width = 180  # Example value, adjust as needed
+        max_image_height = 270  # Example value, adjust as needed
+
+    # Calculate the width and height to maintain the aspect ratio
+    aspect_ratio = image.width / image.height
+    if image.width > max_image_width or image.height > max_image_height:
+        if aspect_ratio > 1:
+            width_image = max_image_width
+            height_image = max_image_width / aspect_ratio
+        else:
+            height_image = max_image_height
+            width_image = max_image_height * aspect_ratio
+    else:
+        width_image = image.width
+        height_image = image.height
+
+    # Calculate the x position to center the image
+    x_pos = (max_image_width - width_image) / 2 + 40  # Adjust the 10 as needed for padding
+    y_pos = 50  # Adjust the 60 as needed for padding
+
+    return width_image, height_image, x_pos, y_pos
 
 
 class MakeReport:
@@ -209,7 +230,8 @@ class MakeReport:
         :return: the created report
         """
         # Make a temp directory for the images needed for the report
-        os.mkdir("images")
+        if not os.path.exists("images"):
+            os.mkdir("images")
         rgb = [0, 0, 120]
         pdf = FPDF(orientation=orientation)
         pdf.set_title("Report of the " + self.name + " case")
@@ -218,18 +240,18 @@ class MakeReport:
         pdf = title_page_title(pdf, "Report of the " + self.name + " case", rgb)
         # Search for a logo. if yes, place in the middle of the slide
         if os.path.exists("logos/" + self.name + ".jpeg"):
-            image = cv2.imread("logos/" + self.name + ".jpeg")
-            max_image, width_image, x_pos = determine_position_images(orientation, image)
-            if image.shape[1] > max_image:
-                pdf.image("logos/" + self.name + ".jpeg", x=25, y=50, w=width_image)
-            else:
-                pdf.image("logos/" + self.name + ".jpeg", x=x_pos, y=50)
+            # Open the image using Pillow
+            image_path = "logos/" + self.name + ".jpeg"
+            image = Image.open(image_path)
+            width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
+            pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
         pdf = title_page_subtitle(pdf, "Responsible business decision making \n" + str(datetime.now().date()))
         # Create Strategic Challenge page
         pdf.add_page()
         pdf = chapter_title(pdf, "Strategic Challenge", rgb)
         pdf = chapter_subtitle(pdf, self.make_strategic_challenge())
         pdf = footer_page(pdf, self.name, orientation)
+
         # Create Input variables pages
         for input_tables in ["key_outputs_theme", "decision_makers_options", "scenarios"]:
             pdf.add_page()
@@ -239,12 +261,12 @@ class MakeReport:
             pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
             pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
             # Search for the right table related to the input_table and place it in the middle of the slide
-            image = cv2.imread("images" + "/table" + input_tables + ".png")
-            max_image, width_image, x_pos = determine_position_images(orientation, image)
-            if image.shape[1] > max_image:
-                pdf.image("images" + "/table" + input_tables + ".png", x=25, y=60, w=width_image)
-            else:
-                pdf.image("images" + "/table" + input_tables + ".png", x=x_pos, y=60)
+            image_path = "images/table" + input_tables + ".png"
+            image = Image.open(image_path)
+            # Determine the position and size for the image
+            width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
+            # Add the image to the PDF with the appropriate size and position
+            pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
             pdf = footer_page(pdf, self.name, orientation)
 
         for input_tables in ["fixed_inputs"]:
@@ -266,22 +288,14 @@ class MakeReport:
                     pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
                 pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
                 self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
-                image = cv2.imread("images" + "/table" + input_tables + str(number_iteration) + ".png")
-                max_image, width_image, x_pos = determine_position_images(orientation, image)
-                if image.shape[1] > max_image:
-                    pdf.image(
-                        "images" + "/table" + input_tables + str(number_iteration) + ".png",
-                        x=25,
-                        y=50,
-                        w=width_image,
-                    )
-                else:
-                    pdf.image(
-                        "images" + "/table" + input_tables + str(number_iteration) + ".png",
-                        x=x_pos,
-                        y=50,
-                    )
+                image_path = "images" + "/table" + input_tables + str(number_iteration) + ".png"
+                image = Image.open(image_path)
+                # Determine the position and size for the image
+                width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
+                # Add the image to the PDF with the appropriate size and position
+                pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
                 pdf = footer_page(pdf, self.name, orientation)
+
         # Create output slide with the weighted appreciations
         pdf.add_page()
         pdf = chapter_title(

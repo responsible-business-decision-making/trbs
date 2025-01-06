@@ -100,7 +100,7 @@ class TheResponsibleBusinessSimulator:
         if not self.exporter:
             self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
         self.exporter.create_template_for_requested_format(requested_format)
-        
+
     def modify(self, input_dict_key, element_key, new_value):
         """
         This function changes the value of one of the inputs in the input_dict.
@@ -136,7 +136,7 @@ class TheResponsibleBusinessSimulator:
             ready = True
         return ready
 
-    def make_report(self, scenario, orientation="Portrait", output_path=Path(str(Path.cwd()) + "/reports/")):
+    def make_report(self, scenario, orientation="Landscape", output_path=Path(str(Path.cwd()) + "/reports/")):
         """This function deals with transforming a case to a Report.
         :param output_path: desired location of the report
         :param scenario: the selected scenario of the case
