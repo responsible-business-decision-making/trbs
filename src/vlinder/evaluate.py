@@ -66,17 +66,6 @@ class Evaluate:
         """This helper function returns the FIRST index of a value for a given key and value of self.input_dict."""
         return np.where(self.input_dict[key] == value)[0][0]
 
-    def _squeeze(self, argument_1_value: float, squeeze_args: dict) -> int:
-        """This functions evaluates ONLY the squeeze * operator function."""
-        division_part = self.operators_dict["/"](argument_1_value, squeeze_args["saturation_point"])
-        result = (
-            min(1, division_part)
-            * squeeze_args["accessibility"]
-            * squeeze_args["probability_of_success"]
-            * squeeze_args["maximum_effect"]
-        )
-        return result
-
     def _get_key_outputs(self) -> dict:
         """
         This function retrieves the current values of the key outputs, based on the value_dict.
@@ -132,23 +121,9 @@ class Evaluate:
             arg2 = self.input_dict["argument_2"][index]
             operator = self.input_dict["operator"][index]
 
-            # squeezed * has its own evaluation function
-            if operator == "squeezed *":
-                dest_result = dest_value + self._squeeze(
-                    self._get_value_of_argument(arg1),
-                    {
-                        "saturation_point": self.input_dict["saturation_point"][index],
-                        "accessibility": self.input_dict["accessibility"][index],
-                        "probability_of_success": self.input_dict["probability_of_success"][index],
-                        "maximum_effect": self.input_dict["maximum_effect"][index],
-                    },
-                )
-            # All other operators are calculated using a general approach
-            else:
-                dest_result = dest_value + self._evaluate_single_dependency(
-                    self._get_value_of_argument(arg1), self._get_value_of_argument(arg2), operator
-                )
-
+            dest_result = dest_value + self._evaluate_single_dependency(
+                self._get_value_of_argument(arg1), self._get_value_of_argument(arg2), operator
+            )
             # update the value dictionary
             result = {dest: dest_result}
             self.value_dict.update(result)
