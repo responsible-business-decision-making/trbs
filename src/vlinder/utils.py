@@ -1,6 +1,9 @@
 """
 This module contains general helper functions
 """
+import sys
+import os
+from functools import wraps
 
 
 def round_all_dict_values(my_dict: dict, digits: int = 2) -> dict:
@@ -80,3 +83,27 @@ def check_list_content(input_list: list) -> str:
     if contains_dicts and not contains_numbers:
         return "dictionaries"
     return "other"
+
+
+def suppress_print(func):
+    """
+    A decorator that suppresses the print output of a function.
+    :param func: the function to wrap
+    :return: the result of the function without print output
+    """
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        # Save the original sys.stdout
+        original_stdout = sys.stdout
+        try:
+            # Redirect standard output to os.devnull (nothing)
+            with open(os.devnull, "w", encoding="utf-8") as devnull:
+                sys.stdout = devnull
+                result = func(*args, **kwargs)
+        finally:
+            # Restore the original sys.stdout
+            sys.stdout = original_stdout
+        return result
+
+    return wrapper
