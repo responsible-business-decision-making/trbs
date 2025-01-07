@@ -55,6 +55,7 @@ class Visualize:
             "scenarios",
             "fixed_inputs",
             "decision_makers_options",
+            "scenario_appreciations",
         ]
         self.available_kwargs = [
             "scenario",
@@ -312,14 +313,14 @@ class Visualize:
         :return: a plotted barchart
         """
         dims = self._find_dimension_level(self.outcomes, key)
-        if dims > 2 and "scenario" not in kwargs:
+        if dims > 2 and "scenario" not in kwargs and not ("stacked" in kwargs and key == "scenario_appreciations"):
             raise VisualizationError(f"Too many dimensions ({dims}). Please specify a scenario")
         stacked = kwargs["stacked"] if "stacked" in kwargs else True
         show_legend = kwargs["show_legend"] if "show_legend" in kwargs else True
 
         appreciations = self._format_data_for_visual(key)
         bar_data, name_str = self._apply_filters(appreciations, drop_used=True, **kwargs)
-        if key == "decision_makers_option_appreciation":
+        if (key == "decision_makers_option_appreciation") | (key == "scenario_appreciations"):
             rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
             bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
             axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5))
@@ -327,15 +328,12 @@ class Visualize:
         else:
             # Apply the function to the "weighted_appreciations" column and add as new column
             bar_data["themes"] = bar_data[key].apply(self.map_values)
-
             # Create a dictionary to map themes to colors
             unique_themes = bar_data["themes"].unique()
             # give each decision makers options belonging to the same theme, the same color
             theme_colors = {theme: self.colors[i % len(self.colors)] for i, theme in enumerate(unique_themes)}
-
             # Map the colors to the themes
             bar_colors = bar_data["themes"].map(theme_colors)
-
             rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
             bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
             axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=bar_colors, figsize=(10, 5))
