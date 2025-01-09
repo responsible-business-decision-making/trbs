@@ -8,6 +8,8 @@ Business Simulator Case.
 
 from pathlib import Path
 import os
+import copy
+
 import numpy as np
 import matplotlib
 
@@ -71,6 +73,12 @@ class TheResponsibleBusinessSimulator:
             * len(self.input_dict["decision_makers_options"])
             * len(self.input_dict["key_outputs"])
         )
+
+    def copy(self):
+        """
+        Creates a deep copy of the instance.
+        """
+        return copy.deepcopy(self)
 
     def build(self):
         """This function builds all necessary elements for a generic RBS case"""
@@ -158,7 +166,5 @@ class TheResponsibleBusinessSimulator:
         self.input_dict = case_optimizer.optimize_single_scenario(
             scenario, kwargs.get("new_dmo_name", "Optimized DMO"), kwargs.get("max_combinations", 60000)
         )
-        new_case_name = kwargs.get("new_case_name", None)
-        if new_case_name is None:
-            new_case_name = self.name + "- Optimized"
+        new_case_name = kwargs.get("new_case_name", self.name + "- Optimized")
         self.name = new_case_name

@@ -3,9 +3,9 @@ This module contains all tests for the Optimize() class
 """
 import pytest
 import numpy as np
-from .params import INPUT_DICT_BEERWISER, OUTPUT_DICT_BEERWISER
 from vlinder.optimize import Optimize
 from vlinder.utils import get_values_from_target, suppress_print
+from .params import INPUT_DICT_BEERWISER, OUTPUT_DICT_BEERWISER
 
 
 @pytest.fixture(name="optimize_beerwiser")

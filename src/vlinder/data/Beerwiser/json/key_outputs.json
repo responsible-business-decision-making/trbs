@@ -36,10 +36,6 @@
             {
                 "name":"end",
                 "type":"number"
-            },
-            {
-                "name":"threshold",
-                "type":"number"
             }
         ],
         "primaryKey":[
@@ -57,8 +53,7 @@
             "linear":1,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         },
         {
             "index":1,
@@ -69,8 +64,7 @@
             "linear":1,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         },
         {
             "index":2,
@@ -81,8 +75,7 @@
             "linear":0,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         }
     ]
 }

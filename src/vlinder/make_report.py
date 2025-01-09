@@ -134,6 +134,7 @@ class MakeReport:
     This class deals with the transformation into a different format and export of output of an RBS case.
     """
 
+    # pylint: disable=too-many-arguments
     def __init__(self, output_path, name, input_dict, output_dict, visualize):
         self.output_path = Path(output_path)
         self.folder_name = ""
