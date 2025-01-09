@@ -127,7 +127,7 @@ that theme. Then the weight becomes:
 $$w= \frac{w_{ko}}{w_{kos|t}} \cdot \frac{w_{kos|t}}{w_{ts}} = \frac{w_{ko}}{w_{ts}}$$
 where by defintion the sum of theme weights equals the sum of all key outputs.
 
-## 🤩 .visualize()
+## 📊 .visualize()
 **Usage:**
 ```python
 # example of a table 
