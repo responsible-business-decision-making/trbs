@@ -6,6 +6,7 @@ from pathlib import Path
 import pandas as pd
 
 
+# pylint: disable=too-few-public-methods
 class CaseExporter:
     """
     This class deals with the transformation into a different format and export of output of an RBS case.

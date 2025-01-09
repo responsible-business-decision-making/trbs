@@ -245,11 +245,12 @@ class Visualize:
                     key_value = key[:-1] + "_value"
                     dataframe[key_value] = self.input_dict[key_value]
                 else:
-                    dataframe[key] = self.input_dict[key][(number_of_iter * 10) : ((number_of_iter * 10) + 10)]
+                    start_idx = number_of_iter * 10
+                    end_idx = start_idx + 10
+
+                    dataframe[key] = self.input_dict[key][start_idx:end_idx]
                     key_value = key[:-1] + "_value"
-                    dataframe[key_value] = self.input_dict[key_value][
-                        (number_of_iter * 10) : ((number_of_iter * 10) + 10)
-                    ]
+                    dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
             elif key == "scenarios":
                 dataframe = self._create_table_n_col(
                     dataframe, key, key[:-1] + "_value", "external_variable_inputs", "External variable input"
@@ -280,6 +281,7 @@ class Visualize:
             styled_df = self._table_styler(table_data.style, table_name)
         return styled_df
 
+    # pylint: disable=too-many-arguments
     def _create_table_n_col(self, dataframe, col_names, col_values, row_names, left_col_header) -> pd.DataFrame:
         """
         This function makes it possible to iterate over all cells in a table

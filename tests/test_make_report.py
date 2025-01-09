@@ -5,9 +5,9 @@ This module contains all tests for the Make_report() class
 from pathlib import Path
 import shutil
 import pytest
-from .params import INPUT_DICT_BEERWISER, OUTPUT_DICT_BEERWISER
 from vlinder.make_report import MakeReport
 from vlinder.visualize import Visualize
+from .params import INPUT_DICT_BEERWISER, OUTPUT_DICT_BEERWISER
 
 
 def visualize(visual_request, key, **kwargs):

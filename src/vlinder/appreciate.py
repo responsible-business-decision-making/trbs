@@ -40,6 +40,7 @@ class Appreciate:
         self.output_dict = output_dict
         self.start_and_end_points = self._get_start_and_end_points()
 
+    # pylint: disable=too-many-locals
     def _get_start_and_end_points(self) -> dict:
         """
         This function obtains the minimum and maximum values of the calculated key_output values, over ALL scenarios

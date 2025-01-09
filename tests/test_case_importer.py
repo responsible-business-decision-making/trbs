@@ -59,7 +59,6 @@ def test_build_template_validators(import_beerwiser_json):
             "automatic",
             "start",
             "end",
-            "threshold",
         ],
         "decision_makers_options": ["internal_variable_input", "decision_makers_option", "value"],
         "scenarios": ["external_variable_input", "scenario", "value"],

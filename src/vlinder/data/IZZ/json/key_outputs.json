@@ -36,10 +36,6 @@
             {
                 "name":"end",
                 "type":"number"
-            },
-            {
-                "name":"threshold",
-                "type":"number"
             }
         ],
         "primaryKey":[
@@ -57,8 +53,7 @@
             "linear":0,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         },
         {
             "index":1,
@@ -69,8 +64,7 @@
             "linear":0,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         },
         {
             "index":2,
@@ -81,8 +75,7 @@
             "linear":0,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         },
         {
             "index":3,
@@ -93,8 +86,7 @@
             "linear":0,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         },
         {
             "index":4,
@@ -105,8 +97,7 @@
             "linear":0,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         },
         {
             "index":5,
@@ -117,8 +108,7 @@
             "linear":0,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         },
         {
             "index":6,
@@ -129,8 +119,7 @@
             "linear":0,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         },
         {
             "index":7,
@@ -141,8 +130,7 @@
             "linear":0,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         },
         {
             "index":8,
@@ -153,8 +141,7 @@
             "linear":0,
             "automatic":1,
             "start":null,
-            "end":null,
-            "threshold":null
+            "end":null
         }
     ]
 }

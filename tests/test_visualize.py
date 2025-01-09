@@ -1,4 +1,4 @@
-# Ignore PEP8 protected-access to client class | pylint: disable=W0212
+# pylint: disable=cyclic-import, protected-access
 """
 This module contains all tests for the Visualize() class. Note that the Visualize class is NOT case dependent.
 Therefore, an arbitrary outcome dictionary is used in these unit tests.
@@ -9,8 +9,8 @@ The following functions are partly tested: _create_barchart (only errors), creat
 import pytest
 import numpy as np
 import pandas as pd
-from .params import OUTPUT_DICT_GENERIC, INPUT_DICT_BEERWISER
 from vlinder.visualize import Visualize, VisualizationError
+from .params import OUTPUT_DICT_GENERIC, INPUT_DICT_BEERWISER
 
 
 @pytest.fixture(name="test_outcomes")
