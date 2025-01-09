@@ -84,8 +84,13 @@ def footer_page(pdf, name, orientation):
         pdf.set_y(175)
     pdf.set_font("helvetica", "I", 8)
     pdf.set_text_color(0, 0, 0)
-    pdf.cell(0, 10, name, 0, 0, "L")
-    pdf.cell(0, 0, f"Page {pdf.page_no()}", 0, 0, "R")
+    pdf.multi_cell(50, 10, name, 0, "L")
+    if orientation == "Landscape":
+        x_position = pdf.w - 60  # Set x-position to the right edge of the page
+    else:
+        x_position = pdf.l_margin  # Set x-position to the left margin of the page
+    pdf.set_xy(x_position, pdf.get_y())  # Set the x-position of the multicell
+    pdf.multi_cell(50, 0, f"Page {pdf.page_no()}", 0, "R")
     return pdf
 
 
