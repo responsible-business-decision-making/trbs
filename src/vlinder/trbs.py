@@ -137,7 +137,7 @@ class TheResponsibleBusinessSimulator:
             ready = True
         return ready
 
-    def make_report(self, scenario, orientation="Portrait", output_path=Path(str(Path.cwd()) + "/reports/")):
+    def make_report(self, scenario, orientation="Landscape", output_path=Path(str(Path.cwd()) + "/reports/")):
         """This function deals with transforming a case to a Report.
         :param output_path: desired location of the report
         :param scenario: the selected scenario of the case
