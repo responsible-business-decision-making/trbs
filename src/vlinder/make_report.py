@@ -306,7 +306,7 @@ class MakeReport:
         # Create for every key_output a dependencygraph slide
         for key_output in self.input_dict["key_outputs"]:
             pdf.add_page()
-            pdf = chapter_title(pdf, "The dependency graph for the key output :" + key_output, rgb)
+            pdf = chapter_title(pdf, "The dependency graph for the key output: " + key_output + key_output, rgb)
 
             dep = DependencyGraph(self.input_dict)
             dep.draw_graph(selected_ko=key_output, save=True)

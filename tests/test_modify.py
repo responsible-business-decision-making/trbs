@@ -4,7 +4,7 @@ This module contains all tests for the modify method in the trbs.py file
 """
 import pytest
 import numpy as np
-from src.vlinder.trbs import TheResponsibleBusinessSimulator
+from vlinder.trbs import TheResponsibleBusinessSimulator
 
 
 @pytest.mark.parametrize(
