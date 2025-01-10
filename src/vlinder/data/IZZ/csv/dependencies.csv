@@ -1,73 +1,149 @@
-destination;argument_1;argument_2;operator;maximum_effect;accessibility;probability_of_success;saturation_point
-Current number of absent employees;Current number of employees;Current absenteeism %;*;;;;
-Costs of full-time absent employee;Number of workable days per year;Average costs of a day lost through absenteeism;*;;;;
-Current absenteeism costs;Current number of absent employees;Costs of full-time absent employee;*;;;;
-Current number of staff turnover;Current number of employees;Current staff turnover %;*;;;;
-Current staff turnover costs;Current number of staff turnover;Average costs of staff turnover;*;;;;
-Current number of productive days per employee;Number of workable days per year;Current productivity %;*;;;;
-Current number of productive days;Current number of employees;Current number of productive days per employee;*;;;;
-Current wage costs;Current number of employees;Average wage costs per employee;*;;;;
-Investment per employee;Healthy eating;Leadership development;+;;;;
-Investment per employee;Physical exercise;Physical strain reduction;+;;;;
-Investment per employee;Psycho-social stress reduction;Salary increase;+;;;;
-Investment per employee;Smoking reduction;Training and development;+;;;;
-Investment per employee;Work-life balance;0;+;;;;
-Share salary increase in total investment;Salary increase;Investment per employee;/;;;;
-Share salary increase in total investment small enough;Share salary increase in total investment;Threshold salary increase effect;<=;;;;
-Effective salary increase;Salary increase;Share salary increase in total investment small enough;*;;;;
-Relative decrease in absenteeism % excluding uncertainty;Psycho-social stress reduction;;squeezed *;0.33;0.71;0.2;180.0
-Relative decrease in absenteeism % excluding uncertainty;Physical strain reduction;;squeezed *;0.3;0.19;0.5;200.0
-Relative decrease in absenteeism % excluding uncertainty;Physical exercise;;squeezed *;0.04;0.5;0.25;125.0
-Relative decrease in absenteeism % excluding uncertainty;Smoking reduction;;squeezed *;0.21;0.232;0.137;390.0
-Relative decrease in absenteeism % excluding uncertainty;Healthy eating;;squeezed *;0.02;0.92;0.8;100.0
-Relative decrease in absenteeism % excluding uncertainty;Work-life balance;;squeezed *;0.38;0.24;0.4;270.0
-Relative decrease in staff turnover % excluding uncertainty;Work-life balance;;squeezed *;0.958;0.24;0.4;270.0
-Relative decrease in staff turnover % excluding uncertainty;Physical strain reduction;;squeezed *;0.5;0.19;0.5;200.0
-Relative decrease in staff turnover % excluding uncertainty;Training and development;;squeezed *;0.19;0.57;0.8;2000.0
-Relative decrease in staff turnover % excluding uncertainty;Effective salary increase;;squeezed *;0.33;0.65;0.7;3600.0
-Relative decrease in staff turnover % excluding uncertainty;Leadership development;;squeezed *;0.0;0.73;0.7;1500.0
-Relative increase in employee satisfaction excluding uncertainty;Physical strain reduction;;squeezed *;0.57;0.19;0.5;200.0
-Relative increase in employee satisfaction excluding uncertainty;Training and development;;squeezed *;0.39;0.57;0.8;2000.0
-Relative increase in employee satisfaction excluding uncertainty;Effective salary increase;;squeezed *;0.1;0.65;0.7;3600.0
-Relative increase in employee satisfaction excluding uncertainty;Work-life balance;;squeezed *;0.64;0.24;0.4;270.0
-Relative increase in employee satisfaction excluding uncertainty;Leadership development;;squeezed *;0.22;0.73;0.7;1500.0
-Direct increase in productivity % excluding uncertainty;Psycho-social stress reduction;;squeezed *;0.07;0.71;0.2;180.0
-Direct increase in productivity % excluding uncertainty;Physical exercise;;squeezed *;0.1;0.5;0.25;125.0
-Direct increase in productivity % excluding uncertainty;Smoking reduction;;squeezed *;0.25;0.232;0.137;390.0
-Relative decrease in absenteeism %;Relative decrease in absenteeism % excluding uncertainty;Relative effect intervention on absenteeism %;*;;;;
-Relative decrease in staff turnover %;Relative decrease in staff turnover % excluding uncertainty;Relative effect intervention on staff turnover %;*;;;;
-Relative increase in employee satisfaction;Relative increase in employee satisfaction excluding uncertainty;Relative effect intervention on employee satisfaction;*;;;;
-Direct increase in productivity %;Direct increase in productivity % excluding uncertainty;Relative effect intervention on productivity %;*;;;;
-Indirect effect employee satisfaction on customer satisfaction including uncertainty;Indirect effect employee satisfaction on customer satisfaction;Relative effect employee satisfaction on customer satisfaction;*;;;;
-Relative indirect increase in productivity % excluding uncertainty;Relative increase in employee satisfaction;Indirect effect employee satisfaction on productivity %;*;;;;
-Relative indirect increase in productivity %;Relative indirect increase in productivity % excluding uncertainty;Relative effect employee satisfaction on productivity %;*;;;;
-New absenteeism %;Current absenteeism %;0;+;;;;
-New absenteeism %;Relative decrease in absenteeism %;Current absenteeism %;-*;;;;
-New staff turnover %;Current staff turnover %;0;+;;;;
-New staff turnover %;Relative decrease in staff turnover %;Current staff turnover %;-*;;;;
-New employee satisfaction;Current employee satisfaction;0;+;;;;
-New employee satisfaction;Relative increase in employee satisfaction;Current employee satisfaction;*;;;;
-New productivity % after direct effect;Current productivity %;Direct increase in productivity %;+;;;;
-New productivity %;New productivity % after direct effect;0;+;;;;
-New productivity %;Relative indirect increase in productivity %;New productivity % after direct effect;*;;;;
-New number of productive days per employee;New productivity %;Number of workable days per year;*;;;;
-New number of employees;Current number of productive days;New number of productive days per employee;/;;;;
-New number of absent employees;New number of employees;New absenteeism %;*;;;;
-New absenteeism costs;New number of absent employees;Costs of full-time absent employee;*;;;;
-New number of staff turnover;New number of employees;New staff turnover %;*;;;;
-New staff turnover costs;New number of staff turnover;Average costs of staff turnover;*;;;;
-New wage costs;New number of employees;Average wage costs per employee;*;;;;
-Decrease in number of employees;Current number of employees;New number of employees;-;;;;
-Total investment;Investment per employee;Current number of employees;*;;;;
-Decrease in absenteeism costs;Current absenteeism costs;New absenteeism costs;-;;;;
-Decrease in staff turnover costs;Current staff turnover costs;New staff turnover costs;-;;;;
-Decrease in wage costs;Current wage costs;New wage costs;-;;;;
-Decrease in absenteeism %;Current absenteeism %;New absenteeism %;-;;;;
-Decrease in staff turnover %;Current staff turnover %;New staff turnover %;-;;;;
-Increase in employee satisfaction;New employee satisfaction;Current employee satisfaction;-;;;;
-Increase in customer satisfaction;Increase in employee satisfaction;Indirect effect employee satisfaction on customer satisfaction including uncertainty;*;;;;
-Increase in production capacity;Decrease in number of employees;New number of productive days per employee;*;;;;
-New customer satisfaction;Current customer satisfaction;Increase in customer satisfaction;+;;;;
-Return on investment €;Decrease in absenteeism costs;Decrease in staff turnover costs;+;;;;
-Return on investment €;Decrease in wage costs;Total investment;-;;;;
-Return on investment %;Return on investment €;Total investment;/;;;;
+destination;argument_1;argument_2;operator
+Current number of absent employees;Current number of employees;Current absenteeism %;*
+Costs of full-time absent employee;Number of workable days per year;Average costs of a day lost through absenteeism;*
+Current absenteeism costs;Current number of absent employees;Costs of full-time absent employee;*
+Current number of staff turnover;Current number of employees;Current staff turnover %;*
+Current staff turnover costs;Current number of staff turnover;Average costs of staff turnover;*
+Current number of productive days per employee;Number of workable days per year;Current productivity %;*
+Current number of productive days;Current number of employees;Current number of productive days per employee;*
+Current wage costs;Current number of employees;Average wage costs per employee;*
+Investment per employee;Healthy eating;Leadership development;+
+Investment per employee;Physical exercise;Physical strain reduction;+
+Investment per employee;Psycho-social stress reduction;Salary increase;+
+Investment per employee;Smoking reduction;Training and development;+
+Investment per employee;Work-life balance;0;+
+Share salary increase in total investment;Salary increase;Investment per employee;/
+Share salary increase in total investment small enough;Share salary increase in total investment;Threshold salary increase effect;<=
+Effective salary increase;Salary increase;Share salary increase in total investment small enough;*
+RD_ABS_pssr_1;Psycho-social stress reduction;RD_ABS_pssr_sp;/
+RD_ABS_pssr_2;RD_ABS_pssr_1;1;min
+RD_ABS_pssr_3;RD_ABS_pssr_2;RD_ABS_pssr_acc;*
+RD_ABS_pssr_4;RD_ABS_pssr_3;RD_ABS_pssr_pos;*
+Relative decrease in absenteeism % excluding uncertainty;RD_ABS_pssr_4;RD_ABS_pssr_me;*
+RD_ABS_psr_1;Physical strain reduction;RD_ABS_psr_sp;/
+RD_ABS_psr_2;RD_ABS_psr_1;1;min
+RD_ABS_psr_3;RD_ABS_psr_2;RD_ABS_psr_acc;*
+RD_ABS_psr_4;RD_ABS_psr_3;RD_ABS_psr_pos;*
+Relative decrease in absenteeism % excluding uncertainty;RD_ABS_psr_4;RD_ABS_psr_me;*
+RD_ABS_pe_1;Physical exercise;RD_ABS_pe_sp;/
+RD_ABS_pe_2;RD_ABS_pe_1;1;min
+RD_ABS_pe_3;RD_ABS_pe_2;RD_ABS_pe_acc;*
+RD_ABS_pe_4;RD_ABS_pe_3;RD_ABS_pe_pos;*
+Relative decrease in absenteeism % excluding uncertainty;RD_ABS_pe_4;RD_ABS_pe_me;*
+RD_ABS_sr_1;Smoking reduction;RD_ABS_sr_sp;/
+RD_ABS_sr_2;RD_ABS_sr_1;1;min
+RD_ABS_sr_3;RD_ABS_sr_2;RD_ABS_sr_acc;*
+RD_ABS_sr_4;RD_ABS_sr_3;RD_ABS_sr_pos;*
+Relative decrease in absenteeism % excluding uncertainty;RD_ABS_sr_4;RD_ABS_sr_me;*
+RD_ABS_he_1;Healthy eating;RD_ABS_he_sp;/
+RD_ABS_he_2;RD_ABS_he_1;1;min
+RD_ABS_he_3;RD_ABS_he_2;RD_ABS_he_acc;*
+RD_ABS_he_4;RD_ABS_he_3;RD_ABS_he_pos;*
+Relative decrease in absenteeism % excluding uncertainty;RD_ABS_he_4;RD_ABS_he_me;*
+RD_ABS_wlb_1;Work-life balance;RD_ABS_wlb_sp;/
+RD_ABS_wlb_2;RD_ABS_wlb_1;1;min
+RD_ABS_wlb_3;RD_ABS_wlb_2;RD_ABS_wlb_acc;*
+RD_ABS_wlb_4;RD_ABS_wlb_3;RD_ABS_wlb_pos;*
+Relative decrease in absenteeism % excluding uncertainty;RD_ABS_wlb_4;RD_ABS_wlb_me;*
+RD_ST_wlb_1;Work-life balance;RD_ST_wlb_sp;/
+RD_ST_wlb_2;RD_ST_wlb_1;1;min
+RD_ST_wlb_3;RD_ST_wlb_2;RD_ST_wlb_acc;*
+RD_ST_wlb_4;RD_ST_wlb_3;RD_ST_wlb_pos;*
+Relative decrease in staff turnover % excluding uncertainty;RD_ST_wlb_4;RD_ST_wlb_me;*
+RD_ST_psr_1;Physical strain reduction;RD_ST_psr_sp;/
+RD_ST_psr_2;RD_ST_psr_1;1;min
+RD_ST_psr_3;RD_ST_psr_2;RD_ST_psr_acc;*
+RD_ST_psr_4;RD_ST_psr_3;RD_ST_psr_pos;*
+Relative decrease in staff turnover % excluding uncertainty;RD_ST_psr_4;RD_ST_psr_me;*
+RD_ST_td_1;Training and development;RD_ST_td_sp;/
+RD_ST_td_2;RD_ST_td_1;1;min
+RD_ST_td_3;RD_ST_td_2;RD_ST_td_acc;*
+RD_ST_td_4;RD_ST_td_3;RD_ST_td_pos;*
+Relative decrease in staff turnover % excluding uncertainty;RD_ST_td_4;RD_ST_td_me;*
+RD_ST_esi_1;Effective salary increase;RD_ST_esi_sp;/
+RD_ST_esi_2;RD_ST_esi_1;1;min
+RD_ST_esi_3;RD_ST_esi_2;RD_ST_esi_acc;*
+RD_ST_esi_4;RD_ST_esi_3;RD_ST_esi_pos;*
+Relative decrease in staff turnover % excluding uncertainty;RD_ST_esi_4;RD_ST_esi_me;*
+RD_ST_ld_1;Leadership development;RD_ST_ld_sp;/
+RD_ST_ld_2;RD_ST_ld_1;1;min
+RD_ST_ld_3;RD_ST_ld_2;RD_ST_ld_acc;*
+RD_ST_ld_4;RD_ST_ld_3;RD_ST_ld_pos;*
+Relative decrease in staff turnover % excluding uncertainty;RD_ST_ld_4;RD_ST_ld_me;*
+RI_ES_psr_1;Physical strain reduction;RI_ES_psr_sp;/
+RI_ES_psr_2;RI_ES_psr_1;1;min
+RI_ES_psr_3;RI_ES_psr_2;RI_ES_psr_acc;*
+RI_ES_psr_4;RI_ES_psr_3;RI_ES_psr_pos;*
+Relative increase in employee satisfaction excluding uncertainty;RI_ES_psr_4;RI_ES_psr_me;*
+RI_ES_td_1;Training and development;RI_ES_td_sp;/
+RI_ES_td_2;RI_ES_td_1;1;min
+RI_ES_td_3;RI_ES_td_2;RI_ES_td_acc;*
+RI_ES_td_4;RI_ES_td_3;RI_ES_td_pos;*
+Relative increase in employee satisfaction excluding uncertainty;RI_ES_td_4;RI_ES_td_me;*
+RI_ES_esi_1;Effective salary increase;RI_ES_esi_sp;/
+RI_ES_esi_2;RI_ES_esi_1;1;min
+RI_ES_esi_3;RI_ES_esi_2;RI_ES_esi_acc;*
+RI_ES_esi_4;RI_ES_esi_3;RI_ES_esi_pos;*
+Relative increase in employee satisfaction excluding uncertainty;RI_ES_esi_4;RI_ES_esi_me;*
+RI_ES_wlb_1;Work-life balance;RI_ES_wlb_sp;/
+RI_ES_wlb_2;RI_ES_wlb_1;1;min
+RI_ES_wlb_3;RI_ES_wlb_2;RI_ES_wlb_acc;*
+RI_ES_wlb_4;RI_ES_wlb_3;RI_ES_wlb_pos;*
+Relative increase in employee satisfaction excluding uncertainty;RI_ES_wlb_4;RI_ES_wlb_me;*
+RI_ES_ld_1;Leadership development;RI_ES_ld_sp;/
+RI_ES_ld_2;RI_ES_ld_1;1;min
+RI_ES_ld_3;RI_ES_ld_2;RI_ES_ld_acc;*
+RI_ES_ld_4;RI_ES_ld_3;RI_ES_ld_pos;*
+Relative increase in employee satisfaction excluding uncertainty;RI_ES_ld_4;RI_ES_ld_me;*
+DI_P_pssr_1;Psycho-social stress reduction;DI_P_pssr_sp;/
+DI_P_pssr_2;DI_P_pssr_1;1;min
+DI_P_pssr_3;DI_P_pssr_2;DI_P_pssr_acc;*
+DI_P_pssr_4;DI_P_pssr_3;DI_P_pssr_pos;*
+Direct increase in productivity % excluding uncertainty;DI_P_pssr_4;DI_P_pssr_me;*
+DI_P_pe_1;Physical exercise;DI_P_pe_sp;/
+DI_P_pe_2;DI_P_pe_1;1;min
+DI_P_pe_3;DI_P_pe_2;DI_P_pe_acc;*
+DI_P_pe_4;DI_P_pe_3;DI_P_pe_pos;*
+Direct increase in productivity % excluding uncertainty;DI_P_pe_4;DI_P_pe_me;*
+DI_P_sr_1;Smoking reduction;DI_P_sr_sp;/
+DI_P_sr_2;DI_P_sr_1;1;min
+DI_P_sr_3;DI_P_sr_2;DI_P_sr_acc;*
+DI_P_sr_4;DI_P_sr_3;DI_P_sr_pos;*
+Direct increase in productivity % excluding uncertainty;DI_P_sr_4;DI_P_sr_me;*
+Relative decrease in absenteeism %;Relative decrease in absenteeism % excluding uncertainty;Relative effect intervention on absenteeism %;*
+Relative decrease in staff turnover %;Relative decrease in staff turnover % excluding uncertainty;Relative effect intervention on staff turnover %;*
+Relative increase in employee satisfaction;Relative increase in employee satisfaction excluding uncertainty;Relative effect intervention on employee satisfaction;*
+Direct increase in productivity %;Direct increase in productivity % excluding uncertainty;Relative effect intervention on productivity %;*
+Indirect effect employee satisfaction on customer satisfaction including uncertainty;Indirect effect employee satisfaction on customer satisfaction;Relative effect employee satisfaction on customer satisfaction;*
+Relative indirect increase in productivity % excluding uncertainty;Relative increase in employee satisfaction;Indirect effect employee satisfaction on productivity %;*
+Relative indirect increase in productivity %;Relative indirect increase in productivity % excluding uncertainty;Relative effect employee satisfaction on productivity %;*
+New absenteeism %;Current absenteeism %;0;+
+New absenteeism %;Relative decrease in absenteeism %;Current absenteeism %;-*
+New staff turnover %;Current staff turnover %;0;+
+New staff turnover %;Relative decrease in staff turnover %;Current staff turnover %;-*
+New employee satisfaction;Current employee satisfaction;0;+
+New employee satisfaction;Relative increase in employee satisfaction;Current employee satisfaction;*
+New productivity % after direct effect;Current productivity %;Direct increase in productivity %;+
+New productivity %;New productivity % after direct effect;0;+
+New productivity %;Relative indirect increase in productivity %;New productivity % after direct effect;*
+New number of productive days per employee;New productivity %;Number of workable days per year;*
+New number of employees;Current number of productive days;New number of productive days per employee;/
+New number of absent employees;New number of employees;New absenteeism %;*
+New absenteeism costs;New number of absent employees;Costs of full-time absent employee;*
+New number of staff turnover;New number of employees;New staff turnover %;*
+New staff turnover costs;New number of staff turnover;Average costs of staff turnover;*
+New wage costs;New number of employees;Average wage costs per employee;*
+Decrease in number of employees;Current number of employees;New number of employees;-
+Total investment;Investment per employee;Current number of employees;*
+Decrease in absenteeism costs;Current absenteeism costs;New absenteeism costs;-
+Decrease in staff turnover costs;Current staff turnover costs;New staff turnover costs;-
+Decrease in wage costs;Current wage costs;New wage costs;-
+Decrease in absenteeism %;Current absenteeism %;New absenteeism %;-
+Decrease in staff turnover %;Current staff turnover %;New staff turnover %;-
+Increase in employee satisfaction;New employee satisfaction;Current employee satisfaction;-
+Increase in customer satisfaction;Increase in employee satisfaction;Indirect effect employee satisfaction on customer satisfaction including uncertainty;*
+Increase in production capacity;Decrease in number of employees;New number of productive days per employee;*
+New customer satisfaction;Current customer satisfaction;Increase in customer satisfaction;+
+Return on investment €;Decrease in absenteeism costs;Decrease in staff turnover costs;+
+Return on investment €;Decrease in wage costs;Total investment;-
+Return on investment %;Return on investment €;Total investment;/
