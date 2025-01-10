@@ -18,6 +18,7 @@ pyvis = "~=0.3.2"
 webdriver-manager = "~=4.0.2"
 networkx = "~=3.2"
 selenium = "~=4.26.1"
+pytest = "~=7.4.0"
 
 [dev-packages]
 
