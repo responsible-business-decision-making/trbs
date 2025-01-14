@@ -245,7 +245,7 @@ class Visualize:
                 else:
                     dataframe[key] = self.input_dict[key][start_idx:end_idx]
                     dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
-                    
+
             elif key == "fixed_inputs":
                 key_value = key[:-1] + "_value"
                 if number_of_iter == -1:
@@ -258,14 +258,14 @@ class Visualize:
             elif key == "scenarios":
                 dataframe = self._create_table_n_col(
                     dataframe, key, key[:-1] + "_value", "external_variable_inputs", "External variable input"
-                    )
+                )
                 if number_of_iter != -1:
                     dataframe = dataframe[start_idx:end_idx]
 
             elif key == "decision_makers_options":
                 dataframe = self._create_table_n_col(
                     dataframe, key, key[:-1] + "_value", "internal_variable_inputs", "Internal variable input"
-                    )
+                )
                 if number_of_iter != -1:
                     dataframe = dataframe[start_idx:end_idx]
 
