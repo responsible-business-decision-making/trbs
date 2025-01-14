@@ -262,7 +262,7 @@ class MakeReport:
             # If there are more than 10 inputs it will generate a maximum of 10 per slide
             if input_tables == "key_outputs_theme":
                 input_tables = "key_outputs"
-            if input_tables in ("decision_makers_options","scenarios"):
+            if input_tables in ("decision_makers_options", "scenarios"):
                 number_of_iterations = round((len(self.input_dict[input_tables[:-1] + "_value"][0]) / 10) + 0.5)
             else:
                 number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
