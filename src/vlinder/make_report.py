@@ -103,8 +103,8 @@ def determine_position_images(orientation, image):
     """
     # Define the maximum dimensions for the image based on the orientation
     if orientation == "Landscape":
-        max_image_width = 180  # Example value, adjust as needed
-        max_image_height = 150  # Example value, adjust as needed
+        max_image_width = 140  # Example value, adjust as needed
+        max_image_height = 120  # Example value, adjust as needed
     else:
         max_image_width = 180  # Example value, adjust as needed
         max_image_height = 270  # Example value, adjust as needed
@@ -134,6 +134,7 @@ class MakeReport:
     This class deals with the transformation into a different format and export of output of an RBS case.
     """
 
+    # pylint: disable=too-many-arguments
     def __init__(self, output_path, name, input_dict, output_dict, visualize):
         self.output_path = Path(output_path)
         self.folder_name = ""
@@ -257,26 +258,14 @@ class MakeReport:
         pdf = chapter_subtitle(pdf, self.make_strategic_challenge())
         pdf = footer_page(pdf, self.name, orientation)
 
-        # Create Input variables pages
-        for input_tables in ["key_outputs_theme", "decision_makers_options", "scenarios"]:
-            pdf.add_page()
-            self.visualize("table", input_tables, save=True)
+        for input_tables in ["key_outputs_theme", "decision_makers_options", "scenarios", "fixed_inputs"]:
+            # If there are more than 10 inputs it will generate a maximum of 10 per slide
             if input_tables == "key_outputs_theme":
                 input_tables = "key_outputs"
-            pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
-            pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
-            # Search for the right table related to the input_table and place it in the middle of the slide
-            image_path = "images/table" + input_tables + ".png"
-            image = Image.open(image_path)
-            # Determine the position and size for the image
-            width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
-            # Add the image to the PDF with the appropriate size and position
-            pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
-            pdf = footer_page(pdf, self.name, orientation)
-
-        for input_tables in ["fixed_inputs"]:
-            # If there are more than 10 fixed inputs it will generate a maximum of 10 per slide
-            number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
+            if input_tables in ("decision_makers_options", "scenarios"):
+                number_of_iterations = round((len(self.input_dict[input_tables[:-1] + "_value"][0]) / 10) + 0.5)
+            else:
+                number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
             for number_iteration in range(0, number_of_iterations):
                 pdf.add_page()
                 if number_of_iterations > 1:
@@ -292,7 +281,11 @@ class MakeReport:
                 else:
                     pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
                 pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
+                if input_tables == "key_outputs":
+                    input_tables = "key_outputs_theme"
                 self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
+                if input_tables == "key_outputs_theme":
+                    input_tables = "key_outputs"
                 image_path = "images" + "/table" + input_tables + str(number_iteration) + ".png"
                 image = Image.open(image_path)
                 # Determine the position and size for the image
