@@ -234,31 +234,41 @@ class Visualize:
             dataframe = pd.DataFrame()
             kwargs["input_variables"] = True
             number_of_iter = kwargs.get("number_iteration", -1)
+            start_idx = number_of_iter * 10
+            end_idx = start_idx + 10
             if key == "key_outputs_theme":
                 key = key[:-6]
-                dataframe[key] = self.input_dict[key]
                 key_value = key[:-1] + "_theme"
-                dataframe[key_value] = self.input_dict[key_value]
-            elif key == "fixed_inputs":
                 if number_of_iter == -1:
                     dataframe[key] = self.input_dict[key]
-                    key_value = key[:-1] + "_value"
                     dataframe[key_value] = self.input_dict[key_value]
                 else:
-                    start_idx = number_of_iter * 10
-                    end_idx = start_idx + 10
-
                     dataframe[key] = self.input_dict[key][start_idx:end_idx]
-                    key_value = key[:-1] + "_value"
                     dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
+                    
+            elif key == "fixed_inputs":
+                key_value = key[:-1] + "_value"
+                if number_of_iter == -1:
+                    dataframe[key] = self.input_dict[key]
+                    dataframe[key_value] = self.input_dict[key_value]
+                else:
+                    dataframe[key] = self.input_dict[key][start_idx:end_idx]
+                    dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
+
             elif key == "scenarios":
                 dataframe = self._create_table_n_col(
                     dataframe, key, key[:-1] + "_value", "external_variable_inputs", "External variable input"
-                )
+                    )
+                if number_of_iter != -1:
+                    dataframe = dataframe[start_idx:end_idx]
+
             elif key == "decision_makers_options":
                 dataframe = self._create_table_n_col(
                     dataframe, key, key[:-1] + "_value", "internal_variable_inputs", "Internal variable input"
-                )
+                    )
+                if number_of_iter != -1:
+                    dataframe = dataframe[start_idx:end_idx]
+
             table_name = f"Values of {self._str_snake_case_to_text(key)}"
             styled_df = self._table_styler(dataframe.style, table_name, **kwargs)
             if number_of_iter == -1:
