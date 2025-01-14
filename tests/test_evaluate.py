@@ -2,10 +2,10 @@
 """This module contains all tests for the Evaluate() class"""
 from pathlib import Path
 import pytest
-from .params import INPUT_DICT_BEERWISER
+from vlinder.trbs import TheResponsibleBusinessSimulator
 from vlinder.evaluate import Evaluate, EvaluationError
 from vlinder.utils import round_all_dict_values
-from vlinder.trbs import TheResponsibleBusinessSimulator
+from .params import INPUT_DICT_BEERWISER
 
 
 @pytest.fixture(name="evaluate_beerwiser")

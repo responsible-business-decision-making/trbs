@@ -254,7 +254,6 @@ class Visualize:
                 else:
                     dataframe[key] = self.input_dict[key][start_idx:end_idx]
                     dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
-
             elif key == "scenarios":
                 dataframe = self._create_table_n_col(
                     dataframe, key, key[:-1] + "_value", "external_variable_inputs", "External variable input"

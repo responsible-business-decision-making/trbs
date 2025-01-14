@@ -85,9 +85,7 @@ INPUT_DICT_BEERWISER = {
         ]
     ),
     "case_text_elements": np.array(["title_test", "strategic_challenge", "intro_test"]),
-    "case_text_element_value": np.array(
-        ["test_title", "nan", "test_intro"]
-    ),
+    "case_text_element_value": np.array(["test_title", "nan", "test_intro"]),
     "key_outputs": np.array(["Accidents reduction", "Water use reduction", "Production cost reduction"]),
     "key_output_theme": np.array(["People", "Planet", "Profit"]),
     "key_output_monetary": np.array([0, 0, 0]),
