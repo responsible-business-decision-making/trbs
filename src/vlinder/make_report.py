@@ -103,7 +103,7 @@ def determine_position_images(orientation, image):
     """
     # Define the maximum dimensions for the image based on the orientation
     if orientation == "Landscape":
-        max_image_width = 140  # Example value, adjust as needed
+        max_image_width = 180  # Example value, adjust as needed
         max_image_height = 120  # Example value, adjust as needed
     else:
         max_image_width = 180  # Example value, adjust as needed
@@ -115,6 +115,8 @@ def determine_position_images(orientation, image):
         if aspect_ratio > 1:
             width_image = max_image_width
             height_image = max_image_width / aspect_ratio
+            if height_image > max_image_height:
+                height_image = max_image_height
         else:
             height_image = max_image_height
             width_image = max_image_height * aspect_ratio
