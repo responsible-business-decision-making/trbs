@@ -485,24 +485,17 @@
         },
         {
             "index":65,
-            "destination":"New Net Promotor Score",
+            "destination":"Increase in Net Promotor Score",
             "argument_1":"ICP condition",
             "argument_2":"Effect of using an internal carbon price on employee engagement",
             "operator":"*"
         },
         {
             "index":66,
-            "destination":"New Net Promotor Score",
+            "destination":"Increase in Net Promotor Score",
             "argument_1":0,
             "argument_2":"Effect of employee engagement on customer satisfaction",
             "operator":"*"
-        },
-        {
-            "index":67,
-            "destination":"New Net Promotor Score",
-            "argument_1":0,
-            "argument_2":"Current Net Promotor Score",
-            "operator":"+"
         }
     ]
 }
