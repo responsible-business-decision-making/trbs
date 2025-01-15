@@ -385,12 +385,6 @@ class DependencyGraph:
         self.input_dict = input_dict
         self.network = None
         self.inc_mat = None
-        self.order = self.input_dict["dependencies_order"]
-        self.destinations = self.input_dict["destination"]
-        self.hierar = self.input_dict["hierarchy"]
-        self.key_outputs = self.input_dict["key_outputs"]
-        self.arg_1 = self.input_dict["argument_1"]
-        self.arg_2 = self.input_dict["argument_2"]
         self.x_coords = {}
         self.y_coords = {}
         self.pos = None
@@ -439,27 +433,26 @@ class DependencyGraph:
 
     def create_inc_mat(self):
         """
-        This function creates the incidence matrix
+        Generate the incidence matrix based on dependencies.
         """
         # Incidence matrix
-        last_calc = max(self.order)
+        last_calc = max(self.input_dict["dependencies_order"])
         self.inc_mat = pd.DataFrame()
-        for i in range(0, last_calc + 1):
+        for i in range(last_calc + 1):
             # Select the first dependency
-            dep = list(self.order).index(i)
-            dest = self.destinations[dep]
-            argument1 = self.arg_1[dep]
-            argument2 = self.arg_2[dep]
+            dep_idx = list(self.input_dict["dependencies_order"]).index(i)
+            dest = self.input_dict["destination"][dep_idx]
+            args = [self.input_dict["argument_1"][dep_idx], self.input_dict["argument_2"][dep_idx]]
 
             # Add the arguments and destinations into the incidence matrix
             if dest not in self.inc_mat.columns:
                 self.inc_mat[dest] = 0
-            for arg in [argument1, argument2]:
+
+            for arg in args:
                 if isinstance(arg, str):
                     if arg not in self.inc_mat.index:
                         self.inc_mat = self.inc_mat.reindex(self.inc_mat.index.tolist() + [arg])
                         self.inc_mat.loc[arg] = 0
-                    self.inc_mat.at[arg, dest] = 1
                     self.inc_mat.at[arg, dest] = 1
 
     def create_network(self):
@@ -482,9 +475,8 @@ class DependencyGraph:
         :param max_gen: the maximum of generations of predecessors one wants in its network
         :return: the total amount of generations in the (filtered) network
         """
-        # Select a key output en select only the predecessors of this outptut
+        # Select a key output en select only the predecessors of this output
         all_predecessors, tot_gen = self.find_all_predecessors(selected_ko, max_gen)
-
         all_predecessors.add(selected_ko)
 
         # Update the graph
@@ -492,7 +484,6 @@ class DependencyGraph:
 
         # Select only the needed columns and indices of the inc matrix
         filtered_columns = [col for col in self.inc_mat.columns if col in all_predecessors]
-
         filtered_index = [idx for idx in self.inc_mat.index if idx in all_predecessors]
 
         # Create the new dataframe
@@ -506,30 +497,18 @@ class DependencyGraph:
         """
         # First set the coordinates for the destinations to its hierarchy
         self.x_coords = {
-            dests: self.hierar[np.where(self.destinations == dests)[0][-1]] for dests in self.inc_mat.columns
+            dests: self.input_dict["hierarchy"][np.where(self.input_dict["destination"] == dests)[0][-1]]
+            for dests in self.inc_mat.columns
         }
 
         # The coordinates of fixed inputs is 0
         for fixed in set(self.inc_mat.index) - set(self.inc_mat.columns):
             self.x_coords[fixed] = 0
 
-        # Sort the dict
-        sorted_items = sorted(self.x_coords.items(), key=lambda item: item[1])
-
-        # Normalise the dict
-        normalized_values = {}
-        rank = 0
-        previous_value = None
-        for key, value in sorted_items:
-            if value != previous_value:
-                normalized_values[key] = rank
-                previous_value = value
-                rank += 1
-            else:
-                normalized_values[key] = rank - 1
-
-        # sorted_dict
-        self.x_coords = {k: normalized_values[k] for k, v in sorted_items}
+        # Normalize x-coordinates
+        unique_ranks = sorted(set(self.x_coords.values()))
+        normalized = {rank: i for i, rank in enumerate(unique_ranks)}
+        self.x_coords = {node: normalized[rank] for node, rank in self.x_coords.items()}
 
     def create_y_coords(self):
         """
@@ -570,7 +549,15 @@ class DependencyGraph:
 
             list_coords.append(coor_dest)
 
-    def draw_graph(self, selected_ko=None, max_gen=None, save=False):
+    def draw_graph(
+        self,
+        selected_ko,
+        max_gen=None,
+        save=False,
+        graph_dir=Path.cwd() / "reports" / "dependency_graphs",
+        sc_dir=Path.cwd() / "images",
+        sc_window_size="1920x1080",
+    ):
         """
         This functions draws the network graph
         :param selected_ko: the key output
@@ -585,7 +572,7 @@ class DependencyGraph:
         self.create_network()
 
         # Filter out the network of a key output if wanted
-        if selected_ko not in self.key_outputs:
+        if selected_ko not in self.input_dict["key_outputs"]:
             raise VisualizationError(f"'{selected_ko}' is not a valid option")
         if isinstance(max_gen, int) is False and max_gen is not None:
             raise VisualizationError(f"'{max_gen}' is not a valid option")
@@ -655,36 +642,35 @@ class DependencyGraph:
             },
         }
 
-        if not os.path.exists(Path(str(Path.cwd()) + "/reports/dependency_graphs")):
-            Path(str(Path.cwd()) + "/reports/dependency_graphs").mkdir()
+        # Create the directory if it doesn't exist
+        if not Path(graph_dir).exists():
+            Path(graph_dir).mkdir(parents=True)
 
-        net.save_graph("reports/dependency_graphs/" + selected_ko.replace(" ", "_") + "_graph.html")
+        graph_location = f"{str(graph_dir)}/{selected_ko.replace(' ', '_')}_graph.html"
+        net.save_graph(graph_location)
 
         # Make a screenshot of the graph if save == true, otherwise open a tab and show the graph
         if save is True:
+            # Use Selenium to take a screenshot
             service = Service(ChromeDriverManager().install())
             options = webdriver.ChromeOptions()
             options.add_argument("headless")
-            options.add_argument("window-size=1920x1080")
-
-            # Open de browser met Selenium
+            options.add_argument(f"window-size={sc_window_size}")
             driver = webdriver.Chrome(service=service, options=options)
 
-            # Maak een absoluut pad naar het bestand
-            bestandspad = Path("reports/dependency_graphs") / f"{selected_ko.replace(' ', '_')}_graph.html"
-            bestandspad_url = bestandspad.resolve().as_uri()
+            # Navigate to the dependency graph
+            driver.get(Path(graph_location).resolve().as_uri())
 
-            # Gebruik het absolute pad in driver.get()
-            driver.get(bestandspad_url)
+            # Wait for the page to fully load
+            time.sleep(2)
 
-            # Geef de pagina wat tijd om volledig te laden
-            time.sleep(2)  # Wacht bijvoorbeeld 2 seconden (dit kan aangepast worden)
+            # Take and store the screenshot
+            if not Path(sc_dir).exists():
+                Path(sc_dir).mkdir(parents=True)
 
-            # Stap 3: Maak een screenshot
-            screenshot_file = "images/keyoutput_" + selected_ko + ".png"
-            driver.save_screenshot(screenshot_file)
+            sc_location = f"{sc_dir}/keyoutput_{selected_ko}.png"
+            driver.save_screenshot(sc_location)
 
-            # Sluit de Selenium-browser
             driver.quit()
         elif save is False:
-            os.system("open 'reports/dependency_graphs/" + f"{selected_ko.replace(' ', '_')}_graph.html'")
+            os.system(f"open '{graph_location}'")

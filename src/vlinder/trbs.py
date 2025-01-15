@@ -100,14 +100,17 @@ class TheResponsibleBusinessSimulator:
     def visualize(self, visual_request, key, **kwargs):
         """This function deals with the visualizations of the outcomes"""
         # Set a Visualize class only if this has not yet been initialised.
+        if visual_request == "dependency_graph":
+            dependency_tree = DependencyGraph(self.input_dict)
+            return dependency_tree.draw_graph(key, **kwargs)
+
         self.visualizer = Visualize(self.input_dict, self.output_dict, self._get_options())
         return self.visualizer.create_visual(visual_request, key, **kwargs)
 
     def transform(self, requested_format, output_path=None):
         """This function deals with transforming a case to a new format."""
         output_path = output_path if output_path is not None else Path.cwd() / "data"
-        if not self.exporter:
-            self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
+        self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
         self.exporter.create_template_for_requested_format(requested_format)
 
     def modify(self, input_dict_key, element_key, new_value):
@@ -145,22 +148,20 @@ class TheResponsibleBusinessSimulator:
             ready = True
         return ready
 
-    def dependency_graph(self):
-        """This function deals with creating the dependency tree"""
-        dependency_tree = DependencyGraph(self.input_dict)
-        return dependency_tree
-
-    def make_report(self, scenario, orientation="Landscape", output_path=Path(str(Path.cwd()) + "/reports/")):
+    def make_report(self, scenario, page_dict=None, orientation="Landscape", output_path=Path.cwd() / "reports/"):
         """This function deals with transforming a case to a Report.
-        :param output_path: desired location of the report
         :param scenario: the selected scenario of the case
+        :param page_dict: dictionary containing the changes that need to be made to the default page dictionary
+        :param output_path: desired location of the report
         :param orientation: the desired orientation for PDF format; there is a choice between Portrait of Landscape
         """
+        page_dict = {} if not page_dict else page_dict
         if self._check_steps_completed():
             # Do not show the graphs in notebook when making a report
             matplotlib.pyplot.ioff()
-            if not self.report:
-                self.report = MakeReport(output_path, self.name, self.input_dict, self.output_dict, self.visualize)
+            self.report = MakeReport(
+                output_path, self.name, self.input_dict, self.output_dict, self.visualize, page_dict
+            )
 
             location_report = self.report.create_report(scenario, orientation, output_path)
             print(location_report)
