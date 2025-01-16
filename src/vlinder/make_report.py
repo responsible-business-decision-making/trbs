@@ -82,6 +82,7 @@ def footer_page(pdf, name):
     pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(50, 10, name, 0, "L")
     x_position = pdf.w - 60  # Set x-position to the right edge of the page
+
     pdf.set_xy(x_position, pdf.get_y())  # Set the x-position of the multicell
     pdf.multi_cell(50, 0, f"Page {pdf.page_no()}", 0, "R")
     return pdf
@@ -254,6 +255,7 @@ class MakeReport:
                 number_of_iterations = round((len(self.input_dict[input_tables[:-1] + "_value"][0]) / 10) + 0.5)
             else:
                 number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
+                
             for number_iteration in range(0, number_of_iterations):
                 pdf.add_page()
                 if number_of_iterations > 1:

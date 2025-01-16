@@ -246,6 +246,7 @@ class Visualize:
                     dataframe[key] = self.input_dict[key][start_idx:end_idx]
                     dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
 
+
             elif key == "fixed_inputs":
                 key_value = key[:-1] + "_value"
                 if number_of_iter == -1:
@@ -253,6 +254,7 @@ class Visualize:
                     dataframe[key_value] = self.input_dict[key_value]
                 else:
                     dataframe[key] = self.input_dict[key][start_idx:end_idx]
+
                     dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
             elif key == "scenarios":
                 dataframe = self._create_table_n_col(
