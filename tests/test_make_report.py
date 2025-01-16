@@ -70,30 +70,26 @@ def test_make_introduction(test_outcomes_report, target_key, expected_result):
     assert result == expected_result
 
 
-@pytest.mark.parametrize("scenario, orientation", [(INPUT_DICT_BEERWISER["scenarios"][0], "Portrait")])
-def test_make_slides_pdf(test_outcomes_report, scenario, orientation):
+@pytest.mark.parametrize("scenario", [(INPUT_DICT_BEERWISER["scenarios"][0])])
+def test_make_slides_pdf(test_outcomes_report, scenario):
     """
     This function tests make_introduction to return the correct title of the imported Excel template.
     :param test_outcomes_report: A MakeReport Class
     :param scenario: the selected scenario
-    :param orientation: the selected orientation
     """
-    result = test_outcomes_report.make_slides_pdf(scenario=scenario, orientation=orientation)
+    result = test_outcomes_report.make_slides_pdf(scenario=scenario)
     shutil.rmtree("images", ignore_errors=True)
     assert str(type(result)) == "<class 'fpdf.fpdf.FPDF'>"
 
 
-@pytest.mark.parametrize("scenario, orientation", [(INPUT_DICT_BEERWISER["scenarios"][1], "Landscape")])
-def test_create_report(
-    test_outcomes_report, scenario, orientation, output_path=Path(str(Path.cwd()) + "/test_reports/")
-):
+@pytest.mark.parametrize("scenario", [(INPUT_DICT_BEERWISER["scenarios"][0])])
+def test_create_report(test_outcomes_report, scenario, output_path=Path(str(Path.cwd()) + "/test_reports/")):
     """
     This function tests make_introduction to return the correct title of the imported Excel template.
     :param test_outcomes_report: A MakeReport Class
     :param scenario: the selected scenario
-    :param orientation: the selected orientation
     """
-    result = test_outcomes_report.create_report(scenario=scenario, orientation=orientation, path=output_path)
+    result = test_outcomes_report.create_report(scenario=scenario, path=output_path)
     # Remove the folder which contains test_report
     shutil.rmtree("test_reports", ignore_errors=True)
     assert "test_reports/" in result

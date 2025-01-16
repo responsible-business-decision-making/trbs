@@ -145,11 +145,10 @@ class TheResponsibleBusinessSimulator:
             ready = True
         return ready
 
-    def make_report(self, scenario, orientation="Landscape", output_path=Path(str(Path.cwd()) + "/reports/")):
+    def make_report(self, scenario, output_path=Path(str(Path.cwd()) + "/reports/")):
         """This function deals with transforming a case to a Report.
         :param output_path: desired location of the report
         :param scenario: the selected scenario of the case
-        :param orientation: the desired orientation for PDF format; there is a choice between Portrait of Landscape
         """
         if self._check_steps_completed():
             # Do not show the graphs in notebook when making a report
@@ -157,7 +156,7 @@ class TheResponsibleBusinessSimulator:
             if not self.report:
                 self.report = MakeReport(output_path, self.name, self.input_dict, self.output_dict, self.visualize)
 
-            location_report = self.report.create_report(scenario, orientation, output_path)
+            location_report = self.report.create_report(scenario, output_path)
             print(location_report)
 
     def optimize(self, scenario, **kwargs):
