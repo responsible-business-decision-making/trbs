@@ -366,3 +366,124 @@ def test_convert_to_relative_weights(import_beerwiser_json, input_dataframe, exp
     assert np.allclose(result["key_output_relative_weight"], expected_output["key_output_relative_weight"])
     for key in ["key_output_theme", "key_output_weight", "themes", "theme_weight"]:
         assert result[key] == expected_output[key]
+
+
+def test_error_weights_key_output(import_beerwiser_json):
+    """
+    This function tests _validate_weights raising an error when key outputs do not match between the key_output sheet
+    and the weight sheet
+    :param import_beerwiser_json: an CaseImporter class for the beerwiser case
+    """
+    # create input data
+    import_beerwiser_json.dataframes_dict["key_outputs"] = pd.DataFrame({"key_output": ["Winnie", "Tigger"]})
+    import_beerwiser_json.dataframes_dict["key_output_weights"] = pd.DataFrame({"key_output": ["Winnie", "Piglet"]})
+
+    with pytest.raises(TemplateError) as template_error:
+        import_beerwiser_json._validate_weights("key_output")
+    expected_result = "Template Error: key_output(s) {'Tigger'} not present in sheet 'key_output_weights'"
+    assert str(template_error.value) == expected_result
+
+
+def test_error_weights_theme(import_beerwiser_json):
+    """
+    This function tests _validate_weights raising an error when themes do not match between the theme sheet
+    and the weight sheet
+    :param import_beerwiser_json: an CaseImporter class for the beerwiser case
+    """
+    # create input data
+    import_beerwiser_json.dataframes_dict["key_outputs"] = pd.DataFrame({"theme": ["Winnie the Pooh", "Disney"]})
+    import_beerwiser_json.dataframes_dict["theme_weights"] = pd.DataFrame(
+        {"theme": ["Winnie the Pooh", "Disney", "Pixar"]}
+    )
+
+    with pytest.raises(TemplateError) as template_error:
+        import_beerwiser_json._validate_weights("theme")
+    expected_result = "Template Error: theme(s) {'Pixar'} only present in sheet 'theme_weights'"
+    assert str(template_error.value) == expected_result
+
+
+def test_error_weights_scenario(import_beerwiser_json):
+    """
+    This function tests _validate_weights raising an error when scenarios do not match between the scenario sheet
+    and the weight sheet
+    :param import_beerwiser_json: an CaseImporter class for the beerwiser case
+    """
+    # create input data
+    import_beerwiser_json.dataframes_dict["scenarios"] = pd.DataFrame({"scenario": ["Happy", "Sad", "Grumpy"]})
+    import_beerwiser_json.dataframes_dict["scenario_weights"] = pd.DataFrame({"scenario": ["Happy", "Grumpy"]})
+
+    with pytest.raises(TemplateError) as template_error:
+        import_beerwiser_json._validate_weights("scenario")
+    expected_result = "Template Error: scenario(s) {'Sad'} not present in sheet 'scenario_weights'"
+    assert str(template_error.value) == expected_result
+
+
+@pytest.mark.parametrize(
+    "ivi, evi, fixed, expected_error",
+    [
+        (
+            set(["Winnie the Pooh"]),
+            set(["Piglet", "Eeyore"]),
+            set([]),
+            "EVI(s) {'Eeyore'} created, but not used in the dependencies.",
+        ),
+        (
+            set(["Winnie the Pooh", "Daisy Duck"]),
+            set(["Piglet"]),
+            set([]),
+            "IVI(s) {'Daisy Duck'} created, but not used in the dependencies.",
+        ),
+        (
+            set(["Winnie the Pooh", "Tigger"]),
+            set(["Piglet", "Tigger"]),
+            set(["Donald Duck"]),
+            "Overlap for input(s) {'Tigger'}. They are used as IVI as well as EVI.",
+        ),
+        (
+            set(["Winnie the Pooh", "Tigger"]),
+            set(["Piglet"]),
+            set(["Donald Duck", "Tigger"]),
+            "Overlap for input(s) {'Tigger'}. They are used as IVI as well as fixed input.",
+        ),
+        (
+            set(["Winnie the Pooh"]),
+            set(["Piglet", "Tigger"]),
+            set(["Donald Duck", "Tigger"]),
+            "Overlap for input(s) {'Tigger'}. They are used as EVI as well as fixed input.",
+        ),
+    ],
+)
+def test_error_input_use_and_naming(import_beerwiser_json, ivi, evi, fixed, expected_error):
+    """
+    This function tests _validate_input_use_and_naming to raise an error when
+        - an IVI or EVI is redundant
+        - The naming of IVI, EVI or fixed input is not unique
+    """
+    # create input data
+    import_beerwiser_json.dataframes_dict["dependencies"] = pd.DataFrame(
+        {"argument_1": ["Winnie the Pooh", "Piglet", "Tigger"], "argument_2": [8, "Mickey Mouse", "Donald Duck"]}
+    )
+
+    with pytest.raises(TemplateError) as template_error:
+        import_beerwiser_json._validate_input_use_and_naming(ivi, evi, fixed)
+
+    assert str(template_error.value) == f"Template Error: {expected_error}"
+
+
+def test_validate_input_completeness_dmo(import_beerwiser_json):
+    # create input data
+    import_beerwiser_json.dataframes_dict["decision_makers_options"] = pd.DataFrame(
+        {
+            "decision_makers_option": ["nothing", "do a lot", "do a lot"],
+            "internal_variable_input": ["invest in A", "invest in A", "invest in B"],
+        }
+    )
+
+    with pytest.raises(TemplateError) as template_error:
+        import_beerwiser_json._validate_input_completeness(
+            "decision_makers_option", set(["invest in A", "invest in B"])
+        )
+
+    expected_result = ("Template Error: internal variable input(s) {'invest in B'} "
+                       "do not have a value assigned for 'nothing'.")
+    assert str(template_error.value) == expected_result
