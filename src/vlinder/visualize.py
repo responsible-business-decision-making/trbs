@@ -2,10 +2,18 @@
 This file contains the Visualize class that deals with the creation of all graphs and tables
 """
 import re
+import time
+import os
+from pathlib import Path
 import pandas as pd
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+import networkx as nx
+from pyvis.network import Network
 import dataframe_image as dfi
 from vlinder.utils import round_all_dict_values, number_formatter, get_values_from_target, check_list_content
 
@@ -77,7 +85,7 @@ class Visualize:
             if argument not in self.available_kwargs:
                 raise VisualizationError(f"Invalid argument '{argument}'")
 
-    def _find_dimension_level(self, my_dict: dict, target_key: str, level: int = 1):
+    def _find_dimension_level(self, my_dict: dict, target_key: str, level: int = 1) -> int or None:
         """
         This recursive function returns the dimension level (level of nesting) for a given dictionary and target key.
         For example in dictionary {A: {B: {C: 1.23, ..}, ..}, ..}. 'A' is nested at level 1, B at level 2 & C level 3.
@@ -367,3 +375,302 @@ class Visualize:
             raise VisualizationError(f"'{key}' is not a valid option")
 
         return self.available_visuals[visual_request](key, **kwargs)
+
+
+class DependencyGraph:
+    """This class deals with the creation of the dependency graph"""
+
+    def __init__(self, input_dict):
+        # Initialize the input dictionary
+        self.input_dict = input_dict
+        self.network = None
+        self.inc_mat = None
+        self.x_coords = {}
+        self.y_coords = {}
+        self.pos = None
+
+    def find_all_predecessors(
+        self, node, max_generation, predecessors=None, current_generation=0, current_max_generation=0
+    ):
+        """
+        This recursive function searches for al the predecessors of a certain node in the network.
+        :param node: the node whose predecessors to find
+        :param max_generation: the amount of generations the function can go back
+        :param predecessors: a set with all the predecessors found
+        :param current_generation: the generation where the function is looking for predecessors
+        :param current_max_generation: the maximum number of generations found
+        :return: the predecessors and the maximum number of generations
+        """
+
+        # Create an empty set for the first iteration
+        if predecessors is None:
+            predecessors = set()
+
+        for predecessor in self.network.predecessors(node):
+            if max_generation is not None and current_generation >= max_generation:
+                continue
+            if predecessor not in predecessors:
+                predecessors.add(predecessor)
+                # Update the max generation if current generation is greater
+                updated_max_generation = max(current_max_generation, current_generation + 1)
+                # Recursively find all predecessors
+                _, returned_max_generation = self.find_all_predecessors(
+                    predecessor, max_generation, predecessors, current_generation + 1, updated_max_generation
+                )
+                # Keep track of the maximum generation during all recursive calls
+                current_max_generation = max(current_max_generation, returned_max_generation)
+
+        return predecessors, current_max_generation
+
+    @staticmethod
+    def is_even(number):
+        """
+        This function checks if a number is even
+        :param number: a number to check
+        :return: true or False dependent on if a number is even
+        """
+        return number % 2 == 0
+
+    def create_inc_mat(self):
+        """
+        Generate the incidence matrix based on dependencies.
+        """
+        # Incidence matrix
+        last_calc = max(self.input_dict["dependencies_order"])
+        self.inc_mat = pd.DataFrame()
+        for i in range(last_calc + 1):
+            # Select the first dependency
+            dep_idx = list(self.input_dict["dependencies_order"]).index(i)
+            dest = self.input_dict["destination"][dep_idx]
+            args = [self.input_dict["argument_1"][dep_idx], self.input_dict["argument_2"][dep_idx]]
+
+            # Add the arguments and destinations into the incidence matrix
+            if dest not in self.inc_mat.columns:
+                self.inc_mat[dest] = 0
+
+            for arg in args:
+                if isinstance(arg, str):
+                    if arg not in self.inc_mat.index:
+                        self.inc_mat = self.inc_mat.reindex(self.inc_mat.index.tolist() + [arg])
+                        self.inc_mat.loc[arg] = 0
+                    self.inc_mat.at[arg, dest] = 1
+
+    def create_network(self):
+        """
+        This function creates the network using networkx
+        """
+        # Create the network
+        network = nx.DiGraph()
+
+        for dest in self.inc_mat.columns:
+            for arg in self.inc_mat.index:
+                if self.inc_mat.at[arg, dest] == 1:
+                    network.add_edge(arg, dest)
+        self.network = network
+
+    def ko_filter(self, selected_ko, max_gen):
+        """
+        This functions filters out only one key output and its predecessors from the network
+        :param selected_ko: the key output
+        :param max_gen: the maximum of generations of predecessors one wants in its network
+        :return: the total amount of generations in the (filtered) network
+        """
+        # Select a key output en select only the predecessors of this output
+        all_predecessors, tot_gen = self.find_all_predecessors(selected_ko, max_gen)
+        all_predecessors.add(selected_ko)
+
+        # Update the graph
+        self.network = self.network.subgraph(all_predecessors)
+
+        # Select only the needed columns and indices of the inc matrix
+        filtered_columns = [col for col in self.inc_mat.columns if col in all_predecessors]
+        filtered_index = [idx for idx in self.inc_mat.index if idx in all_predecessors]
+
+        # Create the new dataframe
+        self.inc_mat = self.inc_mat.loc[filtered_index, filtered_columns]
+
+        return tot_gen
+
+    def create_x_coords(self):
+        """
+        This functions creates the x coordinates for the network
+        """
+        # First set the coordinates for the destinations to its hierarchy
+        self.x_coords = {
+            dests: self.input_dict["hierarchy"][np.where(self.input_dict["destination"] == dests)[0][-1]]
+            for dests in self.inc_mat.columns
+        }
+
+        # The coordinates of fixed inputs is 0
+        for fixed in set(self.inc_mat.index) - set(self.inc_mat.columns):
+            self.x_coords[fixed] = 0
+
+        # Normalize x-coordinates
+        unique_ranks = sorted(set(self.x_coords.values()))
+        normalized = {rank: i for i, rank in enumerate(unique_ranks)}
+        self.x_coords = {node: normalized[rank] for node, rank in self.x_coords.items()}
+
+    def create_y_coords(self):
+        """
+        This functions creates the y coordinates for the network
+        """
+        # First calculate the y-coordinates for the destinations
+        weight = 0
+        prev_hier = 1
+        count = 0
+        for key in self.x_coords.keys():
+            if key in list(self.inc_mat.columns):
+                if prev_hier != self.x_coords[key]:
+                    weight += 0
+
+                self.y_coords[key] = -4 * (count - weight)
+                count += 1
+                prev_hier = self.x_coords[key]
+
+        # Now create the y coordinates of the fixed inputs
+        list_coords = []
+        list_nodes = []
+        for node in self.inc_mat:
+            pres = list(self.network.predecessors(node))
+            coor_dest = self.y_coords[node]
+
+            # Place them on almost the same height as their destination if possible
+            while coor_dest in list_coords:
+                coor_dest = coor_dest - 4
+            for j, node1 in enumerate(pres):
+                if node1 in list_nodes or node1 in self.inc_mat.columns or not isinstance(node1, str):
+                    continue
+
+                direction = 1 if self.is_even(j) else -1
+                offset = 2 if self.is_even(j) else 1
+
+                self.y_coords[node1] = coor_dest + direction * ((j + offset) / 2)
+                list_nodes.append(node1)
+
+            list_coords.append(coor_dest)
+
+    def draw_graph(
+        self,
+        selected_ko,
+        max_gen=None,
+        save=False,
+        graph_dir=Path.cwd() / "reports" / "dependency_graphs",
+        sc_dir=Path.cwd() / "images",
+        sc_window_size="1920x1080",
+    ):
+        """
+        This functions draws the network graph
+        :param selected_ko: the key output
+        :param max_gen: the maximum of generations of predecessors one wants in its network
+        :param save: a boolean parameter if there has to be made a screenshot from the graph
+        :return: the dependency graph
+        """
+        # Create the incidence matrix
+        self.create_inc_mat()
+
+        # Create the graph based on incidence matrix
+        self.create_network()
+
+        # Filter out the network of a key output if wanted
+        if selected_ko not in self.input_dict["key_outputs"]:
+            raise VisualizationError(f"'{selected_ko}' is not a valid option")
+        if isinstance(max_gen, int) is False and max_gen is not None:
+            raise VisualizationError(f"'{max_gen}' is not a valid option")
+
+        if max_gen is None:
+            tot_gen = self.ko_filter(selected_ko, max_gen)
+            minus_gen = 1
+            while self.network.number_of_nodes() > 30:
+                self.ko_filter(selected_ko, tot_gen - minus_gen)
+                minus_gen += 1
+        else:
+            self.ko_filter(selected_ko, max_gen)
+
+        # Create the x and y coordinates
+        self.create_x_coords()
+
+        self.create_y_coords()
+
+        # Add coordinates to the position dictionary
+        self.pos = nx.spring_layout(self.network)
+
+        for node in self.pos.keys():
+            self.pos[node][0] = self.x_coords[node]
+            self.pos[node][1] = self.y_coords[node]
+
+        # Create the pyvis network
+        if save is True:
+            net = Network(
+                notebook=True, directed=True, height="800px", width="100%", layout=False, cdn_resources="in_line"
+            )
+        elif save is False:
+            net = Network(
+                notebook=True,
+                directed=True,
+                height="800px",
+                width="100%",
+                layout=False,
+                cdn_resources="in_line",
+                select_menu=True,
+            )
+        else:
+            raise VisualizationError(f"'{save}' is not a valid option")
+
+        net.from_nx(self.network)
+
+        # Reshape the graph and set colors
+        for node in net.nodes:
+            node["y"] = self.pos[node["id"]][1] * 10
+            node["x"] = self.pos[node["id"]][0] * 140
+            node["size"] = 4
+            node["font"] = {"size": 8}
+            node["color"] = "black"
+
+        for edge in net.edges:
+            edge["color"] = "darkorange"
+
+        net.options = {
+            "physics": {"enabled": False},
+            "nodes": {
+                "font": {
+                    "align": "left",
+                    "face": "Arial",
+                    "size": 14,
+                    "color": "#000000",
+                    "vadjust": -8,  # Pas de verticale positie van de labels aan
+                }
+            },
+        }
+
+        # Create the directory if it doesn't exist
+        if not Path(graph_dir).exists():
+            Path(graph_dir).mkdir(parents=True)
+
+        graph_location = f"{str(graph_dir)}/{selected_ko.replace(' ', '_')}_graph.html"
+        net.save_graph(graph_location)
+
+        # Make a screenshot of the graph if save == true, otherwise open a tab and show the graph
+        if save is True:
+            # Use Selenium to take a screenshot
+            service = Service(ChromeDriverManager().install())
+            options = webdriver.ChromeOptions()
+            options.add_argument("headless")
+            options.add_argument(f"window-size={sc_window_size}")
+            driver = webdriver.Chrome(service=service, options=options)
+
+            # Navigate to the dependency graph
+            driver.get(Path(graph_location).resolve().as_uri())
+
+            # Wait for the page to fully load
+            time.sleep(2)
+
+            # Take and store the screenshot
+            if not Path(sc_dir).exists():
+                Path(sc_dir).mkdir(parents=True)
+
+            sc_location = f"{sc_dir}/keyoutput_{selected_ko}.png"
+            driver.save_screenshot(sc_location)
+
+            driver.quit()
+        elif save is False:
+            os.system(f"open '{graph_location}'")
