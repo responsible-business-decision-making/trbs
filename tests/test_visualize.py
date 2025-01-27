@@ -1,7 +1,7 @@
 # pylint: disable=cyclic-import, protected-access
 """
-This module contains all tests for the Visualize() class. Note that the Visualize class is NOT case dependent.
-Therefore, an arbitrary outcome dictionary is used in these unit tests.
+This module contains all tests for the Visualize() and the DependencyGraph() class. Note that the Visualize class is
+NOT case dependent. Therefore, an arbitrary outcome dictionary is used in these unit tests.
 
 The following functions are skipped: _table_styler, _graph_styler, _create_table (returns styler class),
 The following functions are partly tested: _create_barchart (only errors), create_visuals (only errors)
@@ -9,7 +9,7 @@ The following functions are partly tested: _create_barchart (only errors), creat
 import pytest
 import numpy as np
 import pandas as pd
-from vlinder.visualize import Visualize, VisualizationError
+from vlinder.visualize import Visualize, VisualizationError, DependencyGraph
 from .params import OUTPUT_DICT_GENERIC, INPUT_DICT_BEERWISER
 
 
@@ -214,3 +214,177 @@ def test_create_visual_errors(test_outcomes, visual_request, key, expected_error
     with pytest.raises(VisualizationError) as visualization_error:
         test_outcomes.create_visual(visual_request, key)
     assert str(visualization_error.value) == f"Visualization Error: {expected_error}"
+
+
+def test_find_all_predecessors():
+    """
+    This function tests find_all_predecessors to return the predecessors of a node
+    """
+    input_dict = {}
+    input_dict["dependencies_order"] = [0, 1, 2]
+    input_dict["destination"] = ["goedemorgen", "goedemiddag", "goedenavond"]
+    input_dict["hierarchy"] = [1, 1, 1]
+    input_dict["key_outputs"] = ["goedemorgen", "goedemiddag", "goedenavond"]
+    input_dict["argument_1"] = ["hey", "hoi", "hallo"]
+    input_dict["argument_2"] = ["doei", "dag", "later"]
+
+    dep = DependencyGraph(input_dict)
+    dep.create_inc_mat()
+    dep.create_network()
+
+    result = dep.find_all_predecessors(node="goedenavond", max_generation=1)[0]
+    expected_result = set(["later", "hallo"])
+    assert result == expected_result
+
+
+def test_is_even():
+    """
+    This function tests is_even to return true for an input value of 4
+    """
+    result = DependencyGraph.is_even(4)
+    expected_result = True
+    assert result == expected_result
+
+
+def test_create_inc_mat():
+    """
+    This function tests create_inc_mat if it creates the correct incidence matrix based on some dependencies
+    """
+    input_dict = {}
+    input_dict["dependencies_order"] = [0, 1, 2]
+    input_dict["destination"] = ["goedemorgen", "goedemiddag", "goedenavond"]
+    input_dict["hierarchy"] = [1, 1, 1]
+    input_dict["key_outputs"] = ["goedemorgen", "goedemiddag", "goedenavond"]
+    input_dict["argument_1"] = ["hey", "hoi", "hallo"]
+    input_dict["argument_2"] = ["doei", "dag", "later"]
+
+    dep = DependencyGraph(input_dict)
+
+    expected_result = pd.DataFrame(
+        {
+            "goedemorgen": [1.0, 1.0, 0.0, 0.0, 0.0, 0.0],
+            "goedemiddag": [0.0, 0.0, 1.0, 1.0, 0.0, 0.0],
+            "goedenavond": [0.0, 0.0, 0.0, 0.0, 1.0, 1.0],
+        },
+        index=["hey", "doei", "hoi", "dag", "hallo", "later"],
+    )
+
+    dep.create_inc_mat()
+    result = dep.inc_mat
+    assert result.equals(expected_result) is True
+
+
+def test_ko_filter():
+    """
+    This function tests ko_filter if the correct amount of generations is returned for a network
+    """
+    input_dict = {}
+    input_dict["dependencies_order"] = [0, 1, 2]
+    input_dict["destination"] = ["√", "goedemiddag", "goedenavond"]
+    input_dict["hierarchy"] = [1, 1, 1]
+    input_dict["key_outputs"] = ["goedemorgen", "goedemiddag", "goedenavond"]
+    input_dict["argument_1"] = ["hey", "hoi", "hallo"]
+    input_dict["argument_2"] = ["doei", "dag", "later"]
+
+    dep = DependencyGraph(input_dict)
+
+    dep.create_inc_mat()
+    dep.create_network()
+
+    result = dep.ko_filter("goedemiddag", max_gen=None)
+
+    assert result == 1
+
+
+def test_x_coords():
+    """
+    This function tests x_coords if the correct dictionary with coordinates is created for a certain network
+    """
+    input_dict = {}
+    input_dict["dependencies_order"] = [0, 1, 2]
+    input_dict["destination"] = np.array(["goedemorgen", "goedemiddag", "goedenavond"])
+    input_dict["hierarchy"] = [1, 1, 1]
+    input_dict["key_outputs"] = ["goedemorgen", "goedemiddag", "goedenavond"]
+    input_dict["argument_1"] = ["hey", "hoi", "hallo"]
+    input_dict["argument_2"] = ["doei", "dag", "later"]
+
+    dep = DependencyGraph(input_dict)
+
+    dep.create_inc_mat()
+    dep.create_x_coords()
+    result = dep.x_coords
+    expected_result = {
+        "hoi": 0,
+        "hallo": 0,
+        "later": 0,
+        "hey": 0,
+        "doei": 0,
+        "dag": 0,
+        "goedemorgen": 1,
+        "goedemiddag": 1,
+        "goedenavond": 1,
+    }
+    assert result == expected_result
+
+
+def test_y_coords():
+    """
+    This function tests y_coords if the correct dictionary with coordinates is created for a certain network
+    """
+    input_dict = {}
+    input_dict["dependencies_order"] = [0, 1, 2]
+    input_dict["destination"] = np.array(["goedemorgen", "goedemiddag", "goedenavond"])
+    input_dict["hierarchy"] = [1, 1, 1]
+    input_dict["key_outputs"] = ["goedemorgen", "goedemiddag", "goedenavond"]
+    input_dict["argument_1"] = ["hey", "hoi", "hallo"]
+    input_dict["argument_2"] = ["doei", "dag", "later"]
+
+    dep = DependencyGraph(input_dict)
+
+    dep.create_inc_mat()
+    dep.create_network()
+    dep.create_x_coords()
+    dep.create_y_coords()
+    result = dep.y_coords
+    expected_result = {
+        "dag": -5.0,
+        "doei": -1.0,
+        "goedenavond": -8,
+        "goedemiddag": -4,
+        "goedemorgen": 0,
+        "hallo": -7.0,
+        "hey": 1.0,
+        "hoi": -3.0,
+        "later": -9.0,
+    }
+    assert result == expected_result
+
+
+@pytest.mark.parametrize(
+    "selected_ko, max_gen, save, expected_outcome",
+    [
+        (4, 3, True, "'4' is not a valid option"),
+        ("goedenavond", "vier", True, "'vier' is not a valid option"),
+        ("goedenavond", 4, "waar", "'waar' is not a valid option"),
+    ],
+)
+def test_draw_graph(selected_ko, max_gen, save, expected_outcome):
+    """
+    This function tests draw_graph if the correct errors are given when parameter values are filled in incorrectly
+    :param selected_ko: the key output
+    :param max_gen: the maximum of generations of predecessors one wants in its network
+    :param save: a boolean parameter if there has to be made a screenshot from the graph
+    """
+
+    input_dict = {}
+    input_dict["dependencies_order"] = [0, 1, 2]
+    input_dict["destination"] = np.array(["goedemorgen", "goedemiddag", "goedenavond"])
+    input_dict["hierarchy"] = [1, 1, 1]
+    input_dict["key_outputs"] = ["goedemorgen", "goedemiddag", "goedenavond"]
+    input_dict["argument_1"] = ["hey", "hoi", "hallo"]
+    input_dict["argument_2"] = ["doei", "dag", "later"]
+
+    dep = DependencyGraph(input_dict)
+    with pytest.raises(VisualizationError) as visualization_error:
+        dep.draw_graph(selected_ko, max_gen, save)
+    assert str(visualization_error.value) == f"Visualization Error: {expected_outcome}"

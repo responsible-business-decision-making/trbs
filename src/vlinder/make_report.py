@@ -8,6 +8,7 @@ from pathlib import Path
 from datetime import datetime
 from PIL import Image
 from fpdf import FPDF
+from vlinder.visualize import DependencyGraph
 
 
 def chapter_title(pdf, title, rgb):
@@ -135,7 +136,7 @@ class MakeReport:
     """
 
     # pylint: disable=too-many-arguments
-    def __init__(self, output_path, name, input_dict, output_dict, visualize):
+    def __init__(self, output_path, name, input_dict, output_dict, visualize, page_dict):
         self.output_path = Path(output_path)
         self.folder_name = ""
         self.name = name
@@ -143,6 +144,20 @@ class MakeReport:
         self.output_dict = output_dict
         self.page_number = 1
         self.visualize = visualize
+
+        # set a default
+        self.page_selection = {
+            "title_page": True,
+            "strategic_challenge": True,
+            "key_outputs_theme": True,
+            "decision_makers_options": True,
+            "scenarios": True,
+            "fixed_inputs": True,
+            "dependencies": False,
+            "weighted_appreciations": True,
+        }
+        # update pages based
+        self.page_selection.update({key: value for key, value in page_dict.items() if key in self.page_selection})
 
     def make_title(self, target, scenario="", pos_series="", key_output="") -> str:
         """
@@ -240,61 +255,38 @@ class MakeReport:
             os.mkdir("images")
         rgb = [0, 0, 120]
         pdf = FPDF(orientation=orientation)
-        pdf.set_title("Report of the " + self.name + " case")
+        pdf.set_title(f"Report of the {self.name} case")
+
         # Create title page
-        pdf.add_page()
-        pdf = title_page_title(pdf, "Report of the " + self.name + " case", rgb)
-        # Search for a logo. if yes, place in the middle of the slide
-        if os.path.exists("logos/" + self.name + ".jpeg"):
-            # Open the image using Pillow
-            image_path = "logos/" + self.name + ".jpeg"
-            image = Image.open(image_path)
-            width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
-            pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
-        pdf = title_page_subtitle(pdf, "Responsible business decision making \n" + str(datetime.now().date()))
-        # Create Strategic Challenge page
-        pdf.add_page()
-        pdf = chapter_title(pdf, "Strategic Challenge", rgb)
-        pdf = chapter_subtitle(pdf, self.make_strategic_challenge())
-        pdf = footer_page(pdf, self.name, orientation)
+        if self.page_selection["title_page"]:
+            pdf.add_page()
+            pdf = title_page_title(pdf, "Report of the " + self.name + " case", rgb)
+            # Search for a logo. if yes, place in the middle of the slide
+            if os.path.exists("logos/" + self.name + ".jpeg"):
+                # Open the image using Pillow
+                image_path = "logos/" + self.name + ".jpeg"
+                image = Image.open(image_path)
+                width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
+                pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
+            pdf = title_page_subtitle(pdf, "Responsible business decision making \n" + str(datetime.now().date()))
+
+        if self.page_selection["strategic_challenge"]:
+            # Create Strategic Challenge page
+            pdf.add_page()
+            pdf = chapter_title(pdf, "Strategic Challenge", rgb)
+            pdf = chapter_subtitle(pdf, self.make_strategic_challenge())
+            pdf = footer_page(pdf, self.name, orientation)
 
         # Create Input variables pages
         for input_tables in ["key_outputs_theme", "decision_makers_options", "scenarios"]:
-            pdf.add_page()
-            self.visualize("table", input_tables, save=True)
-            if input_tables == "key_outputs_theme":
-                input_tables = "key_outputs"
-            pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
-            pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
-            # Search for the right table related to the input_table and place it in the middle of the slide
-            image_path = "images/table" + input_tables + ".png"
-            image = Image.open(image_path)
-            # Determine the position and size for the image
-            width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
-            # Add the image to the PDF with the appropriate size and position
-            pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
-            pdf = footer_page(pdf, self.name, orientation)
-
-        for input_tables in ["fixed_inputs"]:
-            # If there are more than 10 fixed inputs it will generate a maximum of 10 per slide
-            number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
-            for number_iteration in range(0, number_of_iterations):
+            if self.page_selection[input_tables]:
                 pdf.add_page()
-                if number_of_iterations > 1:
-                    pdf = chapter_title(
-                        pdf,
-                        self.make_title(input_tables)
-                        + " "
-                        + str(number_iteration + 1)
-                        + "/"
-                        + str(number_of_iterations),
-                        rgb,
-                    )
-                else:
-                    pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
+                self.visualize("table", input_tables, save=True)
+                input_tables = "key_outputs" if input_tables == "key_outputs_theme" else input_tables
+                pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
                 pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
-                self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
-                image_path = "images" + "/table" + input_tables + str(number_iteration) + ".png"
+                # Search for the right table related to the input_table and place it in the middle of the slide
+                image_path = "images/table" + input_tables + ".png"
                 image = Image.open(image_path)
                 # Determine the position and size for the image
                 width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
@@ -302,22 +294,66 @@ class MakeReport:
                 pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
                 pdf = footer_page(pdf, self.name, orientation)
 
+        for input_tables in ["fixed_inputs"]:
+            if self.page_selection[input_tables]:
+                # If there are more than 10 fixed inputs it will generate a maximum of 10 per slide
+                number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
+                for number_iteration in range(0, number_of_iterations):
+                    pdf.add_page()
+                    if number_of_iterations > 1:
+                        pdf = chapter_title(
+                            pdf,
+                            self.make_title(input_tables)
+                            + " "
+                            + str(number_iteration + 1)
+                            + "/"
+                            + str(number_of_iterations),
+                            rgb,
+                        )
+                    else:
+                        pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
+                    pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
+                    self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
+                    image_path = "images" + "/table" + input_tables + str(number_iteration) + ".png"
+                    image = Image.open(image_path)
+                    # Determine the position and size for the image
+                    width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
+                    # Add the image to the PDF with the appropriate size and position
+                    pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
+                    pdf = footer_page(pdf, self.name, orientation)
+
+        # Create for every key_output a dependency graph slide
+        if self.page_selection["dependencies"]:
+            for key_output in self.input_dict["key_outputs"]:
+                pdf.add_page()
+                pdf = chapter_title(pdf, f"The dependency graph for the key output: {key_output}", rgb)
+
+                dep = DependencyGraph(self.input_dict)
+                if orientation == "Portrait":
+                    dep.draw_graph(selected_ko=key_output, save=True, sc_window_size="1920x1080")
+                    pdf.image("images/keyoutput_" + key_output + ".png", x=5, y=25, w=200)
+                else:
+                    dep.draw_graph(selected_ko=key_output, save=True, sc_window_size="1920x1080")
+                    pdf.image("images/keyoutput_" + key_output + ".png", x=25, y=25, h=150)
+                pdf = footer_page(pdf, self.name, orientation)
+
         # Create output slide with the weighted appreciations
-        pdf.add_page()
-        pdf = chapter_title(
-            pdf,
-            "The decision maker option '"
-            + self.output_dict[scenario]["highest_weighted_dmo"]
-            + "' has the highest weighted appreciations for scenario: "
-            + scenario,
-            rgb,
-        )
-        self.visualize("barchart", "weighted_appreciations", scenario=scenario, stacked=True, save=True)
-        if orientation == "Portrait":
-            pdf.image("images" + "/figure.png", x=25, y=50, w=150)
-        else:
-            pdf.image("images" + "/figure.png", x=25, y=50, w=250)
-        pdf = footer_page(pdf, self.name, orientation)
+        if self.page_selection["weighted_appreciations"]:
+            pdf.add_page()
+            pdf = chapter_title(
+                pdf,
+                "The decision maker option '"
+                + self.output_dict[scenario]["highest_weighted_dmo"]
+                + "' has the highest weighted appreciations for scenario: "
+                + scenario,
+                rgb,
+            )
+            self.visualize("barchart", "weighted_appreciations", scenario=scenario, stacked=True, save=True)
+            if orientation == "Portrait":
+                pdf.image("images" + "/figure.png", x=25, y=50, w=150)
+            else:
+                pdf.image("images" + "/figure.png", x=25, y=50, w=250)
+            pdf = footer_page(pdf, self.name, orientation)
         return pdf
 
     def create_report(self, scenario, orientation, path) -> str:
