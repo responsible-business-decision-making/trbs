@@ -461,7 +461,11 @@ def test_error_input_use_and_naming(import_beerwiser_json, ivi, evi, fixed, expe
     """
     # create input data
     import_beerwiser_json.dataframes_dict["dependencies"] = pd.DataFrame(
-        {"argument_1": ["Winnie the Pooh", "Piglet", "Tigger"], "argument_2": [8, "Mickey Mouse", "Donald Duck"]}
+        {
+            "destination": ["Mickey Mouse", None, None],
+            "argument_1": ["Winnie the Pooh", "Piglet", "Tigger"],
+            "argument_2": [8, "Mickey Mouse", "Donald Duck"],
+        }
     )
 
     with pytest.raises(TemplateError) as template_error:
@@ -471,6 +475,10 @@ def test_error_input_use_and_naming(import_beerwiser_json, ivi, evi, fixed, expe
 
 
 def test_validate_input_completeness_dmo(import_beerwiser_json):
+    """
+    This functions tests _validate_input_completeness to raise an error when not all IVIs have a value associated
+    with them.
+    """
     # create input data
     import_beerwiser_json.dataframes_dict["decision_makers_options"] = pd.DataFrame(
         {
@@ -484,6 +492,7 @@ def test_validate_input_completeness_dmo(import_beerwiser_json):
             "decision_makers_option", set(["invest in A", "invest in B"])
         )
 
-    expected_result = ("Template Error: internal variable input(s) {'invest in B'} "
-                       "do not have a value assigned for 'nothing'.")
+    expected_result = (
+        "Template Error: internal variable input(s) {'invest in B'} " "do not have a value assigned for 'nothing'."
+    )
     assert str(template_error.value) == expected_result
