@@ -29,6 +29,10 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
 
     def __init__(self, file_path, name, extension):
         self.path_base = Path(file_path) / name / extension
+
+        if not self.path_base.exists():
+            raise TemplateError(f"Incorrect path. Could not find '{self.path_base}'")
+
         self.file_path = file_path
         self.name = os.path.splitext(os.listdir(self.path_base)[0])[0]
         self.extension = extension
@@ -43,6 +47,20 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         # -- Build template validators based on template.xlsx
         self.validate_dict = self._build_template_validators()
 
+        # -- fields that cannot be empty in a template for given table
+        self.mandatory_fields = {
+            "key_outputs": ["key_output", "theme", "monetary", "smaller_the_better", "linear", "automatic"],
+            "decision_makers_options": ["internal_variable_input", "decision_makers_option", "value"],
+            "scenarios": ["external_variable_input", "scenario", "value"],
+            "fixed_inputs": ["fixed_input", "value"],
+            "dependencies": ["destination", "argument_1", "argument_2", "operator"],
+            "theme_weights": ["theme", "weight"],
+            "key_output_weights": ["key_output", "weight"],
+            "scenario_weights": ["scenario", "weights"],
+        }
+
+        warnings.formatwarning = lambda msg, *args, **kwargs: f"TemplateWarning: {msg}\n"
+
     @staticmethod
     def _build_template_validators() -> dict:
         """
@@ -56,12 +74,13 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
     def _check_data_columns(self, to_check: pd.DataFrame, table: str) -> pd.DataFrame:
         """
         This function checks whether all necessary columns of a given table are provided. If necessary columns are
-        missing a TemplateError is raised. If to many columns are provided the user receives a warning, but no error
+        missing a TemplateError is raised. If too many columns are provided the user receives a warning, but no error
         is raised.
         :param to_check: dataframe that needs to be checked
         :param table: name of the table the dataframe is supposed to be
         :return: the dataframe with any additional non-necessary columns removed
         """
+        columns_with_na = to_check.columns[to_check.isna().any()].to_list()
         column_list = to_check.columns.values.tolist()
 
         # 1. Validate all necessary columns are there
@@ -72,6 +91,11 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         extra_cols = [col for col in column_list if col not in self.validate_dict[table]]
         if extra_cols:
             warnings.warn(f"column(s) '{', '.join(extra_cols)}' are not used for '{table}'")
+        # 3. Validate whether all mandatory fields are filled in
+        if table in self.mandatory_fields:
+            missing = set(columns_with_na) & set(self.mandatory_fields[table])
+            if missing:
+                raise TemplateError(f"Missing values in column(s) {missing} for table {table}.")
         return to_check.drop(columns=extra_cols)
 
     @staticmethod
@@ -226,7 +250,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
             key_name = table if col == table[:-1] else f"{table[:-1]}_{col}"
             self.input_dict[key_name] = data[col].to_numpy()
 
-    def _create_input_dict(self):
+    def _create_input_dict(self) -> None:
         two_dim = ["decision_makers_options", "scenarios"]
         for table, data in self.dataframes_dict.items():
             # Option 1: data is transformed to a matrix
@@ -262,6 +286,97 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
     def _enrich_input_dict(self):
         self._convert_to_relative_weights()
 
+    def _col(self, table, col_name=None) -> set:
+        """
+        Shorthand to get unique set of values for a given column and table.
+        Often the name of column is the name of the table minus 's'. If no col_name is provided this is the default.
+        """
+        column = col_name if col_name else table[:-1]
+        return set(self.dataframes_dict[table][column])
+
+    def _validate_weights(self, weight_type: str) -> None:
+        """
+        Check on weights: do the weights match the names of the key outputs, scenarios and themes?
+        :param weight_type: the type (ko, theme, scenario) of weight that is being checked
+        """
+        left = self._col("key_outputs", "theme") if weight_type == "theme" else self._col(f"{weight_type}s")
+        right = self._col(f"{weight_type}_weights", weight_type)
+
+        if left - right:
+            raise TemplateError(f"{weight_type}(s) {left - right} not present in sheet '{weight_type}_weights'")
+        if right - left:
+            raise TemplateError(f"{weight_type}(s) {right - left} only present in sheet '{weight_type}_weights'")
+
+    def _validate_input_use_and_naming(self, ivi: set, evi: set, fixed: set) -> None:
+        """
+        This function validates whether all defined inputs are (i) are used in the dependencies and (ii) have a name
+        that does not overlap with another input type
+        :param ivi: set of unique IVIs
+        :param evi: set of unique EVIs
+        :param fixed: set of unique fixed inputs
+        """
+        all_arguments = self._col("dependencies", "argument_1") | self._col("dependencies", "argument_2")
+
+        # Are all inputs actually used in the dependencies?
+        if ivi - all_arguments:
+            raise TemplateError(f"IVI(s) {ivi - all_arguments} created, but not used in the dependencies.")
+        if evi - all_arguments:
+            raise TemplateError(f"EVI(s) {evi - all_arguments} created, but not used in the dependencies.")
+        if fixed - all_arguments:
+            warnings.warn(f"Fixed input(s) {fixed - all_arguments} created, but not used in the dependencies.")
+
+        # Are all names used in the dependencies defined?
+        all_names = ivi | evi | fixed | self._col("dependencies", "destination")
+        filter_arguments = {arg for arg in all_arguments if not check_numeric(arg)}
+        if filter_arguments - all_names:
+            raise TemplateError(f"Argument(s) {filter_arguments - all_names} used in dependencies, but not defined.")
+
+        # Naming of IVI, EVI and fixed inputs should be unique
+        if ivi & evi:
+            raise TemplateError(f"Overlap for input(s) {ivi & evi}. They are used as IVI as well as EVI.")
+        if ivi & fixed:
+            raise TemplateError(f"Overlap for input(s) {ivi & fixed}. They are used as IVI as well as fixed input.")
+        if evi & fixed:
+            raise TemplateError(f"Overlap for input(s) {evi & fixed}. They are used as EVI as well as fixed input.")
+
+    def _validate_input_completeness(self, key: str, full_set: set) -> None:
+        """
+        This function checks whether a dmo or scenario has a value assigned for each IVI / EVI
+        :param key: type of input we are verifying: decision_makers_option or scenario
+        :param full_set: the full set of input we are verifying
+        """
+        instruments = self._col(f"{key}s")
+        input_name = "external" if key == "scenario" else "internal"
+
+        for instr in instruments:
+            table = self.dataframes_dict[f"{key}s"]
+            assigned_ivi = set(table.loc[table[key] == instr, f"{input_name}_variable_input"])
+
+            if full_set - assigned_ivi:
+                raise TemplateError(
+                    f"{input_name} variable input(s) {full_set - assigned_ivi} "
+                    f"do not have a value assigned for '{instr}'."
+                )
+
+    def _validate_dataframes(self):
+        """
+        This function is the wrapper for validation checks across the dataframes.
+        Checks on specific sheets w.r.t. 'template.xlsx' are done in _create_dataframes_dict.
+        This wrapper is therefore only meant for checks across sheets!
+        """
+        # 1. Checks on weights
+        for weight_type in ["key_output", "theme", "scenario"]:
+            self._validate_weights(weight_type)
+
+        # 2. Checks on inputs
+        ivi = self._col("decision_makers_options", "internal_variable_input")
+        evi = self._col("scenarios", "external_variable_input")
+        fixed = self._col("fixed_inputs")
+
+        self._validate_input_use_and_naming(ivi, evi, fixed)
+        self._validate_input_completeness("decision_makers_option", ivi)
+        self._validate_input_completeness("scenario", evi)
+
     def import_case(self) -> dict:
         """
         This function creates the input dictionary. It wraps other functions that deal with reading and validating
@@ -270,6 +385,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         """
         for table in self.validate_dict:
             self._create_dataframes_dict(table)
+        self._validate_dataframes()
         self._create_input_dict()
         self._enrich_input_dict()
         return self.input_dict, self.dataframes_dict
