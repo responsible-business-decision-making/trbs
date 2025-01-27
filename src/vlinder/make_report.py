@@ -8,6 +8,7 @@ from pathlib import Path
 from datetime import datetime
 from PIL import Image
 from fpdf import FPDF
+from vlinder.visualize import DependencyGraph
 
 
 def chapter_title(pdf, title, rgb):
@@ -125,7 +126,7 @@ class MakeReport:
     """
 
     # pylint: disable=too-many-arguments
-    def __init__(self, output_path, name, input_dict, output_dict, visualize):
+    def __init__(self, output_path, name, input_dict, output_dict, visualize, page_dict):
         self.output_path = Path(output_path)
         self.folder_name = ""
         self.name = name
@@ -133,6 +134,20 @@ class MakeReport:
         self.output_dict = output_dict
         self.page_number = 1
         self.visualize = visualize
+
+        # set a default
+        self.page_selection = {
+            "title_page": True,
+            "strategic_challenge": True,
+            "key_outputs_theme": True,
+            "decision_makers_options": True,
+            "scenarios": True,
+            "fixed_inputs": True,
+            "dependencies": False,
+            "weighted_appreciations": True,
+        }
+        # update pages based
+        self.page_selection.update({key: value for key, value in page_dict.items() if key in self.page_selection})
 
     def make_title(self, target, scenario="", pos_series="", key_output="") -> str:
         """
@@ -258,18 +273,9 @@ class MakeReport:
 
             for number_iteration in range(0, number_of_iterations):
                 pdf.add_page()
-                if number_of_iterations > 1:
-                    pdf = chapter_title(
-                        pdf,
-                        self.make_title(input_tables)
-                        + " "
-                        + str(number_iteration + 1)
-                        + "/"
-                        + str(number_of_iterations),
-                        rgb,
-                    )
-                else:
-                    pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
+                self.visualize("table", input_tables, save=True)
+                input_tables = "key_outputs" if input_tables == "key_outputs_theme" else input_tables
+                pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
                 pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
                 if input_tables == "key_outputs":
                     input_tables = "key_outputs_theme"
@@ -277,6 +283,7 @@ class MakeReport:
                 if input_tables == "key_outputs_theme":
                     input_tables = "key_outputs"
                 image_path = "images" + "/table" + input_tables + str(number_iteration) + ".png"
+
                 image = Image.open(image_path)
                 # Determine the position and size for the image
                 width_image, height_image, x_pos, y_pos = determine_position_images(image)
@@ -284,7 +291,51 @@ class MakeReport:
                 pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
                 pdf = footer_page(pdf, self.name)
 
+        for input_tables in ["fixed_inputs"]:
+            if self.page_selection[input_tables]:
+                # If there are more than 10 fixed inputs it will generate a maximum of 10 per slide
+                number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
+                for number_iteration in range(0, number_of_iterations):
+                    pdf.add_page()
+                    if number_of_iterations > 1:
+                        pdf = chapter_title(
+                            pdf,
+                            self.make_title(input_tables)
+                            + " "
+                            + str(number_iteration + 1)
+                            + "/"
+                            + str(number_of_iterations),
+                            rgb,
+                        )
+                    else:
+                        pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
+                    pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
+                    self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
+                    image_path = "images" + "/table" + input_tables + str(number_iteration) + ".png"
+                    image = Image.open(image_path)
+                    # Determine the position and size for the image
+                    width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
+                    # Add the image to the PDF with the appropriate size and position
+                    pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
+                    pdf = footer_page(pdf, self.name, orientation)
+
+        # Create for every key_output a dependency graph slide
+        if self.page_selection["dependencies"]:
+            for key_output in self.input_dict["key_outputs"]:
+                pdf.add_page()
+                pdf = chapter_title(pdf, f"The dependency graph for the key output: {key_output}", rgb)
+
+                dep = DependencyGraph(self.input_dict)
+                if orientation == "Portrait":
+                    dep.draw_graph(selected_ko=key_output, save=True, sc_window_size="1920x1080")
+                    pdf.image("images/keyoutput_" + key_output + ".png", x=5, y=25, w=200)
+                else:
+                    dep.draw_graph(selected_ko=key_output, save=True, sc_window_size="1920x1080")
+                    pdf.image("images/keyoutput_" + key_output + ".png", x=25, y=25, h=150)
+                pdf = footer_page(pdf, self.name, orientation)
+
         # Create output slide with the weighted appreciations
+
         for figure in ["weighted_appreciations", "scenario_appreciations"]:
             pdf.add_page()
             if figure == "weighted_appreciations":
@@ -306,6 +357,7 @@ class MakeReport:
                 self.visualize("barchart", "scenario_appreciations", stacked=True, save=True)
             pdf.image("images" + "/figure_" + figure + ".png", x=25, y=50, w=250)
             pdf = footer_page(pdf, self.name)
+
         return pdf
 
     def create_report(self, scenario, path) -> str:
