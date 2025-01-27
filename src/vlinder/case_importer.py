@@ -325,6 +325,12 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         if fixed - all_arguments:
             warnings.warn(f"Fixed input(s) {fixed - all_arguments} created, but not used in the dependencies.")
 
+        # Are all names used in the dependencies defined?
+        all_names = ivi | evi | fixed | self._col("dependencies", "destination")
+        filter_arguments = {arg for arg in all_arguments if not check_numeric(arg)}
+        if filter_arguments - all_names:
+            raise TemplateError(f"Argument(s) {filter_arguments - all_names} used in dependencies, but not defined.")
+
         # Naming of IVI, EVI and fixed inputs should be unique
         if ivi & evi:
             raise TemplateError(f"Overlap for input(s) {ivi & evi}. They are used as IVI as well as EVI.")
