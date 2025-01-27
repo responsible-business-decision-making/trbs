@@ -42,6 +42,13 @@ class Visualize:
             "#5CB9BD",
             "#E27588",
         ]
+        self.colors_scen = [
+            "#003DAB",
+            "#0089EB",
+            "#B3DCF9",
+            "#0060D7",
+            "#4DACF1",
+        ]
         self.available_visuals = {
             "table": self._create_table,
             "barchart": self._create_barchart,
@@ -246,7 +253,6 @@ class Visualize:
                     dataframe[key] = self.input_dict[key][start_idx:end_idx]
                     dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
 
-
             elif key == "fixed_inputs":
                 key_value = key[:-1] + "_value"
                 if number_of_iter == -1:
@@ -336,7 +342,14 @@ class Visualize:
         if (key == "decision_makers_option_appreciation") | (key == "scenario_appreciations"):
             rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
             bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
-            axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5))
+            if key == "scenario_appreciations":
+                axis = bar_data.plot.bar(
+                    x="decision_makers_option", stacked=stacked, color=self.colors_scen, figsize=(10, 5)
+                )
+            else:
+                axis = bar_data.plot.bar(
+                    x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5)
+                )
             self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
         else:
             # Apply the function to the "weighted_appreciations" column and add as new column
@@ -357,7 +370,7 @@ class Visualize:
             self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
 
         if "save" in kwargs:
-            plt.savefig("images" + "/figure.png", bbox_inches="tight")
+            plt.savefig("images" + "/figure_" + key + ".png", bbox_inches="tight")
         else:
             plt.show()
 

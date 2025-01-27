@@ -255,7 +255,7 @@ class MakeReport:
                 number_of_iterations = round((len(self.input_dict[input_tables[:-1] + "_value"][0]) / 10) + 0.5)
             else:
                 number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
-                
+
             for number_iteration in range(0, number_of_iterations):
                 pdf.add_page()
                 if number_of_iterations > 1:
@@ -285,18 +285,27 @@ class MakeReport:
                 pdf = footer_page(pdf, self.name)
 
         # Create output slide with the weighted appreciations
-        pdf.add_page()
-        pdf = chapter_title(
-            pdf,
-            "The decision maker option '"
-            + self.output_dict[scenario]["highest_weighted_dmo"]
-            + "' has the highest weighted appreciations for scenario: "
-            + scenario,
-            rgb,
-        )
-        self.visualize("barchart", "weighted_appreciations", scenario=scenario, stacked=True, save=True)
-        pdf.image("images" + "/figure.png", x=25, y=50, w=250)
-        pdf = footer_page(pdf, self.name)
+        for figure in ["weighted_appreciations", "scenario_appreciations"]:
+            pdf.add_page()
+            if figure == "weighted_appreciations":
+                pdf = chapter_title(
+                    pdf,
+                    "The decision maker option '"
+                    + self.output_dict[scenario]["highest_weighted_dmo"]
+                    + "' has the highest weighted appreciations for scenario: "
+                    + scenario,
+                    rgb,
+                )
+                self.visualize("barchart", "weighted_appreciations", scenario=scenario, stacked=True, save=True)
+            else:
+                pdf = chapter_title(
+                    pdf,
+                    "Values of scenario appreciations",
+                    rgb,
+                )
+                self.visualize("barchart", "scenario_appreciations", stacked=True, save=True)
+            pdf.image("images" + "/figure_" + figure + ".png", x=25, y=50, w=250)
+            pdf = footer_page(pdf, self.name)
         return pdf
 
     def create_report(self, scenario, path) -> str:
