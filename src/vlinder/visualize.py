@@ -4,6 +4,7 @@ This file contains the Visualize class that deals with the creation of all graph
 import re
 import time
 import os
+import warnings
 from pathlib import Path
 import pandas as pd
 import numpy as np
@@ -388,6 +389,8 @@ class DependencyGraph:
         self.x_coords = {}
         self.y_coords = {}
         self.pos = None
+
+        warnings.simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
 
     def find_all_predecessors(
         self, node, max_generation, predecessors=None, current_generation=0, current_max_generation=0

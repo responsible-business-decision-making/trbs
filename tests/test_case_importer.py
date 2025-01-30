@@ -134,7 +134,7 @@ def test_check_case_text_element(import_beerwiser_json):
             pd.DataFrame({"case_text_element": ["strategic_challenge"], "value": [np.nan]})
         )
 
-    expected_result = "Warning: No case text element entered"
+    expected_result = "No case text element entered"
     assert str(warning_case[0].message) == expected_result
 
 
@@ -496,3 +496,30 @@ def test_validate_input_completeness_dmo(import_beerwiser_json):
         "Template Error: internal variable input(s) {'invest in B'} " "do not have a value assigned for 'nothing'."
     )
     assert str(template_error.value) == expected_result
+
+
+@pytest.mark.parametrize(
+    "automatic_list, expected_error",
+    [
+        ([1, 1], "Key output(s) {'Winnie the Pooh'} with automatic = 1, but also a start and/or endpoint"),
+        ([0, 0], "Key output(s) {'Piglet'} with automatic = 0 have missing start- and/or endpoint"),
+    ],
+)
+def test_validate_start_and_endpoint(import_beerwiser_json, automatic_list, expected_error):
+    """
+    This function tests _validate_start_and_endpoint to raise errors when automatic-setting does not match with
+    the provided endpoints.
+    """
+    import_beerwiser_json.dataframes_dict["key_outputs"] = pd.DataFrame(
+        {
+            "key_output": ["Winnie the Pooh", "Piglet"],
+            "automatic": automatic_list,
+            "start": [0, np.nan],
+            "end": [80, np.nan],
+        }
+    )
+
+    with pytest.raises(TemplateError) as template_error:
+        import_beerwiser_json._validate_start_and_endpoint()
+
+    assert str(template_error.value) == f"Template Error: {expected_error}"
