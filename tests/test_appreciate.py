@@ -4,7 +4,7 @@ This module contains all tests for the Appreciate() class
 """
 import pytest
 import numpy as np
-from vlinder.appreciate import Appreciate, AppreciationError, AppreciationWarning
+from vlinder.appreciate import Appreciate
 from vlinder.utils import round_all_dict_values, get_values_from_target
 from .params import INPUT_DICT_BEERWISER, OUTPUT_DICT_BEERWISER
 
@@ -62,42 +62,6 @@ def test_get_start_and_end_points_min_max_monetary(appreciate_beerwiser_min_max_
         "Production cost reduction": [0.04, 6818181.82],
     }
     assert rounded_result == expected_result
-
-
-def test_appreciate_beerwiser_error():
-    """
-    This fixture tests _get_start_and_end_points to raise an Appreciation Error when
-    key_output_start and/or key_output_end is NOT provided while key_output_automatic = 0
-    """
-    input_copy = INPUT_DICT_BEERWISER.copy()
-    input_copy["key_output_automatic"] = np.array([0, 1, 1])
-    input_copy["key_output_start"] = np.array([np.nan, np.nan, np.nan])
-    input_copy["key_output_end"] = np.array([np.nan, np.nan, np.nan])
-
-    with pytest.raises(AppreciationError) as appreciation_error:
-        Appreciate(input_copy, OUTPUT_DICT_BEERWISER)
-    expected_result = (
-        "Appreciation Error: key_output_start and/or key_output_end is NOT provided while key_output_automatic = 0"
-    )
-    assert str(appreciation_error.value) == expected_result
-
-
-def test_appreciate_beerwiser_warning():
-    """
-    This fixture tests _get_start_and_end_points to raise an Appreciation Warning when
-    key_output_start and/or key_output_end is provided while key_output_automatic = 1
-    """
-    input_copy = INPUT_DICT_BEERWISER.copy()
-    input_copy["key_output_automatic"] = np.array([1, 1, 1])
-    input_copy["key_output_start"] = np.array([100, np.nan, np.nan])
-    input_copy["key_output_end"] = np.array([450, np.nan, np.nan])
-
-    with pytest.warns(AppreciationWarning) as appreciation_warning:
-        Appreciate(input_copy, OUTPUT_DICT_BEERWISER)
-    expected_result = (
-        "Appreciation Warning: key_output_start and/or key_output_end is provided while key_output_automatic = 1"
-    )
-    assert str(appreciation_warning[0].message) == expected_result
 
 
 @pytest.mark.parametrize(

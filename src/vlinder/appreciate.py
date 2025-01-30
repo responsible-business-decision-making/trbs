@@ -2,34 +2,9 @@
 This file contains the Appreciate class that deals with the calculation of appreciations.
 """
 import math
-import warnings
 import pandas as pd
 import numpy as np
 from vlinder.utils import get_values_from_target
-
-
-class AppreciationError(Exception):
-    """
-    This class deals with the error handling of our appreciate calculations.
-    """
-
-    def __init__(self, message):  # ignore warning about super-init | pylint: disable=W0231
-        self.message = message
-
-    def __str__(self):
-        return f"Appreciation Error: {self.message}"
-
-
-class AppreciationWarning(UserWarning):
-    """
-    This class deals with the error handling of our appreciate calculations.
-    """
-
-    def __init__(self, message):  # ignore warning about super-init | pylint: disable=W0231
-        self.message = message
-
-    def __str__(self):
-        return f"Appreciation Warning: {self.message}"
 
 
 class Appreciate:
@@ -55,25 +30,6 @@ class Appreciate:
             boundaries[key_output] = [values_as_df[key_output].min(), values_as_df[key_output].max()]
 
         # Change the boundries to max and min key output value provides by the user if key_output_automatic = 0
-
-        for i in range(len(self.input_dict["key_output_automatic"])):
-            # Give error message when start or end piont are NOT given by user while key_output_automatic = 0
-            if self.input_dict["key_output_automatic"][i] == 0 and (
-                np.isnan(self.input_dict["key_output_start"][i]) or np.isnan(self.input_dict["key_output_end"][i])
-            ):
-                raise AppreciationError(
-                    "key_output_start and/or key_output_end is NOT provided while key_output_automatic = 0"
-                )
-
-            # Give warning message when start or end piont are given by user while key_output_automatic = 1
-            if self.input_dict["key_output_automatic"][i] == 1 and (
-                ~np.isnan(self.input_dict["key_output_start"][i]) or ~np.isnan(self.input_dict["key_output_end"][i])
-            ):
-                warnings.warn(
-                    "key_output_start and/or key_output_end is provided while key_output_automatic = 1",
-                    AppreciationWarning,
-                )
-
         indices_automatic = [i for i, x in enumerate(self.input_dict["key_output_automatic"]) if x == 0]
         key_output_start_automatic = self.input_dict["key_output_start"][indices_automatic].tolist()
         key_output_end_automatic = self.input_dict["key_output_end"][indices_automatic].tolist()

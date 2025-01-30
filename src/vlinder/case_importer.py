@@ -59,7 +59,16 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
             "scenario_weights": ["scenario", "weights"],
         }
 
+    @staticmethod
+    def _custom_warning(txt: str):
+        """
+        Helper function to show custom warnings
+        :param txt: txt to display
+        """
+        original_formatwarning = warnings.formatwarning
         warnings.formatwarning = lambda msg, *args, **kwargs: f"TemplateWarning: {msg}\n"
+        warnings.warn(txt)
+        warnings.formatwarning = original_formatwarning
 
     @staticmethod
     def _build_template_validators() -> dict:
@@ -90,7 +99,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         # 2. Warn the user about columns that will not be used
         extra_cols = [col for col in column_list if col not in self.validate_dict[table]]
         if extra_cols:
-            warnings.warn(f"column(s) '{', '.join(extra_cols)}' are not used for '{table}'")
+            self._custom_warning(f"column(s) '{', '.join(extra_cols)}' are not used for '{table}'")
         # 3. Validate whether all mandatory fields are filled in
         if table in self.mandatory_fields:
             missing = set(columns_with_na) & set(self.mandatory_fields[table])
@@ -98,8 +107,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
                 raise TemplateError(f"Missing values in column(s) {missing} for table {table}.")
         return to_check.drop(columns=extra_cols)
 
-    @staticmethod
-    def _check_case_text_element(case_text):
+    def _check_case_text_element(self, case_text):
         """
         This function checks if the case text element is filled in
         """
@@ -108,7 +116,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
             or isinstance(case_text["value"].iloc[0], (int, float))
             or bool(any(char.isalpha() for char in str(case_text["value"].iloc[0]))) is False
         ):
-            warnings.warn("Warning: No case text element entered")
+            self._custom_warning("No case text element entered")
 
     def _create_dataframes_dict(self, table: str) -> None:
         """
@@ -323,7 +331,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         if evi - all_arguments:
             raise TemplateError(f"EVI(s) {evi - all_arguments} created, but not used in the dependencies.")
         if fixed - all_arguments:
-            warnings.warn(f"Fixed input(s) {fixed - all_arguments} created, but not used in the dependencies.")
+            self._custom_warning(f"Fixed input(s) {fixed - all_arguments} created, but not used in the dependencies.")
 
         # Are all names used in the dependencies defined?
         all_names = ivi | evi | fixed | self._col("dependencies", "destination")
@@ -358,6 +366,30 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
                     f"do not have a value assigned for '{instr}'."
                 )
 
+    def _validate_start_and_endpoint(self):
+        """
+        This function checks whether automatic and start / end points are used correctly.
+        """
+        table = self.dataframes_dict["key_outputs"]
+
+        # Check 1: if automatic = 1, there should not be any start- or endpoints provided
+        automatic_condition = (table["automatic"] == 1) & (~np.isnan(table["start"]) | ~np.isnan(table["end"]))
+        invalid_rows = table[automatic_condition]
+        if not invalid_rows.empty:
+            raise TemplateError(
+                f"Key output(s) {set(invalid_rows['key_output'])} with automatic = 1, but also a start and/or endpoint"
+            )
+
+        # Check 2: if automatic = 0, there should be start and endpoints provided
+        automatic_condition = (table["automatic"] == 0) & (np.isnan(table["start"]) | np.isnan(table["end"]))
+
+        invalid_rows = table[automatic_condition]
+        if not invalid_rows.empty:
+            raise TemplateError(
+                f"Key output(s) {set(invalid_rows['key_output'])} with automatic = 0 "
+                f"have missing start- and/or endpoint"
+            )
+
     def _validate_dataframes(self):
         """
         This function is the wrapper for validation checks across the dataframes.
@@ -377,6 +409,9 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         self._validate_input_completeness("decision_makers_option", ivi)
         self._validate_input_completeness("scenario", evi)
 
+        # 3. Check on start and endpoints
+        self._validate_start_and_endpoint()
+
     def import_case(self) -> dict:
         """
         This function creates the input dictionary. It wraps other functions that deal with reading and validating
@@ -388,4 +423,5 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         self._validate_dataframes()
         self._create_input_dict()
         self._enrich_input_dict()
+
         return self.input_dict, self.dataframes_dict
