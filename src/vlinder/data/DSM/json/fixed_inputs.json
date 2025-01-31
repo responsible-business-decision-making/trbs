@@ -47,46 +47,41 @@
         },
         {
             "index":5,
-            "fixed_input":"Current Net Promotor Score",
-            "value":0.36
-        },
-        {
-            "index":6,
             "fixed_input":"Disengaged employee recommendation rate",
             "value":0.13
         },
         {
-            "index":7,
+            "index":6,
             "fixed_input":"Effect of carbon footprint reduction on brand value",
             "value":212.0
         },
         {
-            "index":8,
+            "index":7,
             "fixed_input":"Effect of employee engagement on customer satisfaction",
             "value":0.1
         },
         {
-            "index":9,
+            "index":8,
             "fixed_input":"Effect of maximum carbon footprint reduction on employee engagement",
             "value":0.0173
         },
         {
-            "index":10,
+            "index":9,
             "fixed_input":"Effect of using an internal carbon price on employee engagement",
             "value":0.0173
         },
         {
-            "index":11,
+            "index":10,
             "fixed_input":"Energy demand",
             "value":30000.0
         },
         {
-            "index":12,
+            "index":11,
             "fixed_input":"Engaged employee recommendation rate",
             "value":0.78
         },
         {
-            "index":13,
+            "index":12,
             "fixed_input":"Investment cost RE make",
             "value":40000000.0
         }

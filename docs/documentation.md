@@ -135,16 +135,21 @@ case.visualize(visual_request='table', key='key_outputs', scenario='SCENARIO_NAM
 
 # example of a barchart 
 case.visualize('barchart', 'weighted_appreciations', scenario=selected_scenario, stacked=True)
+
+# example of a dependency graph
+case.visualize('dependency_graph', 'KEY_OUTPUT_NAME')
 ```
 
 **What does it do?**
 - This function visualizes the content of the `output_dict`. 
-- It uses a `visual_request` (table or barchart) and `key` of the `output_dict` as variables. If the key is associated
-with a list of dimension 3, a `scenario` also needs to be provided.
+- It uses a `visual_request` (table, barchart or dependency graph) and `key` of the `output_dict` as variables. 
+If the key is associated with a list of dimension 3, a `scenario` also needs to be provided.
+- When creating a dependency graph, the `key` parameter represent the key output of interest. Optionally the maximum 
+number of generation can be set (via `max_gen`) and the location where the graph is stored can be changed (via `graph_dir`). 
 
 **💡 Tips and tricks**
 
-To get an overview of the supported `key`s and `**kwargs` values: 
+To get an overview of the supported `key`s and `**kwargs` values for tables and barcharts: 
 ```python
 # supported keys 
 case.visualizer.available_outputs
@@ -178,10 +183,21 @@ case.make_report("SCENARIO_NAME")
 
 # change to portrait mode and store at own location
 case.make_report("SCENARIO_NAME", orientation="Portrait", output_path="MY/LOCATION/PATH")
+
+# e.g. turn the dependency graphs pages on
+case.make_report("SCENARIO_NAME", page_dict={'dependencies': True})
 ```
 **What does it do?**
 - Creates a report that summarizes the active case in a PDF file for a selected scenario. As a default it uses 
 `orientation = 'Landscape'` and places it in a 'reports' folder in the current working directory.
+
+**💡 Tips and tricks**
+
+The `page_dict` parameter can be used to influence the pages included in the report. To see the current settings
+you can run
+```python
+case.report.page_selection
+```
 
 ## 📈 optimize()
 **Usage:**
