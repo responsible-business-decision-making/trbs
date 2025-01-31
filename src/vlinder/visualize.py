@@ -560,7 +560,7 @@ class DependencyGraph:
         graph_dir=Path.cwd() / "reports" / "dependency_graphs",
         sc_dir=Path.cwd() / "images",
         sc_window_size="1920x1080",
-        return_html = False,
+        return_html=False,
     ):
         """
         This functions draws the network graph
