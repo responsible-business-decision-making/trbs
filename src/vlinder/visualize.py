@@ -560,6 +560,7 @@ class DependencyGraph:
         graph_dir=Path.cwd() / "reports" / "dependency_graphs",
         sc_dir=Path.cwd() / "images",
         sc_window_size="1920x1080",
+        return_html=False,
     ):
         """
         This functions draws the network graph
@@ -650,6 +651,10 @@ class DependencyGraph:
             Path(graph_dir).mkdir(parents=True)
 
         graph_location = f"{str(graph_dir)}/{selected_ko.replace(' ', '_')}_graph.html"
+
+        if return_html:
+            return net.generate_html()
+
         net.save_graph(graph_location)
 
         # Make a screenshot of the graph if save == true, otherwise open a tab and show the graph
