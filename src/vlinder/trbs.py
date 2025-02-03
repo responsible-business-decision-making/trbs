@@ -148,12 +148,11 @@ class TheResponsibleBusinessSimulator:
             ready = True
         return ready
 
-    def make_report(self, scenario, page_dict=None, orientation="Landscape", output_path=Path.cwd() / "reports/"):
+    def make_report(self, scenario, page_dict=None, output_path=Path.cwd() / "reports/"):
         """This function deals with transforming a case to a Report.
         :param scenario: the selected scenario of the case
         :param page_dict: dictionary containing the changes that need to be made to the default page dictionary
         :param output_path: desired location of the report
-        :param orientation: the desired orientation for PDF format; there is a choice between Portrait of Landscape
         """
         page_dict = {} if not page_dict else page_dict
         if self._check_steps_completed():
@@ -163,7 +162,7 @@ class TheResponsibleBusinessSimulator:
                 output_path, self.name, self.input_dict, self.output_dict, self.visualize, page_dict
             )
 
-            location_report = self.report.create_report(scenario, orientation, output_path)
+            location_report = self.report.create_report(scenario, output_path)
             print(location_report)
 
     def optimize(self, scenario, **kwargs):
