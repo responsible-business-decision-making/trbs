@@ -12,7 +12,7 @@ import copy
 
 import numpy as np
 import matplotlib
-
+import pandas as pd
 import vlinder as vl
 from vlinder.case_exporter import CaseExporter
 from vlinder.case_importer import CaseImporter
@@ -164,8 +164,8 @@ class TheResponsibleBusinessSimulator:
     def optimize(self, scenario, **kwargs):
         """This function deals with finding the optimal distribution of decision maker options."""
         case_optimizer = Optimize(self.input_dict, self.output_dict)
-        if "Optimize_DMO_name" in self.input_dict["configurations"] and ~(
-            np.isnan(
+        if ("Optimize_DMO_name" in self.input_dict["configurations"]) and (
+            not pd.isna(
                 self.input_dict["configuration_value"][
                     list(self.input_dict["configurations"]).index("Optimize_DMO_name")
                 ]

@@ -8,7 +8,7 @@ from pathlib import Path
 from datetime import datetime
 from PIL import Image
 from fpdf import FPDF
-import numpy as np
+import pandas as pd
 from vlinder.visualize import DependencyGraph, Visualize
 from vlinder.optimize import Optimize
 from vlinder.evaluate import Evaluate
@@ -275,8 +275,8 @@ class MakeReport:
         pdf = FPDF(orientation="Landscape")
         pdf.set_title(f"Report of the {self.name} case")
         if self.page_selection["report_add_optimize"] == "True":
-            if "Optimize_DMO_name" in self.input_dict["configurations"] and ~(
-                np.isnan(
+            if ("Optimize_DMO_name" in self.input_dict["configurations"]) and (
+                not pd.isna(
                     self.input_dict["configuration_value"][
                         list(self.input_dict["configurations"]).index("Optimize_DMO_name")
                     ]
