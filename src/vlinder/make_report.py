@@ -8,7 +8,10 @@ from pathlib import Path
 from datetime import datetime
 from PIL import Image
 from fpdf import FPDF
-from vlinder.visualize import DependencyGraph
+from vlinder.visualize import DependencyGraph, Visualize
+from vlinder.optimize import Optimize
+from vlinder.evaluate import Evaluate
+from vlinder.appreciate import Appreciate
 
 
 def chapter_title(pdf, title, rgb):
@@ -135,6 +138,7 @@ class MakeReport:
         self.output_dict = output_dict
         self.page_number = 1
         self.visualize = visualize
+        self.visualizer = ""
 
         # set a default
         self.page_selection = {
@@ -146,9 +150,26 @@ class MakeReport:
             "fixed_inputs": True,
             "dependencies": False,
             "weighted_appreciations": True,
+            "add_optimize": False,
         }
         # update pages based
         self.page_selection.update({key: value for key, value in page_dict.items() if key in self.page_selection})
+
+    def visualize_optimize(self, visual_request, key, **kwargs):
+        """This function deals with the visualizations of the outcomes"""
+        # Set a Visualize class only if this has not yet been initialised.
+        if visual_request == "dependency_graph":
+            dependency_tree = DependencyGraph(self.input_dict)
+            return dependency_tree.draw_graph(key, **kwargs)
+
+        self.visualizer = Visualize(
+            self.input_dict,
+            self.output_dict,
+            len(self.input_dict["scenarios"])
+            * len(self.input_dict["decision_makers_options"])
+            * len(self.input_dict["key_outputs"]),
+        )
+        return self.visualizer.create_visual(visual_request, key, **kwargs)
 
     def make_title(self, target, scenario="", pos_series="", key_output="") -> str:
         """
@@ -247,6 +268,16 @@ class MakeReport:
         rgb = [0, 0, 120]
         pdf = FPDF(orientation="Landscape")
         pdf.set_title(f"Report of the {self.name} case")
+
+        if self.page_selection["add_optimize"]:
+            case_optimizer = Optimize(self.input_dict, self.output_dict)
+            self.input_dict = case_optimizer.optimize_single_scenario(scenario, "Optimized DMO", 60000)
+            case_evaluation = Evaluate(self.input_dict)
+            self.output_dict = case_evaluation.evaluate_all_scenarios()
+
+            case_appreciation = Appreciate(self.input_dict, self.output_dict)
+            case_appreciation.appreciate_all_scenarios()
+            self.visualize = self.visualize_optimize
 
         # Create title page
         if self.page_selection["title_page"]:
