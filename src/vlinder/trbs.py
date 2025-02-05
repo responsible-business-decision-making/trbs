@@ -148,19 +148,15 @@ class TheResponsibleBusinessSimulator:
             ready = True
         return ready
 
-    def make_report(self, scenario, page_dict=None, output_path=Path.cwd() / "reports/"):
+    def make_report(self, scenario, output_path=Path.cwd() / "reports/"):
         """This function deals with transforming a case to a Report.
         :param scenario: the selected scenario of the case
-        :param page_dict: dictionary containing the changes that need to be made to the default page dictionary
         :param output_path: desired location of the report
         """
-        page_dict = {} if not page_dict else page_dict
         if self._check_steps_completed():
             # Do not show the graphs in notebook when making a report
             matplotlib.pyplot.ioff()
-            self.report = MakeReport(
-                output_path, self.name, self.input_dict, self.output_dict, self.visualize, page_dict
-            )
+            self.report = MakeReport(output_path, self.name, self.input_dict, self.output_dict, self.visualize)
 
             location_report = self.report.create_report(scenario, output_path)
             print(location_report)
@@ -168,8 +164,20 @@ class TheResponsibleBusinessSimulator:
     def optimize(self, scenario, **kwargs):
         """This function deals with finding the optimal distribution of decision maker options."""
         case_optimizer = Optimize(self.input_dict, self.output_dict)
-        self.input_dict = case_optimizer.optimize_single_scenario(
-            scenario, kwargs.get("new_dmo_name", "Optimized DMO"), kwargs.get("max_combinations", 60000)
-        )
-        new_case_name = kwargs.get("new_case_name", self.name + "- Optimized")
-        self.name = new_case_name
+        if "Optimize_DMO_name" in self.input_dict["configurations"] and ~(
+            np.isnan(
+                self.input_dict["configuration_value"][
+                    list(self.input_dict["configurations"]).index("Optimize_DMO_name")
+                ]
+            )
+        ):
+            optimized_dmo_name = self.input_dict["configuration_value"][
+                list(self.input_dict["configurations"]).index("Optimize_DMO_name")
+            ]
+            self.input_dict = case_optimizer.optimize_single_scenario(
+                scenario, kwargs.get("new_dmo_name", optimized_dmo_name), kwargs.get("max_combinations", 60000)
+            )
+            new_case_name = kwargs.get("new_case_name", self.name + "- Optimized")
+            self.name = new_case_name
+        else:
+            print("Name optimized DMO not defined in template")

@@ -31,7 +31,6 @@ def fixture_make_report_outcomes():
         input_dict=INPUT_DICT_BEERWISER,
         output_dict=OUTPUT_DICT_BEERWISER,
         visualize=visualize,
-        page_dict={},
     )
 
 
