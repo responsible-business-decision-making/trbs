@@ -150,6 +150,7 @@ def test_get_value_of_argument(evaluate_beerwiser, arg, expected_result):
         (5, 10, ">=", 0),
         (2, 3, "min", 2),
         (10, 10.5, "max", 10.5),
+        (100.00, 100, "-", 0),
     ],
 )
 def test_evaluate_single_dependency(evaluate_beerwiser, arg1, arg2, operator, expected_result):

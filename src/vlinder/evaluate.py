@@ -87,6 +87,17 @@ class Evaluate:
             value = self.value_dict[arg]
         return value
 
+    @staticmethod
+    def _check_result_for_zero(value, tolerance=1e-9):
+        """
+        Checks if a result is too close to zero and return zero if it's below the tolerance value
+        :param value: the value that needs to be checked
+        :param tolerance: allowed level of precision
+        """
+        if abs(value) < tolerance:
+            return 0
+        return value
+
     def _evaluate_single_dependency(self, argument_1_value: float, argument_2_value: float, operator: str) -> int:
         """
         This function evaluates a single dependency. Raises an EvaluationError when the operator is unknown.
@@ -100,6 +111,8 @@ class Evaluate:
 
         # apply operations based on occurrence in operators_dict
         result = self.operators_dict[operator](argument_1_value, argument_2_value)
+        # and check for 'errors' due to floating-point representation
+        result = self._check_result_for_zero(result)
         return result
 
     def evaluate_all_dependencies(self, scenario: str, decision_makers_option: str) -> dict:

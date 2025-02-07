@@ -35,3 +35,14 @@ There is a serious need for measures that will help achieve a balance between su
 sector but also to account for the welfare of personnel. IZZ uses the strategic decision making process to support 
 many healthcare institutions in finding out what measures will help make healthcare a more pleasant, efficient and 
 attractive working environment. 
+
+
+### NEMO 
+This case addresses NEMO's decision making process towards solving its problems with the roof. Recurring leaks have 
+required complicated and expensive repairs and the roof also fell short of the insulation standards for this type of 
+public building. The strategic decision making process facilitated the expansion plans of NEMO to do more than the 
+repair a roof. In the process with the Business Simulator the importance of the public space of the roof and the 
+iconic function of the building for the city of Amsterdam was underlined. More intensive use of the roof would also 
+lead to more visitors of NEMO. Multi-functionality turned out to be key in the decision making process on the 
+investments of the roof. In close collaboration with architect Renzo Piano multiple uses and designs of the roof 
+were discussed. The opening of the new roof was in Spring 2016.

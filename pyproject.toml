@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "vlinder"
-version = "1.4.2"
+version = "1.4.3"
 authors = [
   {name="Vlinder team"},
 ]
@@ -51,6 +51,9 @@ where = ["src"]
 "vlinder.data.Refugee.xlsx" = ["*.xlsx"]
 "vlinder.data.Refugee.csv" = ["*.csv"]
 "vlinder.data.Refugee.json" = ["*.json"]
+"vlinder.data.NEMO.xlsx" = ["*.xlsx"]
+"vlinder.data.NEMO.csv" = ["*.csv"]
+"vlinder.data.NEMO.json" = ["*.json"]
 
 [project.urls]
 "Homepage" = "https://github.com/responsible-business-decision-making/trbs"
