@@ -53,6 +53,18 @@ def fixture_evaluate_izz():
     return Evaluate(case.input_dict)
 
 
+@pytest.fixture(name="evaluate_nemo")
+def fixture_evaluate_nemo():
+    """
+    This fixture initialises a IZZ case.
+    :return Evaluate(): an Evaluate class for IZZ
+    """
+
+    case = TheResponsibleBusinessSimulator("NEMO")
+    case.build()
+    return Evaluate(case.input_dict)
+
+
 def test_create_value_dict(evaluate_beerwiser):
     """
     This functions tests _create_value_dict returning a correctly initialized value dictionary, for the
@@ -242,6 +254,23 @@ def test_evaluate_single_dependency_evaluation_error(evaluate_beerwiser):
                     "Decrease in wage costs": 11235861.75,
                     "Increase in production capacity": 513.44,
                     "Total investment": 120000.0,
+                }
+            },
+        ),
+        (
+            "evaluate_nemo",
+            "Base case",
+            "Energy",
+            {
+                "key_outputs": {
+                    "Capex": 1971625.0,
+                    "Energy savings in euros": 19167.76,
+                    "Energy savings in kilowatt-hours": 319462.75,
+                    "ExtraBarMargin": 197.83,
+                    "ExtraEntranceFees": 2057.45,
+                    "IncreaseLandmarkValue": 0.4,
+                    "IncreaseVisitorSatisfaction": 1.0,
+                    "Opex": 14065.0,
                 }
             },
         ),
