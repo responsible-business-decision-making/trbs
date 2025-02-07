@@ -43,6 +43,7 @@ do so. For new scripts and/or logic unit tests must be added. <br><br> To run th
     `transform` function to generate the other two. 
    2. Add at least one relevant unit test to `test_evaluate_all_dependencies` for the new case.
    3. The `README.md`-file in the data folder has been updated. 
+   4. The data files for the new case are added to the `pyproject.toml` file. 
 <br><br>
 4. If the **vlinder_demo notebook** has been changed, ensure that 
    1. it still uses beerwiser as default case

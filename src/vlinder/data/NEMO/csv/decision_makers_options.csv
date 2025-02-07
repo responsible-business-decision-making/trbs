@@ -1,0 +1,109 @@
+internal_variable_input;decision_makers_option;value
+AmpyxPowerPlanes;Do Nothing;0
+ExternalElevator;Do Nothing;0
+ExtraIsolation;Do Nothing;0
+GardeningLowerRoof;Do Nothing;0
+GardeningUpperRoof;Do Nothing;0
+LowerRoofRepair;Do Nothing;0
+MontanaWindmills;Do Nothing;0
+PianoMills;Do Nothing;0
+PianoTent;Do Nothing;0
+PlanterStepsLowerRoof;Do Nothing;0
+PlanterStepsUpperRoof;Do Nothing;0
+PVFieldBarRoof;Do Nothing;0
+PVFieldLowerRoof;Do Nothing;0
+PVFieldUpperRoof;Do Nothing;0
+PVStepsLowerRoof;Do Nothing;0
+SkystreamWindmills;Do Nothing;0
+UpperRoofRepair;Do Nothing;0
+VisitorPath;Do Nothing;0
+AmpyxPowerPlanes;Energy;0
+ExternalElevator;Energy;0
+ExtraIsolation;Energy;1
+GardeningLowerRoof;Energy;0
+GardeningUpperRoof;Energy;0
+LowerRoofRepair;Energy;1
+MontanaWindmills;Energy;2
+PianoMills;Energy;0
+PianoTent;Energy;0
+PlanterStepsLowerRoof;Energy;0
+PlanterStepsUpperRoof;Energy;0
+PVFieldBarRoof;Energy;300
+PVFieldLowerRoof;Energy;1000
+PVFieldUpperRoof;Energy;1110
+PVStepsLowerRoof;Energy;0
+SkystreamWindmills;Energy;2
+UpperRoofRepair;Energy;1
+VisitorPath;Energy;1
+AmpyxPowerPlanes;Gardening;0
+ExternalElevator;Gardening;0
+ExtraIsolation;Gardening;1
+GardeningLowerRoof;Gardening;1000
+GardeningUpperRoof;Gardening;1150
+LowerRoofRepair;Gardening;1
+MontanaWindmills;Gardening;0
+PianoMills;Gardening;0
+PianoTent;Gardening;0
+PlanterStepsLowerRoof;Gardening;0
+PlanterStepsUpperRoof;Gardening;0
+PVFieldBarRoof;Gardening;0
+PVFieldLowerRoof;Gardening;0
+PVFieldUpperRoof;Gardening;0
+PVStepsLowerRoof;Gardening;0
+SkystreamWindmills;Gardening;0
+UpperRoofRepair;Gardening;1
+VisitorPath;Gardening;1
+AmpyxPowerPlanes;Just Repair;0
+ExternalElevator;Just Repair;0
+ExtraIsolation;Just Repair;0
+GardeningLowerRoof;Just Repair;0
+GardeningUpperRoof;Just Repair;0
+LowerRoofRepair;Just Repair;1
+MontanaWindmills;Just Repair;0
+PianoMills;Just Repair;0
+PianoTent;Just Repair;0
+PlanterStepsLowerRoof;Just Repair;0
+PlanterStepsUpperRoof;Just Repair;0
+PVFieldBarRoof;Just Repair;0
+PVFieldLowerRoof;Just Repair;0
+PVFieldUpperRoof;Just Repair;0
+PVStepsLowerRoof;Just Repair;0
+SkystreamWindmills;Just Repair;0
+UpperRoofRepair;Just Repair;1
+VisitorPath;Just Repair;0
+AmpyxPowerPlanes;Mix;1
+ExternalElevator;Mix;0
+ExtraIsolation;Mix;1
+GardeningLowerRoof;Mix;500
+GardeningUpperRoof;Mix;505
+LowerRoofRepair;Mix;1
+MontanaWindmills;Mix;2
+PianoMills;Mix;0
+PianoTent;Mix;0
+PlanterStepsLowerRoof;Mix;0
+PlanterStepsUpperRoof;Mix;0
+PVFieldBarRoof;Mix;300
+PVFieldLowerRoof;Mix;500
+PVFieldUpperRoof;Mix;505
+PVStepsLowerRoof;Mix;0
+SkystreamWindmills;Mix;2
+UpperRoofRepair;Mix;1
+VisitorPath;Mix;1
+AmpyxPowerPlanes;Renzo Piano;0
+ExternalElevator;Renzo Piano;1
+ExtraIsolation;Renzo Piano;1
+GardeningLowerRoof;Renzo Piano;0
+GardeningUpperRoof;Renzo Piano;0
+LowerRoofRepair;Renzo Piano;1
+MontanaWindmills;Renzo Piano;0
+PianoMills;Renzo Piano;2
+PianoTent;Renzo Piano;1
+PlanterStepsLowerRoof;Renzo Piano;600
+PlanterStepsUpperRoof;Renzo Piano;1130
+PVFieldBarRoof;Renzo Piano;0
+PVFieldLowerRoof;Renzo Piano;0
+PVFieldUpperRoof;Renzo Piano;0
+PVStepsLowerRoof;Renzo Piano;1670
+SkystreamWindmills;Renzo Piano;0
+UpperRoofRepair;Renzo Piano;1
+VisitorPath;Renzo Piano;0
