@@ -1,0 +1,9 @@
+key_output;theme;monetary;smaller_the_better;linear;automatic;start;end
+IncreaseVisitorSatisfaction;People;0;0;0;1;;
+IncreaseLandmarkValue;People;0;0;0;1;;
+Energy savings in kilowatt-hours;Planet;0;0;0;1;;
+Energy savings in euros;Profit (Other);1;0;0;1;;
+ExtraEntranceFees;Profit (Other);1;0;0;1;;
+ExtraBarMargin;Profit (Other);1;0;0;1;;
+Capex;Profit (Capex);1;1;0;1;;
+Opex;Profit (Other);1;1;0;1;;
