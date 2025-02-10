@@ -333,7 +333,19 @@ class MakeReport:
                     input_tables = "key_outputs_theme" if input_tables == "key_outputs" else input_tables
                     self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
                     input_tables = "key_outputs" if input_tables == "key_outputs_theme" else input_tables
-                    pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
+                    if number_of_iterations > 1:
+                        pdf = chapter_title(
+                            pdf,
+                            self.make_title(input_tables)
+                            + " ("
+                            + str(number_iteration + 1)
+                            + "/"
+                            + str(number_of_iterations)
+                            + ")",
+                            rgb,
+                        )
+                    else:
+                        pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
                     pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
                     # Search for the right table related to the input_table and place it in the middle of the slide
                     image_path = "images" + "/table" + input_tables + str(number_iteration) + ".png"
