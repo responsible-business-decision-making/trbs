@@ -51,6 +51,13 @@ class Visualize:
             "#5CB9BD",
             "#E27588",
         ]
+        self.colors_scen = [
+            "#003DAB",
+            "#0089EB",
+            "#B3DCF9",
+            "#0060D7",
+            "#4DACF1",
+        ]
         self.available_visuals = {
             "table": self._create_table,
             "barchart": self._create_barchart,
@@ -243,31 +250,40 @@ class Visualize:
             dataframe = pd.DataFrame()
             kwargs["input_variables"] = True
             number_of_iter = kwargs.get("number_iteration", -1)
+            start_idx = number_of_iter * 10
+            end_idx = start_idx + 10
             if key == "key_outputs_theme":
                 key = key[:-6]
-                dataframe[key] = self.input_dict[key]
                 key_value = key[:-1] + "_theme"
-                dataframe[key_value] = self.input_dict[key_value]
-            elif key == "fixed_inputs":
                 if number_of_iter == -1:
                     dataframe[key] = self.input_dict[key]
-                    key_value = key[:-1] + "_value"
                     dataframe[key_value] = self.input_dict[key_value]
                 else:
-                    start_idx = number_of_iter * 10
-                    end_idx = start_idx + 10
-
                     dataframe[key] = self.input_dict[key][start_idx:end_idx]
-                    key_value = key[:-1] + "_value"
+                    dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
+
+            elif key == "fixed_inputs":
+                key_value = key[:-1] + "_value"
+                if number_of_iter == -1:
+                    dataframe[key] = self.input_dict[key]
+                    dataframe[key_value] = self.input_dict[key_value]
+                else:
+                    dataframe[key] = self.input_dict[key][start_idx:end_idx]
+
                     dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
             elif key == "scenarios":
                 dataframe = self._create_table_n_col(
                     dataframe, key, key[:-1] + "_value", "external_variable_inputs", "External variable input"
                 )
+                if number_of_iter != -1:
+                    dataframe = dataframe[start_idx:end_idx]
             elif key == "decision_makers_options":
                 dataframe = self._create_table_n_col(
                     dataframe, key, key[:-1] + "_value", "internal_variable_inputs", "Internal variable input"
                 )
+                if number_of_iter != -1:
+                    dataframe = dataframe[start_idx:end_idx]
+
             table_name = f"Values of {self._str_snake_case_to_text(key)}"
             styled_df = self._table_styler(dataframe.style, table_name, **kwargs)
             if number_of_iter == -1:
@@ -334,7 +350,14 @@ class Visualize:
         if (key == "decision_makers_option_appreciation") | (key == "scenario_appreciations"):
             rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
             bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
-            axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5))
+            if key == "scenario_appreciations":
+                axis = bar_data.plot.bar(
+                    x="decision_makers_option", stacked=stacked, color=self.colors_scen, figsize=(10, 5)
+                )
+            else:
+                axis = bar_data.plot.bar(
+                    x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5)
+                )
             self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
         else:
             # Apply the function to the "weighted_appreciations" column and add as new column
@@ -355,7 +378,8 @@ class Visualize:
             self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
 
         if "save" in kwargs:
-            plt.savefig("images" + "/figure.png", bbox_inches="tight")
+            plt.savefig("images" + "/figure_" + key + ".png", bbox_inches="tight")
+            plt.close()
         else:
             plt.show()
 
