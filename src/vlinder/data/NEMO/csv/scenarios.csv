@@ -1,0 +1,16 @@
+external_variable_input;scenario;value
+CapexCoveredBySponsoring;Base case;0.75
+CapexCoveredBySponsoring;Optimistic;1.0
+CapexCoveredBySponsoring;Pessimistic;0.6
+ElevatorRestaurantRevenues;Base case;0.2
+ElevatorRestaurantRevenues;Optimistic;0.6
+ElevatorRestaurantRevenues;Pessimistic;0.0
+IncreaseAnnualVisitorsCustomerSatisfaction;Base case;150.0
+IncreaseAnnualVisitorsCustomerSatisfaction;Optimistic;500.0
+IncreaseAnnualVisitorsCustomerSatisfaction;Pessimistic;125.0
+IncreaseAnnualVisitorsLandmarkValue;Base case;250.0
+IncreaseAnnualVisitorsLandmarkValue;Optimistic;400.0
+IncreaseAnnualVisitorsLandmarkValue;Pessimistic;100.0
+PricePerKwH;Base case;0.06
+PricePerKwH;Optimistic;0.07
+PricePerKwH;Pessimistic;0.05
