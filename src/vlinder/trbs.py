@@ -148,15 +148,16 @@ class TheResponsibleBusinessSimulator:
             ready = True
         return ready
 
-    def make_report(self, scenario, output_path=Path.cwd() / "reports/"):
+    def make_report(self, scenario, page_dict=None, output_path=Path.cwd() / "reports/"):
         """This function deals with transforming a case to a Report.
         :param scenario: the selected scenario of the case
         :param output_path: desired location of the report
         """
+        page_dict = {} if not page_dict else page_dict
         if self._check_steps_completed():
             # Do not show the graphs in notebook when making a report
             matplotlib.pyplot.ioff()
-            self.report = MakeReport(output_path, self.name, self.input_dict, self.output_dict, self.visualize)
+            self.report = MakeReport(output_path, self.name, self.input_dict, self.output_dict, self.visualize, page_dict)
 
             location_report = self.report.create_report(scenario, output_path)
             print(location_report)

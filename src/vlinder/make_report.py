@@ -131,7 +131,7 @@ class MakeReport:
     """
 
     # pylint: disable=too-many-arguments
-    def __init__(self, output_path, name, input_dict, output_dict, visualize):
+    def __init__(self, output_path, name, input_dict, output_dict, visualize, page_dict={}):
         self.output_path = Path(output_path)
         self.folder_name = ""
         self.name = name
@@ -140,6 +140,7 @@ class MakeReport:
         self.page_number = 1
         self.visualize = visualize
         self.visualizer = ""
+        self.page_dict = page_dict
 
         # set a default
         self.page_selection = {
@@ -153,13 +154,15 @@ class MakeReport:
             "report_weighted_appreciations": "True",
             "report_add_optimize": "False",
         }
-        # update pages based
+        # update pages based on Excel
         self.page_selection = {
             key: self.input_dict["configuration_value"][list(self.input_dict["configurations"]).index(key)]
             if key in self.input_dict["configurations"]
             else self.page_selection[key]
             for key in self.page_selection
         }
+        # update pages based on hardcoded input
+        self.page_selection.update({key: value for key, value in self.page_dict.items() if key in self.page_selection})
 
     def visualize_optimize(self, visual_request, key, **kwargs):
         """This function deals with the visualizations of the outcomes"""
