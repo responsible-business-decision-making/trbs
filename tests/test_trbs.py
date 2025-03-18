@@ -89,7 +89,7 @@ def test_visualize_before_build(case_beerwiser):
     Test to check whether visualizing before building a case yields the correct error
     """
     with pytest.raises(CaseError) as case_error:
-        case_beerwiser.visualize('SHOULD_NOT_MATTER', 'CAN BE ANYTHING')
+        case_beerwiser.visualize("SHOULD_NOT_MATTER", "CAN BE ANYTHING")
     expected_error = "Case Error: first build a case with .build()"
     assert str(case_error.value) == expected_error
 
@@ -99,7 +99,7 @@ def test_transform_before_build(case_beerwiser):
     Test to check whether transforming before building a case yields the correct error
     """
     with pytest.raises(CaseError) as case_error:
-        case_beerwiser.transform('SHOULD NOT MATTER')
+        case_beerwiser.transform("SHOULD NOT MATTER")
     expected_error = "Case Error: first build a case with .build()"
     assert str(case_error.value) == expected_error
 
@@ -109,16 +109,19 @@ def test_modify_before_build(case_beerwiser):
     Test to check whether modifying a case before building yields the correct error
     """
     with pytest.raises(CaseError) as case_error:
-        case_beerwiser.modify('A', 'B', 'C')
+        case_beerwiser.modify("A", "B", "C")
     expected_error = "Case Error: first build a case with .build()"
     assert str(case_error.value) == expected_error
 
 
-@pytest.mark.parametrize("setup_methods, expected_error", [
-    ([], "Case Error: first build a case with .build()"),
-    (["build"], "Case Error: first evaluate a case with .evaluate()"),
-    (["build", "evaluate"], "Case Error: first appreciate a case with .appreciate()"),
-])
+@pytest.mark.parametrize(
+    "setup_methods, expected_error",
+    [
+        ([], "Case Error: first build a case with .build()"),
+        (["build"], "Case Error: first evaluate a case with .evaluate()"),
+        (["build", "evaluate"], "Case Error: first appreciate a case with .appreciate()"),
+    ],
+)
 def test_make_report_or_optimize(case_beerwiser, setup_methods, expected_error):
     """
     Test to check whether asking for a report or optimisation too soon will result in the appropriate error
@@ -128,14 +131,11 @@ def test_make_report_or_optimize(case_beerwiser, setup_methods, expected_error):
         getattr(case_beerwiser, method)()
 
     with pytest.raises(CaseError) as case_error:
-        case_beerwiser.make_report('A')
+        case_beerwiser.make_report("A")
 
     assert str(case_error.value) == expected_error
 
     with pytest.raises(CaseError) as case_error:
-        case_beerwiser.optimize('ScenA')
+        case_beerwiser.optimize("ScenA")
 
     assert str(case_error.value) == expected_error
-
-
-def test_optimize_without_

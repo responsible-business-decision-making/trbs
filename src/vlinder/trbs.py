@@ -63,12 +63,7 @@ class TheResponsibleBusinessSimulator:
         self.exporter = None
         self.report = None
 
-        self.possible_status = {
-            0: "build",
-            1: "evaluate",
-            2: "appreciate",
-            3: "optimize"
-        }
+        self.possible_status = {0: "build", 1: "evaluate", 2: "appreciate", 3: "optimize"}
         self.status = {}
 
     def __str__(self):
@@ -111,9 +106,7 @@ class TheResponsibleBusinessSimulator:
         all higher levels are removed
         """
         self.status[status_to_set] = self.possible_status[status_to_set]
-        self.status = {
-            key: value for key, value in self.status.items() if key <= status_to_set
-        }
+        self.status = {key: value for key, value in self.status.items() if key <= status_to_set}
 
     def copy(self):
         """
@@ -189,14 +182,15 @@ class TheResponsibleBusinessSimulator:
         page_dict = {} if not page_dict else page_dict
         # Do not show the graphs in notebook when making a report
         matplotlib.pyplot.ioff()
-        self.report = MakeReport(
-            output_path, self.name, self.input_dict, self.output_dict, self.visualize, page_dict
-        )
+        self.report = MakeReport(output_path, self.name, self.input_dict, self.output_dict, self.visualize, page_dict)
         location_report = self.report.create_report(scenario, output_path)
         print(location_report)
 
     def optimize(self, scenario, **kwargs):
-        """This function deals with finding the optimal distribution of decision maker options."""
+        """
+        This function deals with finding the optimal distribution of decision maker options.
+        :param scenario: the selected scenario of the case
+        """
         self._status_check([0, 1, 2])
         case_optimizer = Optimize(self.input_dict, self.output_dict)
 
@@ -212,5 +206,5 @@ class TheResponsibleBusinessSimulator:
             )
             self.name = kwargs.get("new_case_name", f"{self.name} - Optimized")
 
-        except (ValueError, IndexError, KeyError) as e:
-            raise CaseError(f"cannot find optimized DMO name with {e}")
+        except (ValueError, IndexError, KeyError) as error:
+            raise CaseError("cannot find optimized DMO name") from error
