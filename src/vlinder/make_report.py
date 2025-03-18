@@ -164,6 +164,8 @@ class MakeReport:
         # update pages based on hardcoded input
         self.page_selection.update({key: value for key, value in self.page_dict.items() if key in self.page_selection})
 
+        print(self.page_selection)
+
     def visualize_optimize(self, visual_request, key, **kwargs):
         """This function deals with the visualizations of the outcomes"""
         # Set a Visualize class only if this has not yet been initialised.
