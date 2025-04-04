@@ -8,7 +8,7 @@ from pathlib import Path
 from datetime import datetime
 from PIL import Image
 from fpdf import FPDF
-from vlinder.visualize import DependencyGraph, Visualize
+from vlinder.visualize import DependencyGraph
 
 
 def chapter_title(pdf, title, rgb):
@@ -160,22 +160,6 @@ class MakeReport:
         }
         # update pages based on hardcoded input
         self.page_selection.update({key: value for key, value in self.page_dict.items() if key in self.page_selection})
-
-    def visualize_optimize(self, visual_request, key, **kwargs):
-        """This function deals with the visualizations of the outcomes"""
-        # Set a Visualize class only if this has not yet been initialised.
-        if visual_request == "dependency_graph":
-            dependency_tree = DependencyGraph(self.input_dict)
-            return dependency_tree.draw_graph(key, **kwargs)
-
-        self.visualizer = Visualize(
-            self.input_dict,
-            self.output_dict,
-            len(self.input_dict["scenarios"])
-            * len(self.input_dict["decision_makers_options"])
-            * len(self.input_dict["key_outputs"]),
-        )
-        return self.visualizer.create_visual(visual_request, key, **kwargs)
 
     def make_title(self, target, scenario="", pos_series="", key_output="") -> str:
         """
