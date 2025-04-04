@@ -9,4 +9,3 @@ report_scenarios;True
 report_fixed_inputs;True
 report_dependencies;False
 report_weighted_appreciations;True
-report_add_optimize;False

@@ -69,11 +69,6 @@
             "index":9,
             "configuration":"report_weighted_appreciations",
             "value":"True"
-        },
-        {
-            "index":10,
-            "configuration":"report_add_optimize",
-            "value":"False"
         }
     ]
 }
