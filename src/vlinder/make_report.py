@@ -8,11 +8,7 @@ from pathlib import Path
 from datetime import datetime
 from PIL import Image
 from fpdf import FPDF
-import pandas as pd
-from vlinder.visualize import DependencyGraph, Visualize
-from vlinder.optimize import Optimize
-from vlinder.evaluate import Evaluate
-from vlinder.appreciate import Appreciate
+from vlinder.visualize import DependencyGraph
 
 
 def chapter_title(pdf, title, rgb):
@@ -131,7 +127,8 @@ class MakeReport:
     """
 
     # pylint: disable=too-many-arguments
-    def __init__(self, output_path, name, input_dict, output_dict, visualize, page_dict={}):
+    def __init__(self, output_path, name, input_dict, output_dict, visualize, page_dict=None):
+        page_dict = page_dict or {}
         self.output_path = Path(output_path)
         self.folder_name = ""
         self.name = name
@@ -144,41 +141,25 @@ class MakeReport:
 
         # set a default
         self.page_selection = {
-            "report_title_page": "True",
-            "report_strategic_challenge": "True",
-            "report_key_outputs_theme": "True",
-            "report_decision_makers_options": "True",
-            "report_scenarios": "True",
-            "report_fixed_inputs": "True",
-            "report_dependencies": "False",
-            "report_weighted_appreciations": "True",
-            "report_add_optimize": "False",
+            "report_title_page": True,
+            "report_strategic_challenge": True,
+            "report_key_outputs_theme": True,
+            "report_decision_makers_options": True,
+            "report_scenarios": True,
+            "report_fixed_inputs": True,
+            "report_dependencies": False,
+            "report_weighted_appreciations": True,
         }
         # update pages based on Excel
         self.page_selection = {
-            key: self.input_dict["configuration_value"][list(self.input_dict["configurations"]).index(key)]
+            key: self.input_dict["configuration_value"][list(self.input_dict["configurations"]).index(key)].lower()
+            == "true"
             if key in self.input_dict["configurations"]
             else self.page_selection[key]
             for key in self.page_selection
         }
         # update pages based on hardcoded input
         self.page_selection.update({key: value for key, value in self.page_dict.items() if key in self.page_selection})
-
-    def visualize_optimize(self, visual_request, key, **kwargs):
-        """This function deals with the visualizations of the outcomes"""
-        # Set a Visualize class only if this has not yet been initialised.
-        if visual_request == "dependency_graph":
-            dependency_tree = DependencyGraph(self.input_dict)
-            return dependency_tree.draw_graph(key, **kwargs)
-
-        self.visualizer = Visualize(
-            self.input_dict,
-            self.output_dict,
-            len(self.input_dict["scenarios"])
-            * len(self.input_dict["decision_makers_options"])
-            * len(self.input_dict["key_outputs"]),
-        )
-        return self.visualizer.create_visual(visual_request, key, **kwargs)
 
     def make_title(self, target, scenario="", pos_series="", key_output="") -> str:
         """
@@ -277,33 +258,9 @@ class MakeReport:
         rgb = [0, 0, 120]
         pdf = FPDF(orientation="Landscape")
         pdf.set_title(f"Report of the {self.name} case")
-        if self.page_selection["report_add_optimize"] == "True":
-            if ("Optimize_DMO_name" in self.input_dict["configurations"]) and (
-                not pd.isna(
-                    self.input_dict["configuration_value"][
-                        list(self.input_dict["configurations"]).index("Optimize_DMO_name")
-                    ]
-                )
-            ):
-                optimized_dmo_name = self.input_dict["configuration_value"][
-                    list(self.input_dict["configurations"]).index("Optimize_DMO_name")
-                ]
-                case_optimizer = Optimize(self.input_dict, self.output_dict)
-                optimized_dmo_name = self.input_dict["configuration_value"][
-                    list(self.input_dict["configurations"]).index("Optimize_DMO_name")
-                ]
-                self.input_dict = case_optimizer.optimize_single_scenario(scenario, optimized_dmo_name, 60000)
-                case_evaluation = Evaluate(self.input_dict)
-                self.output_dict = case_evaluation.evaluate_all_scenarios()
-
-                case_appreciation = Appreciate(self.input_dict, self.output_dict)
-                case_appreciation.appreciate_all_scenarios()
-                self.visualize = self.visualize_optimize
-            else:
-                print("Name optimized DMO not defined in template")
 
         # Create title page
-        if self.page_selection["report_title_page"] == "True":
+        if self.page_selection["report_title_page"]:
             pdf.add_page()
             pdf = title_page_title(pdf, "Report of the " + self.name + " case", rgb)
             # Search for a logo. if yes, place in the middle of the slide
@@ -315,7 +272,7 @@ class MakeReport:
                 pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
             pdf = title_page_subtitle(pdf, "Responsible business decision making \n" + str(datetime.now().date()))
 
-        if self.page_selection["report_strategic_challenge"] == "True":
+        if self.page_selection["report_strategic_challenge"]:
             # Create Strategic Challenge page
             pdf.add_page()
             pdf = chapter_title(pdf, "Strategic Challenge", rgb)
@@ -324,7 +281,7 @@ class MakeReport:
 
         # Create Input variables pages
         for input_tables in ["key_outputs_theme", "decision_makers_options", "scenarios", "fixed_inputs"]:
-            if self.page_selection["report_" + input_tables] == "True":
+            if self.page_selection["report_" + input_tables]:
                 if input_tables == "key_outputs_theme":
                     input_tables = "key_outputs"
                 if input_tables in ("decision_makers_options", "scenarios"):
@@ -360,7 +317,7 @@ class MakeReport:
                     pdf = footer_page(pdf, self.name)
 
         # Create for every key_output a dependency graph slide
-        if self.page_selection["report_dependencies"] == "True":
+        if self.page_selection["report_dependencies"]:
             for key_output in self.input_dict["key_outputs"]:
                 pdf.add_page()
                 pdf = chapter_title(pdf, f"The dependency graph for the key output: {key_output}", rgb)
@@ -371,7 +328,7 @@ class MakeReport:
                 pdf = footer_page(pdf, self.name)
 
         # Create output slide with the weighted appreciations
-        if self.page_selection["report_weighted_appreciations"] == "True":
+        if self.page_selection["report_weighted_appreciations"]:
             for figure in ["weighted_appreciations", "scenario_appreciations"]:
                 pdf.add_page()
                 if figure == "weighted_appreciations":
