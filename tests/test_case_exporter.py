@@ -16,9 +16,9 @@ def fixture_export_beerwiser():
     """
     # get a dataframe dictionary from beerwiser -- this class is tested in test_case_importer
     case = CaseImporter(Path.cwd() / "src/vlinder/data", "beerwiser", "csv")
-    _, dataframes_dict = case.import_case()
+    input_dict, _ = case.import_case()
     # initialize exporter
-    yield CaseExporter(Path.cwd(), "beerwiser", dataframes_dict)
+    yield CaseExporter(Path.cwd(), "beerwiser", input_dict)
     # remove stuff after testing is done
     shutil.rmtree(Path.cwd() / "test_folder")
 
@@ -61,3 +61,22 @@ def test_create_template_for_requested_format(export_beerwiser, requested_format
         expected_file_location = Path.cwd() / requested_format / f"configurations.{requested_format}"
     assert expected_file_location.exists()
     shutil.rmtree(Path.cwd() / requested_format)
+
+
+# def test_input_to_dataframe_correct_sheets(export_beerwiser):
+#     """
+#     Test that the dataframe_dict format in the initialization has correct sheets.
+#     """
+#     assert list(export_beerwiser.dataframe_dict.keys()) == [
+#         'configurations',
+#         'generic_text_elements',
+#         'case_text_elements',
+#         'key_outputs',
+#         'decision_makers_options',
+#         'scenarios',
+#         'fixed_inputs',
+#         'dependencies',
+#         'theme_weights',
+#         'key_output_weights',
+#         'scenario_weights'
+#     ]
