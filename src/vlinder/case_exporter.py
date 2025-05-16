@@ -162,7 +162,7 @@ class CaseExporter:
     def _make_table_key_output_weights(self):
         return pd.DataFrame(
             {
-                "key_ouptut": self.input_dict["key_outputs"],
+                "key_output": self.input_dict["key_outputs"],
                 "weight": self.input_dict["key_output_weight"],
             }
         )
