@@ -152,7 +152,7 @@ class TheResponsibleBusinessSimulator:
         """This function deals with transforming a case to a new format."""
         self._status_check([0])
         output_path = output_path if output_path is not None else Path.cwd() / "data"
-        self.exporter = CaseExporter(output_path, self.name, self.dataframe_dict)
+        self.exporter = CaseExporter(output_path, self.name, self.input_dict)
         self.exporter.create_template_for_requested_format(requested_format)
 
     def modify(self, input_dict_key, element_key, new_value):
