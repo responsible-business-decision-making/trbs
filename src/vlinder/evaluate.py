@@ -2,6 +2,7 @@
 This file contains the Evaluate class that deals with the calculation of key output values for
 the decision makers options.
 """
+
 import numpy as np
 
 

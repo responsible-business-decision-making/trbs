@@ -1,6 +1,7 @@
 """
 This module contains all tests for the Optimize() class
 """
+
 import pytest
 import numpy as np
 from vlinder.optimize import Optimize
