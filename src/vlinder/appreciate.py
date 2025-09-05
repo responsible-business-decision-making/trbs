@@ -1,6 +1,7 @@
 """
 This file contains the Appreciate class that deals with the calculation of appreciations.
 """
+
 import math
 import pandas as pd
 import numpy as np

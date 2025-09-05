@@ -1,6 +1,7 @@
 """
 This module contains the CaseExporter() class. This class deals with transforming a case or exporting the outputs.
 """
+
 import os
 from pathlib import Path
 import pandas as pd

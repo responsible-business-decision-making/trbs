@@ -1,6 +1,7 @@
 """
 This file contains the Visualize class that deals with the creation of all graphs and tables
 """
+
 import re
 import time
 import os
