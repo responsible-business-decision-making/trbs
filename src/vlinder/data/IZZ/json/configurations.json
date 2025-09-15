@@ -24,6 +24,51 @@
             "index":0,
             "configuration":"language",
             "value":"EN"
+        },
+        {
+            "index":1,
+            "configuration":"Optimize_DMO_name",
+            "value":"Optimized_DMO"
+        },
+        {
+            "index":2,
+            "configuration":"report_title_page",
+            "value":"True"
+        },
+        {
+            "index":3,
+            "configuration":"report_strategic_challenge",
+            "value":"True"
+        },
+        {
+            "index":4,
+            "configuration":"report_key_outputs_theme",
+            "value":"True"
+        },
+        {
+            "index":5,
+            "configuration":"report_decision_makers_options",
+            "value":"True"
+        },
+        {
+            "index":6,
+            "configuration":"report_scenarios",
+            "value":"True"
+        },
+        {
+            "index":7,
+            "configuration":"report_fixed_inputs",
+            "value":"True"
+        },
+        {
+            "index":8,
+            "configuration":"report_dependencies",
+            "value":"False"
+        },
+        {
+            "index":9,
+            "configuration":"report_weighted_appreciations",
+            "value":"True"
         }
     ]
 }

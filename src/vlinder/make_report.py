@@ -71,7 +71,7 @@ def title_page_subtitle(pdf, subtitle):
     return pdf
 
 
-def footer_page(pdf, name, orientation):
+def footer_page(pdf, name):
     """
     This function makes it possible to add a footer to a pdf, with desired text
     :param pdf: the pdf where we want to apply the function on
@@ -79,23 +79,17 @@ def footer_page(pdf, name, orientation):
     :param orientation: the orientation used for the pdf, i.e. Portrait or Landscape
     :return: the updated pdf
     """
-    if orientation == "Portrait":
-        pdf.set_y(250)
-    else:
-        pdf.set_y(175)
+    pdf.set_y(175)
     pdf.set_font("helvetica", "I", 8)
     pdf.set_text_color(0, 0, 0)
     pdf.multi_cell(50, 10, name, 0, "L")
-    if orientation == "Landscape":
-        x_position = pdf.w - 60  # Set x-position to the right edge of the page
-    else:
-        x_position = pdf.l_margin  # Set x-position to the left margin of the page
+    x_position = pdf.w - 60  # Set x-position to the right edge of the page
     pdf.set_xy(x_position, pdf.get_y())  # Set the x-position of the multicell
     pdf.multi_cell(50, 0, f"Page {pdf.page_no()}", 0, "R")
     return pdf
 
 
-def determine_position_images(orientation, image):
+def determine_position_images(image):
     """
     This function gives the possibility to place images at the desired position
     :param orientation: the desired orientation for PDF format; there is a choice between Portrait or Landscape
@@ -103,12 +97,8 @@ def determine_position_images(orientation, image):
     :return: the right position
     """
     # Define the maximum dimensions for the image based on the orientation
-    if orientation == "Landscape":
-        max_image_width = 180  # Example value, adjust as needed
-        max_image_height = 150  # Example value, adjust as needed
-    else:
-        max_image_width = 180  # Example value, adjust as needed
-        max_image_height = 270  # Example value, adjust as needed
+    max_image_width = 180  # Example value, adjust as needed
+    max_image_height = 120  # Example value, adjust as needed
 
     # Calculate the width and height to maintain the aspect ratio
     aspect_ratio = image.width / image.height
@@ -116,6 +106,7 @@ def determine_position_images(orientation, image):
         if aspect_ratio > 1:
             width_image = max_image_width
             height_image = max_image_width / aspect_ratio
+            height_image = min(height_image, max_image_height)
         else:
             height_image = max_image_height
             width_image = max_image_height * aspect_ratio
@@ -136,7 +127,8 @@ class MakeReport:
     """
 
     # pylint: disable=too-many-arguments
-    def __init__(self, output_path, name, input_dict, output_dict, visualize, page_dict):
+    def __init__(self, output_path, name, input_dict, output_dict, visualize, page_dict=None):
+        page_dict = page_dict or {}
         self.output_path = Path(output_path)
         self.folder_name = ""
         self.name = name
@@ -144,20 +136,30 @@ class MakeReport:
         self.output_dict = output_dict
         self.page_number = 1
         self.visualize = visualize
+        self.visualizer = ""
+        self.page_dict = page_dict
 
         # set a default
         self.page_selection = {
-            "title_page": True,
-            "strategic_challenge": True,
-            "key_outputs_theme": True,
-            "decision_makers_options": True,
-            "scenarios": True,
-            "fixed_inputs": True,
-            "dependencies": False,
-            "weighted_appreciations": True,
+            "report_title_page": True,
+            "report_strategic_challenge": True,
+            "report_key_outputs_theme": True,
+            "report_decision_makers_options": True,
+            "report_scenarios": True,
+            "report_fixed_inputs": True,
+            "report_dependencies": False,
+            "report_weighted_appreciations": True,
         }
-        # update pages based
-        self.page_selection.update({key: value for key, value in page_dict.items() if key in self.page_selection})
+        # update pages based on Excel
+        self.page_selection = {
+            key: self.input_dict["configuration_value"][list(self.input_dict["configurations"]).index(key)].lower()
+            == "true"
+            if key in self.input_dict["configurations"]
+            else self.page_selection[key]
+            for key in self.page_selection
+        }
+        # update pages based on hardcoded input
+        self.page_selection.update({key: value for key, value in self.page_dict.items() if key in self.page_selection})
 
     def make_title(self, target, scenario="", pos_series="", key_output="") -> str:
         """
@@ -243,7 +245,7 @@ class MakeReport:
             text = "Not defined in template"
         return text
 
-    def make_slides_pdf(self, scenario, orientation):
+    def make_slides_pdf(self, scenario):
         """
         This function present different visualisation on different slides in a PDF format
         :param scenario: the desired scenario which is used in the visualisations
@@ -254,11 +256,11 @@ class MakeReport:
         if not os.path.exists("images"):
             os.mkdir("images")
         rgb = [0, 0, 120]
-        pdf = FPDF(orientation=orientation)
+        pdf = FPDF(orientation="Landscape")
         pdf.set_title(f"Report of the {self.name} case")
 
         # Create title page
-        if self.page_selection["title_page"]:
+        if self.page_selection["report_title_page"]:
             pdf.add_page()
             pdf = title_page_title(pdf, "Report of the " + self.name + " case", rgb)
             # Search for a logo. if yes, place in the middle of the slide
@@ -266,108 +268,101 @@ class MakeReport:
                 # Open the image using Pillow
                 image_path = "logos/" + self.name + ".jpeg"
                 image = Image.open(image_path)
-                width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
+                width_image, height_image, x_pos, y_pos = determine_position_images(image)
                 pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
             pdf = title_page_subtitle(pdf, "Responsible business decision making \n" + str(datetime.now().date()))
 
-        if self.page_selection["strategic_challenge"]:
+        if self.page_selection["report_strategic_challenge"]:
             # Create Strategic Challenge page
             pdf.add_page()
             pdf = chapter_title(pdf, "Strategic Challenge", rgb)
             pdf = chapter_subtitle(pdf, self.make_strategic_challenge())
-            pdf = footer_page(pdf, self.name, orientation)
+            pdf = footer_page(pdf, self.name)
 
         # Create Input variables pages
-        for input_tables in ["key_outputs_theme", "decision_makers_options", "scenarios"]:
-            if self.page_selection[input_tables]:
-                pdf.add_page()
-                self.visualize("table", input_tables, save=True)
-                input_tables = "key_outputs" if input_tables == "key_outputs_theme" else input_tables
-                pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
-                pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
-                # Search for the right table related to the input_table and place it in the middle of the slide
-                image_path = "images/table" + input_tables + ".png"
-                image = Image.open(image_path)
-                # Determine the position and size for the image
-                width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
-                # Add the image to the PDF with the appropriate size and position
-                pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
-                pdf = footer_page(pdf, self.name, orientation)
-
-        for input_tables in ["fixed_inputs"]:
-            if self.page_selection[input_tables]:
-                # If there are more than 10 fixed inputs it will generate a maximum of 10 per slide
-                number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
+        for input_tables in ["key_outputs_theme", "decision_makers_options", "scenarios", "fixed_inputs"]:
+            if self.page_selection["report_" + input_tables]:
+                if input_tables == "key_outputs_theme":
+                    input_tables = "key_outputs"
+                if input_tables in ("decision_makers_options", "scenarios"):
+                    number_of_iterations = round((len(self.input_dict[input_tables[:-1] + "_value"][0]) / 10) + 0.5)
+                else:
+                    number_of_iterations = round((len(self.input_dict[input_tables]) / 10) + 0.5)
                 for number_iteration in range(0, number_of_iterations):
                     pdf.add_page()
+                    input_tables = "key_outputs_theme" if input_tables == "key_outputs" else input_tables
+                    self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
+                    input_tables = "key_outputs" if input_tables == "key_outputs_theme" else input_tables
                     if number_of_iterations > 1:
                         pdf = chapter_title(
                             pdf,
                             self.make_title(input_tables)
-                            + " "
+                            + " ("
                             + str(number_iteration + 1)
                             + "/"
-                            + str(number_of_iterations),
+                            + str(number_of_iterations)
+                            + ")",
                             rgb,
                         )
                     else:
                         pdf = chapter_title(pdf, self.make_title(input_tables), rgb)
                     pdf = chapter_subtitle(pdf, self.make_introduction(input_tables))
-                    self.visualize("table", input_tables, save=True, number_iteration=number_iteration)
+                    # Search for the right table related to the input_table and place it in the middle of the slide
                     image_path = "images" + "/table" + input_tables + str(number_iteration) + ".png"
                     image = Image.open(image_path)
                     # Determine the position and size for the image
-                    width_image, height_image, x_pos, y_pos = determine_position_images(orientation, image)
+                    width_image, height_image, x_pos, y_pos = determine_position_images(image)
                     # Add the image to the PDF with the appropriate size and position
                     pdf.image(image_path, x=x_pos, y=y_pos, w=width_image, h=height_image)
-                    pdf = footer_page(pdf, self.name, orientation)
+                    pdf = footer_page(pdf, self.name)
 
         # Create for every key_output a dependency graph slide
-        if self.page_selection["dependencies"]:
+        if self.page_selection["report_dependencies"]:
             for key_output in self.input_dict["key_outputs"]:
                 pdf.add_page()
                 pdf = chapter_title(pdf, f"The dependency graph for the key output: {key_output}", rgb)
 
                 dep = DependencyGraph(self.input_dict)
-                if orientation == "Portrait":
-                    dep.draw_graph(selected_ko=key_output, save=True, sc_window_size="1920x1080")
-                    pdf.image("images/keyoutput_" + key_output + ".png", x=5, y=25, w=200)
-                else:
-                    dep.draw_graph(selected_ko=key_output, save=True, sc_window_size="1920x1080")
-                    pdf.image("images/keyoutput_" + key_output + ".png", x=25, y=25, h=150)
-                pdf = footer_page(pdf, self.name, orientation)
+                dep.draw_graph(selected_ko=key_output, save=True, sc_window_size="1920x1080")
+                pdf.image("images/keyoutput_" + key_output + ".png", x=25, y=25, h=150)
+                pdf = footer_page(pdf, self.name)
 
         # Create output slide with the weighted appreciations
-        if self.page_selection["weighted_appreciations"]:
-            pdf.add_page()
-            pdf = chapter_title(
-                pdf,
-                "The decision maker option '"
-                + self.output_dict[scenario]["highest_weighted_dmo"]
-                + "' has the highest weighted appreciations for scenario: "
-                + scenario,
-                rgb,
-            )
-            self.visualize("barchart", "weighted_appreciations", scenario=scenario, stacked=True, save=True)
-            if orientation == "Portrait":
-                pdf.image("images" + "/figure.png", x=25, y=50, w=150)
-            else:
-                pdf.image("images" + "/figure.png", x=25, y=50, w=250)
-            pdf = footer_page(pdf, self.name, orientation)
+        if self.page_selection["report_weighted_appreciations"]:
+            for figure in ["weighted_appreciations", "scenario_appreciations"]:
+                pdf.add_page()
+                if figure == "weighted_appreciations":
+                    pdf = chapter_title(
+                        pdf,
+                        "The decision maker option '"
+                        + self.output_dict[scenario]["highest_weighted_dmo"]
+                        + "' has the highest weighted appreciations for scenario: "
+                        + scenario,
+                        rgb,
+                    )
+                    self.visualize("barchart", "weighted_appreciations", scenario=scenario, stacked=True, save=True)
+                else:
+                    pdf = chapter_title(
+                        pdf,
+                        "Values of scenario appreciations",
+                        rgb,
+                    )
+                    self.visualize("barchart", "scenario_appreciations", stacked=True, save=True)
+                pdf.image("images" + "/figure_" + figure + ".png", x=25, y=50, w=250)
+                pdf = footer_page(pdf, self.name)
         return pdf
 
-    def create_report(self, scenario, orientation, path) -> str:
+    def create_report(self, scenario, path) -> str:
         """
         This function saves the created report out of the function make_slides at the desired location
         :param scenario: the desired scenario which is used in the visualisations
         :param path: the desired location where the report is saved
-        :param orientation: the desired orientation for PDF format; there is a choice between Portrait or Landscape
         :return: a success message including the location of the report
         """
         date_year = str(datetime.now().strftime("%Y-%m-%d"))
         date_hour = str(datetime.now().strftime("%H:%M:%S"))
 
-        pdf = self.make_slides_pdf(scenario, orientation)
+        pdf = self.make_slides_pdf(scenario)
         filename = "Report " + self.name + " tRBS " + f'{date_year + " " + date_hour}.pdf'
         # Make a folder if it does not exist already
         if not os.path.exists(path):

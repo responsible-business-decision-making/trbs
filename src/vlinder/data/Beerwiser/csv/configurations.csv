@@ -1,2 +1,11 @@
 configuration;value
 language;EN
+Optimize_DMO_name;Optimized_DMO
+report_title_page;True
+report_strategic_challenge;True
+report_key_outputs_theme;True
+report_decision_makers_options;True
+report_scenarios;True
+report_fixed_inputs;True
+report_dependencies;False
+report_weighted_appreciations;True

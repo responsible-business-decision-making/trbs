@@ -491,10 +491,10 @@ def test_validate_input_completeness_dmo(import_beerwiser_json):
         import_beerwiser_json._validate_input_completeness(
             "decision_makers_option", set(["invest in A", "invest in B"])
         )
-
     expected_result = (
-        "Template Error: internal variable input(s) {'invest in B'} " "do not have a value assigned for 'nothing'."
+        "Template Error: internal variable input(s) {'invest in B'} do not have a value assigned for 'nothing'."
     )
+
     assert str(template_error.value) == expected_result
 
 

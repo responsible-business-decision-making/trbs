@@ -1,6 +1,7 @@
 """
 This module contains the CaseImporter() class. This class deals with importing and validating an RBS case.
 """
+
 from pathlib import Path
 import os
 import warnings
@@ -283,9 +284,11 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         theme_weight_dict = dict(zip(self.input_dict["themes"], self.input_dict["theme_weight"]))
 
         relative_weights = [
-            self.input_dict["key_output_weight"][i]
-            if theme_count_dict[theme] == 1
-            else (self.input_dict["key_output_weight"][i] / theme_count_dict[theme]) * theme_weight_dict[theme]
+            (
+                self.input_dict["key_output_weight"][i]
+                if theme_count_dict[theme] == 1
+                else (self.input_dict["key_output_weight"][i] / theme_count_dict[theme]) * theme_weight_dict[theme]
+            )
             for i, theme in enumerate(self.input_dict["key_output_theme"])
         ]
 

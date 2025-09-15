@@ -4,30 +4,30 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "vlinder"
-version = "1.4.3"
+version = "1.5.0"
 authors = [
   {name="Vlinder team"},
 ]
 description = "Package for responsible business decision making"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "pandas~=2.2.3",
-    "numpy~=1.26.4",
-    "openpyxl~=3.1.2",
-    "matplotlib~=3.7.2",
-    "xlsxwriter~=3.1.2",
-    "dataframe-image~=0.2.3",
-    "fpdf2~=2.7.9",
-    "networkx~=3.2.1",
+    "pandas~=2.3.2",
+    "numpy~=2.3.2",
+    "openpyxl~=3.1.5",
+    "matplotlib~=3.10.5",
+    "xlsxwriter~=3.2.5",
+    "dataframe-image~=0.2.7",
+    "fpdf2~=2.8.4",
+    "networkx~=3.5",
     "pyvis~=0.3.2",
     "webdriver-manager~=4.0.2",
-    "selenium~=4.26.1",
+    "selenium~=4.35.0",
 ]
 
 [tool.setuptools]
