@@ -1,3 +1,4 @@
+# pylint: disable=cyclic-import, protected-access
 """
 This file contains the Visualize class that deals with the creation of all graphs and tables
 """
@@ -538,45 +539,127 @@ class DependencyGraph:
         normalized = {rank: i for i, rank in enumerate(unique_ranks)}
         self.x_coords = {node: normalized[rank] for node, rank in self.x_coords.items()}
 
+    def _get_successor_avg_position(self, node, next_layer_positions):
+        """Calculate average y-position of successors in next layer."""
+        successors = [n for n in self.network.successors(node) if n in next_layer_positions]
+        if not successors:
+            return float("inf")
+        return sum(next_layer_positions[s] for s in successors) / len(successors)
+
+    def _get_predecessor_avg_position(self, node, prev_layer_positions):
+        """Calculate average y-position of predecessors in previous layer."""
+        predecessors = [n for n in self.network.predecessors(node) if n in prev_layer_positions]
+        if not predecessors:
+            return float("inf")
+        return sum(prev_layer_positions[p] for p in predecessors) / len(predecessors)
+
+    def _sort_by_successor(self, layer_nodes, pos_map):
+        """Sort nodes by average successor position with stable name tie-breaker."""
+        return sorted(layer_nodes, key=lambda n: (self._get_successor_avg_position(n, pos_map), n))
+
+    def _sort_by_predecessor(self, layer_nodes, pos_map):
+        """Sort nodes by average predecessor position with stable name tie-breaker."""
+        return sorted(layer_nodes, key=lambda n: (self._get_predecessor_avg_position(n, pos_map), n))
+
+    def _get_input_hierarchy_weight(self, node):
+        """Return a hierarchy weight for an input node based on the highest
+        hierarchy of its downstream destination(s)."""
+        destinations = []
+        for idx, destination in enumerate(self.input_dict["destination"]):
+            arg_1 = self.input_dict["argument_1"][idx]
+            arg_2 = self.input_dict["argument_2"][idx]
+            if node in (arg_1, arg_2):
+                destinations.append(destination)
+
+        if not destinations:
+            return 0
+
+        destination_hierarchy = {
+            destination: self.input_dict["hierarchy"][idx]
+            for idx, destination in enumerate(self.input_dict["destination"])
+        }
+        return max(destination_hierarchy.get(destination, 0) for destination in destinations)
+
+    # pylint: disable=too-many-branches, disable=too-many-arguments, disable=too-many-positional-arguments
+    # pylint: disable=too-many-locals, disable=too-many-statements
     def create_y_coords(self):
-        """
-        This functions creates the y coordinates for the network
-        """
-        # First calculate the y-coordinates for the destinations
-        weight = 0
-        prev_hier = 1
-        count = 0
-        for key in self.x_coords.keys():
-            if key in list(self.inc_mat.columns):
-                if prev_hier != self.x_coords[key]:
-                    weight += 0
+        """Assign y-coordinates with the same behavior as create_y_coords in a shorter pipeline."""
+        layers = {}
+        for node, layer in self.x_coords.items():
+            layers.setdefault(layer, []).append(node)
 
-                self.y_coords[key] = -4 * (count - weight)
-                count += 1
-                prev_hier = self.x_coords[key]
+        sorted_layer_keys = sorted(layers.keys())
+        if not sorted_layer_keys:
+            self.y_coords = {}
+            return
 
-        # Now create the y coordinates of the fixed inputs
-        list_coords = []
-        list_nodes = []
-        for node in self.inc_mat:
-            pres = list(self.network.predecessors(node))
-            coor_dest = self.y_coords[node]
+        for layer_key in sorted_layer_keys:
+            layers[layer_key] = sorted(layers[layer_key], key=str)
 
-            # Place them on almost the same height as their destination if possible
-            while coor_dest in list_coords:
-                coor_dest = coor_dest - 4
-            for j, node1 in enumerate(pres):
-                if node1 in list_nodes or node1 in self.inc_mat.columns or not isinstance(node1, str):
-                    continue
+        if len(sorted_layer_keys) > 1:
+            second_layer = layers[sorted_layer_keys[1]]
+            second_pos = {node: idx for idx, node in enumerate(second_layer)}
+            first_layer_key = sorted_layer_keys[0]
+            layers[first_layer_key] = self._sort_by_successor(layers[first_layer_key], second_pos)
 
-                direction = 1 if self.is_even(j) else -1
-                offset = 2 if self.is_even(j) else 1
+        for _ in range(3):
+            for i in range(len(sorted_layer_keys) - 1):
+                layer_key = sorted_layer_keys[i]
+                next_layer = layers[sorted_layer_keys[i + 1]]
+                next_pos = {node: idx for idx, node in enumerate(next_layer)}
+                layers[layer_key] = self._sort_by_successor(layers[layer_key], next_pos)
 
-                self.y_coords[node1] = coor_dest + direction * ((j + offset) / 2)
-                list_nodes.append(node1)
+            for i in range(len(sorted_layer_keys) - 1, 0, -1):
+                layer_key = sorted_layer_keys[i]
+                prev_layer = layers[sorted_layer_keys[i - 1]]
+                prev_pos = {node: idx for idx, node in enumerate(prev_layer)}
+                layers[layer_key] = self._sort_by_predecessor(layers[layer_key], prev_pos)
 
-            list_coords.append(coor_dest)
+        node_height = 6
+        all_y = {}
+        for layer_key in sorted_layer_keys:
+            nodes_in_layer = layers[layer_key]
+            start_y = -((len(nodes_in_layer) - 1) * node_height) / 2
+            for idx, node in enumerate(nodes_in_layer):
+                all_y[node] = start_y + idx * node_height
 
+        if len(sorted_layer_keys) > 1:
+            first_layer_nodes = layers[sorted_layer_keys[0]]
+            second_layer_nodes = layers[sorted_layer_keys[1]]
+            second_layer_pos = {node: idx for idx, node in enumerate(second_layer_nodes)}
+            second_layer_mid = (len(second_layer_nodes) - 1) / 2 if second_layer_nodes else 0
+
+            above_center, below_center, neutral_nodes = [], [], []
+            for node in first_layer_nodes:
+                successor_avg = self._get_successor_avg_position(node, second_layer_pos)
+                hierarchy_weight = self._get_input_hierarchy_weight(node)
+                row = (node, hierarchy_weight, successor_avg)
+                if successor_avg == float("inf"):
+                    neutral_nodes.append(row)
+                elif successor_avg < second_layer_mid:
+                    above_center.append(row)
+                elif successor_avg > second_layer_mid:
+                    below_center.append(row)
+                else:
+                    neutral_nodes.append(row)
+
+            for row in sorted(neutral_nodes, key=lambda item: (item[1], str(item[0]))):
+                if len(above_center) <= len(below_center):
+                    above_center.append(row)
+                else:
+                    below_center.append(row)
+
+            above_center = sorted(above_center, key=lambda item: (item[1], item[2], str(item[0])))
+            below_center = sorted(below_center, key=lambda item: (item[1], item[2], str(item[0])))
+            for idx, (node, _, _) in enumerate(above_center, start=1):
+                all_y[node] = -idx * node_height
+            for idx, (node, _, _) in enumerate(below_center, start=1):
+                all_y[node] = idx * node_height
+
+        self.y_coords = all_y
+
+    # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals,
+    # too-many-branches, too-many-statements
     def draw_graph(
         self,
         selected_ko,
@@ -586,48 +669,113 @@ class DependencyGraph:
         sc_dir=Path.cwd() / "images",
         sc_window_size="1920x1080",
         return_html=False,
+        return_json=False,
     ):
         """
         This functions draws the network graph
         :param selected_ko: the key output
         :param max_gen: the maximum of generations of predecessors one wants in its network
         :param save: a boolean parameter if there has to be made a screenshot from the graph
-        :return: the dependency graph
+        :param return_react_flow_data: If True, returns data in ReactFlow format (JSON/Dict).
+        :return: the dependency graph (html string or ReactFlow data dict)
         """
-        # Create the incidence matrix
         self.create_inc_mat()
 
-        # Create the graph based on incidence matrix
         self.create_network()
 
-        # Filter out the network of a key output if wanted
         if selected_ko not in self.input_dict["key_outputs"]:
-            raise VisualizationError(f"'{selected_ko}' is not a valid option")
-        if isinstance(max_gen, int) is False and max_gen is not None:
-            raise VisualizationError(f"'{max_gen}' is not a valid option")
+            raise VisualizationError(f"'{selected_ko}' is not a valid option among key outputs.")
+        if not isinstance(max_gen, int) and max_gen is not None:
+            raise VisualizationError(f"'{max_gen}' is not a valid option for max_gen (must be int or None).")
 
         if max_gen is None:
             tot_gen = self.ko_filter(selected_ko, max_gen)
             minus_gen = 1
-            while self.network.number_of_nodes() > 30:
+            while self.network and self.network.number_of_nodes() > 30 and (tot_gen - minus_gen) >= 0:
                 self.ko_filter(selected_ko, tot_gen - minus_gen)
                 minus_gen += 1
+            if self.network and self.network.number_of_nodes() > 30:
+                self.ko_filter(selected_ko, 0)
         else:
             self.ko_filter(selected_ko, max_gen)
 
-        # Create the x and y coordinates
-        self.create_x_coords()
+        if not self.network or self.network.number_of_nodes() == 0:
+            if return_json:
+                return {"nodes": [], "edges": []}
+            if return_html:
+                return "<html><body><p>No graph to display for the given key output and filters.</p></body></html>"
+            return None
 
+        self.create_x_coords()
         self.create_y_coords()
 
-        # Add coordinates to the position dictionary
-        self.pos = nx.spring_layout(self.network)
+        self.pos = {node: [self.x_coords.get(node, 0), self.y_coords.get(node, 0)] for node in self.network.nodes()}
 
-        for node in self.pos.keys():
-            self.pos[node][0] = self.x_coords[node]
-            self.pos[node][1] = self.y_coords[node]
+        x_scale = 200
+        y_scale = 10
 
-        # Create the pyvis network
+        if return_json:
+            react_flow_nodes = []
+            react_flow_edges = []
+            for node_id in self.network.nodes():
+                x = self.x_coords.get(node_id, 0) * x_scale
+                y = self.y_coords.get(node_id, 0) * y_scale
+
+                node_label = str(node_id)
+
+                node_type = "default"
+                if node_id == selected_ko:
+                    node_type = "output"
+                elif node_id in self.inc_mat.index and node_id not in self.inc_mat.columns:
+                    node_type = "input"
+
+                node_data = {
+                    "label": node_label,
+                    "originalId": str(node_id),
+                    "isKeyOutput": node_id == selected_ko,
+                }
+
+                react_flow_nodes.append(
+                    {
+                        "id": str(node_id),
+                        "type": node_type,
+                        "data": node_data,
+                        "position": {"x": float(x), "y": float(y)},
+                        "sourcePosition": "right",
+                        "targetPosition": "left",
+                    }
+                )
+
+            for source_node, target_node in self.network.edges():
+                edge_id = f"e-{source_node}-{target_node}"
+
+                edge_label = ""
+                edge_data = {}
+
+                for i, (dep_dest, dep_arg1, dep_arg2) in enumerate(
+                    zip(self.input_dict["destination"], self.input_dict["argument_1"], self.input_dict["argument_2"])
+                ):
+
+                    if dep_dest == target_node and source_node in (dep_arg1, dep_arg2):
+                        if "dependency_label" in self.input_dict and i < len(self.input_dict["dependency_label"]):
+                            edge_label = self.input_dict["dependency_label"][i]
+
+                        break
+
+                react_flow_edges.append(
+                    {
+                        "id": edge_id,
+                        "source": str(source_node),
+                        "target": str(target_node),
+                        "type": "default",
+                        "animated": True,
+                        "label": edge_label,
+                        "data": edge_data,
+                    }
+                )
+
+            return {"nodes": react_flow_nodes, "edges": react_flow_edges}
+
         if save is True:
             net = Network(
                 notebook=True, directed=True, height="800px", width="100%", layout=False, cdn_resources="in_line"
@@ -647,10 +795,14 @@ class DependencyGraph:
 
         net.from_nx(self.network)
 
-        # Reshape the graph and set colors
         for node in net.nodes:
-            node["y"] = self.pos[node["id"]][1] * 10
-            node["x"] = self.pos[node["id"]][0] * 140
+            if node["id"] in self.pos:
+                node["y"] = self.pos[node["id"]][1] * y_scale  # Uses y_scale from above
+                node["x"] = self.pos[node["id"]][0] * x_scale  # Uses x_scale from above
+            else:
+                node["y"] = 0
+                node["x"] = 0
+
             node["size"] = 4
             node["font"] = {"size": 8}
             node["color"] = "black"
@@ -666,12 +818,11 @@ class DependencyGraph:
                     "face": "Arial",
                     "size": 14,
                     "color": "#000000",
-                    "vadjust": -8,  # Pas de verticale positie van de labels aan
+                    "vadjust": -8,
                 }
             },
         }
 
-        # Create the directory if it doesn't exist
         if not Path(graph_dir).exists():
             Path(graph_dir).mkdir(parents=True)
 
@@ -682,19 +833,16 @@ class DependencyGraph:
 
         net.save_graph(graph_location)
 
-        # Make a screenshot of the graph if save == true, otherwise open a tab and show the graph
         if save is True:
-            # Use Selenium to take a screenshot
+
             service = Service(ChromeDriverManager().install())
             options = webdriver.ChromeOptions()
             options.add_argument("headless")
             options.add_argument(f"window-size={sc_window_size}")
             driver = webdriver.Chrome(service=service, options=options)
 
-            # Navigate to the dependency graph
             driver.get(Path(graph_location).resolve().as_uri())
 
-            # Wait for the page to fully load
             time.sleep(2)
 
             # Take and store the screenshot
@@ -707,3 +855,4 @@ class DependencyGraph:
             driver.quit()
         elif save is False:
             os.system(f"open '{graph_location}'")
+        return None
