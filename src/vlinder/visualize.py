@@ -1,23 +1,26 @@
-# pylint: disable=cyclic-import, protected-access
 """
 This file contains the Visualize class that deals with the creation of all graphs and tables
 """
 
+import os
 import re
 import time
-import os
 import warnings
 from pathlib import Path
-import pandas as pd
-import numpy as np
+from typing import Optional, Tuple
+
+import dataframe_image as dfi
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from webdriver_manager.chrome import ChromeDriverManager
+import networkx as nx
+import numpy as np
+import pandas as pd
+from pandas.io.formats.style import Styler
+from pyvis.network import Network
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-import networkx as nx
-from pyvis.network import Network
-import dataframe_image as dfi
+from webdriver_manager.chrome import ChromeDriverManager
+
 from vlinder.utils import round_all_dict_values, number_formatter, get_values_from_target, check_list_content
 
 
@@ -27,21 +30,55 @@ class VisualizationError(Exception):
     """
 
     def __init__(self, message):  # ignore warning about super-init | pylint: disable=W0231
+        """Store the error message that will be shown when this exception is raised."""
+
         self.message = message
 
     def __str__(self):
+        """Return the formatted error message for this VisualizationError."""
+
         return f"Visualization Error: {self.message}"
 
 
 class Visualize:
     """This class deals with the creation of all graphs and tables"""
 
-    def __init__(self, input_dict, outcomes, options, appreciation_functions=None):
-        # for visualization purposes two digits is sufficient
+    # dispatch config for _create_table
+    _TABLE_CONFIG = {
+        "key_outputs_theme": {
+            "kind": "simple",
+            "col": "key_outputs",
+            "value_col": "key_output_theme",
+            "display_key": "key_outputs",
+        },
+        "fixed_inputs": {
+            "kind": "simple",
+            "col": "fixed_inputs",
+            "value_col": "fixed_input_value",
+            "display_key": "fixed_inputs",
+        },
+        "scenarios": {
+            "kind": "multi",
+            "col_values": "scenario_value",
+            "row_names": "external_variable_inputs",
+            "left_col_header": "External variable input",
+            "display_key": "scenarios",
+        },
+        "decision_makers_options": {
+            "kind": "multi",
+            "col_values": "decision_makers_option_value",
+            "row_names": "internal_variable_inputs",
+            "left_col_header": "Internal variable input",
+            "display_key": "decision_makers_options",
+        },
+    }
+
+    def __init__(self, input_dict, outcomes, options): # for visualization purposes two digits is sufficient
+        """Set up the input data, rounded outcomes, and color palettes used to build all visuals."""
+
         self.input_dict = input_dict
         self.outcomes = round_all_dict_values(outcomes)
         self.options = options
-        self.appreciation_functions = appreciation_functions or {}
         self.colors = [
             "#295477",
             "#F3DD8C",
@@ -64,7 +101,6 @@ class Visualize:
         self.available_visuals = {
             "table": self._create_table,
             "barchart": self._create_barchart,
-            "appreciation_graph": self._create_appreciation_graph,
         }
         self.available_outputs = [
             "key_outputs",
@@ -97,7 +133,7 @@ class Visualize:
             if argument not in self.available_kwargs:
                 raise VisualizationError(f"Invalid argument '{argument}'")
 
-    def _find_dimension_level(self, my_dict: dict, target_key: str, level: int = 1) -> int or None:
+    def _find_dimension_level(self, my_dict: dict, target_key: str, level: int = 1) -> Optional[int]:
         """
         This recursive function returns the dimension level (level of nesting) for a given dictionary and target key.
         For example in dictionary {A: {B: {C: 1.23, ..}, ..}, ..}. 'A' is nested at level 1, B at level 2 & C level 3.
@@ -141,7 +177,7 @@ class Visualize:
         return truncated_list
 
     @staticmethod
-    def _table_styler(styler: pd.DataFrame.style, table_name: str, **kwargs) -> pd.DataFrame.style:
+    def _table_styler(styler: Styler, table_name: str, **kwargs) -> Styler:
         """
         This function adds a coherent style for all generated tables
         :param styler: a Pandas styler object
@@ -221,7 +257,7 @@ class Visualize:
         return formatted_data
 
     @staticmethod
-    def _apply_filters(dataframe: pd.DataFrame, drop_used: bool = False, **kwargs) -> pd.DataFrame and str:
+    def _apply_filters(dataframe: pd.DataFrame, drop_used: bool = False, **kwargs) -> Tuple[pd.DataFrame, str]:
         """
         This function applies filters, based on **kwargs arguments, on the dataframe and generates a corresponding
         name for the visual.
@@ -244,71 +280,73 @@ class Visualize:
 
         return dataframe, name_str
 
-    def _create_table(self, key: str, **kwargs) -> pd.DataFrame.style:
+    def _create_table(self, key: str, **kwargs) -> Styler:
         """
         This function creates a 2- or 3-dimensional table depending on the key.
         :param key: key of the values for the table
         :return: a styled table
         """
-        if key in ["scenarios", "fixed_inputs", "decision_makers_options", "key_outputs_theme"]:
-            dataframe = pd.DataFrame()
-            kwargs["input_variables"] = True
-            number_of_iter = kwargs.get("number_iteration", -1)
-            start_idx = number_of_iter * 10
-            end_idx = start_idx + 10
-            if key == "key_outputs_theme":
-                key = key[:-6]
-                key_value = key[:-1] + "_theme"
-                if number_of_iter == -1:
-                    dataframe[key] = self.input_dict[key]
-                    dataframe[key_value] = self.input_dict[key_value]
-                else:
-                    dataframe[key] = self.input_dict[key][start_idx:end_idx]
-                    dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
+        if key in self._TABLE_CONFIG:
+            return self._create_input_table(key, **kwargs)
+        return self._create_outcome_table(key, **kwargs)
 
-            elif key == "fixed_inputs":
-                key_value = key[:-1] + "_value"
-                if number_of_iter == -1:
-                    dataframe[key] = self.input_dict[key]
-                    dataframe[key_value] = self.input_dict[key_value]
-                else:
-                    dataframe[key] = self.input_dict[key][start_idx:end_idx]
+    def _create_input_table(self, key: str, **kwargs) -> Styler:
+        """
+        This function builds a table for an input key (scenarios, fixed_inputs, decision_makers_options or
+        key_outputs_theme), based on the matching entry in _TABLE_CONFIG.
+        :param key: key of the values for the table, must be present in _TABLE_CONFIG
+        :return: a styled table
+        """
+        config = self._TABLE_CONFIG[key]
+        kwargs["input_variables"] = True
+        number_of_iter = kwargs.get("number_iteration", -1)
+        start_idx = number_of_iter * 10
+        end_idx = start_idx + 10
 
-                    dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
-            elif key == "scenarios":
-                dataframe = self._create_table_n_col(
-                    dataframe, key, key[:-1] + "_value", "external_variable_inputs", "External variable input"
-                )
-                if number_of_iter != -1:
-                    dataframe = dataframe[start_idx:end_idx]
-            elif key == "decision_makers_options":
-                dataframe = self._create_table_n_col(
-                    dataframe, key, key[:-1] + "_value", "internal_variable_inputs", "Internal variable input"
-                )
-                if number_of_iter != -1:
-                    dataframe = dataframe[start_idx:end_idx]
-
-            table_name = f"Values of {self._str_snake_case_to_text(key)}"
-            styled_df = self._table_styler(dataframe.style, table_name, **kwargs)
-            if number_of_iter == -1:
-                name_table = "/table" + str(key)
-            else:
-                name_table = "/table" + str(key) + str(number_of_iter)
-            if "save" in kwargs:
-                dfi.export(styled_df, "images" + name_table + ".png", table_conversion="matplotlib")
-        else:
-            table_data = self._format_data_for_visual(key)
-            # Filter the data based on potentially provided arguments by the user.
-            table_data, name_str = self._apply_filters(table_data, **kwargs)
-            table_data = (
-                table_data.set_index(["scenario", key])
-                .pivot(columns="decision_makers_option", values="value")
-                .rename_axis((None, None))
-                .rename_axis(None, axis=1)
+        if config["kind"] == "simple":
+            dataframe = pd.DataFrame(
+                {
+                    config["col"]: self.input_dict[config["col"]],
+                    config["value_col"]: self.input_dict[config["value_col"]],
+                }
             )
-            table_name = f"Values of {self._str_snake_case_to_text(key)}{name_str}"
-            styled_df = self._table_styler(table_data.style, table_name)
+        else:
+            dataframe = self._create_table_n_col(
+                pd.DataFrame(), key, config["col_values"], config["row_names"], config["left_col_header"]
+            )
+
+        if number_of_iter != -1:
+            dataframe = dataframe[start_idx:end_idx]
+
+        display_key = config["display_key"]
+        table_name = f"Values of {self._str_snake_case_to_text(display_key)}"
+        styled_df = self._table_styler(dataframe.style, table_name, **kwargs)
+
+        if number_of_iter == -1:
+            name_table = "/table" + str(display_key)
+        else:
+            name_table = "/table" + str(display_key) + str(number_of_iter)
+        if "save" in kwargs:
+            dfi.export(styled_df, "images" + name_table + ".png", table_conversion="matplotlib")
         return styled_df
+
+    def _create_outcome_table(self, key: str, **kwargs) -> Styler:
+        """
+        This function builds a pivoted table for an outcome key (e.g. key_outputs, appreciations).
+        :param key: key of the values for the table
+        :return: a styled table
+        """
+        table_data = self._format_data_for_visual(key)
+        # Filter the data based on potentially provided arguments by the user.
+        table_data, name_str = self._apply_filters(table_data, **kwargs)
+        table_data = (
+            table_data.set_index(["scenario", key])
+            .pivot(columns="decision_makers_option", values="value")
+            .rename_axis((None, None))
+            .rename_axis(None, axis=1)
+        )
+        table_name = f"Values of {self._str_snake_case_to_text(key)}{name_str}"
+        return self._table_styler(table_data.style, table_name)
 
     # pylint: disable=too-many-arguments
     def _create_table_n_col(self, dataframe, col_names, col_values, row_names, left_col_header) -> pd.DataFrame:
@@ -346,86 +384,44 @@ class Visualize:
         dims = self._find_dimension_level(self.outcomes, key)
         if dims > 2 and "scenario" not in kwargs and not ("stacked" in kwargs and key == "scenario_appreciations"):
             raise VisualizationError(f"Too many dimensions ({dims}). Please specify a scenario")
-        stacked = kwargs["stacked"] if "stacked" in kwargs else True
-        show_legend = kwargs["show_legend"] if "show_legend" in kwargs else True
+            stacked = kwargs.get("stacked", True)
+            show_legend = kwargs.get("show_legend", True)
 
-        appreciations = self._format_data_for_visual(key)
-        bar_data, name_str = self._apply_filters(appreciations, drop_used=True, **kwargs)
-        if (key == "decision_makers_option_appreciation") | (key == "scenario_appreciations"):
-            rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
-            bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
-            if key == "scenario_appreciations":
-                axis = bar_data.plot.bar(
-                    x="decision_makers_option", stacked=stacked, color=self.colors_scen, figsize=(10, 5)
-                )
+            # keys with a fixed color palette; any other key gets colors derived per theme instead
+            fixed_colors = {
+                "scenario_appreciations": self.colors_scen,
+                "decision_makers_option_appreciation": self.colors,
+            }
+
+            appreciations = self._format_data_for_visual(key)
+            bar_data, name_str = self._apply_filters(appreciations, drop_used=True, **kwargs)
+
+            if key in fixed_colors:
+                colors = fixed_colors[key]
+                add_border = False
             else:
-                axis = bar_data.plot.bar(
-                    x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5)
-                )
-            self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
-        else:
-            # Apply the function to the "weighted_appreciations" column and add as new column
-            bar_data["themes"] = bar_data[key].apply(self.map_values)
-            # Create a dictionary to map themes to colors
-            unique_themes = bar_data["themes"].unique()
-            # give each decision makers options belonging to the same theme, the same color
-            theme_colors = {theme: self.colors[i % len(self.colors)] for i, theme in enumerate(unique_themes)}
-            # Map the colors to the themes
-            bar_colors = bar_data["themes"].map(theme_colors)
+                # Apply the function to the "weighted_appreciations" column and add as new column
+                bar_data["themes"] = bar_data[key].apply(self.map_values)
+                # give each decision makers options belonging to the same theme, the same color
+                unique_themes = bar_data["themes"].unique()
+                theme_colors = {theme: self.colors[i % len(self.colors)] for i, theme in enumerate(unique_themes)}
+                colors = bar_data["themes"].map(theme_colors)
+                add_border = True
+
             rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
             bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
-            axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=bar_colors, figsize=(10, 5))
-            # Add border to each bar
-            for patch in axis.patches:
-                patch.set_edgecolor("white")
-                patch.set_linewidth(1)
+            axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=colors, figsize=(10, 5))
+
+            if add_border:
+                for patch in axis.patches:
+                    patch.set_edgecolor("white")
+                    patch.set_linewidth(1)
+
             self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
 
-        if "save" in kwargs:
-            plt.savefig("images" + "/figure_" + key + ".png", bbox_inches="tight")
-            plt.close()
-        else:
-            plt.show()
-
-    def _create_appreciation_graph(self, key: str, **kwargs) -> None:
-        """
-        This function creates and shows a line chart of the appreciation function of a single key output: for every
-        value on the grid between its start and end point (see Appreciate.calculate_appreciation_functions), it
-        plots the corresponding appreciation. Unlike the other visuals, this does not depend on a scenario or
-        decision makers option, since the appreciation function of a key output does not depend on those either.
-        :param key: name of the key output to plot the appreciation function for
-        :return: a plotted line chart
-        """
-        if key not in self.appreciation_functions:
-            raise VisualizationError(f"'{key}' is not a valid option")
-
-        grid_data = self.appreciation_functions[key]
-        graph_data = pd.DataFrame(grid_data)
-
-        axis = graph_data.plot(
-            x="key_output_value", y="appreciation", legend=False, color=self.colors[0], figsize=(10, 5)
-        )
-        axis.set_ylim(0, 100)
-        axis.set_xlabel(key)
-        axis.set_ylabel("Appreciation")
-        axis.set_title(f"Appreciation function of {self._str_snake_case_to_text(key)}", color="#777777", fontsize=12)
-        axis.grid(True, linestyle="--", alpha=0.4)
-        # highlight the min and max key output value with a marker + label
-        start_x, start_y = grid_data["key_output_value"][0], grid_data["appreciation"][0]
-        end_x, end_y = grid_data["key_output_value"][-1], grid_data["appreciation"][-1]
-        for x_value, y_value in [(start_x, start_y), (end_x, end_y)]:
-            axis.plot(x_value, y_value, marker="o", color=self.colors[0])
-            axis.annotate(
-                f"({x_value:.2f}, {y_value:.0f})",
-                xy=(x_value, y_value),
-                xytext=(5, 5),
-                textcoords="offset points",
-                fontsize=9,
-            )
-
-        if "save" in kwargs:
-            plt.savefig("images" + "/figure_appreciation_" + key + ".png", bbox_inches="tight")
-            plt.close()
+            if "save" in kwargs:
+                plt.savefig("images" + "/figure_" + key + ".png", bbox_inches="tight")
+                plt.close()
         else:
             plt.show()
 
@@ -442,7 +438,7 @@ class Visualize:
         self._validate_kwargs(**kwargs)
         if visual_request not in self.available_visuals:
             raise VisualizationError(f"'{visual_request}' is not a valid chart type")
-        if visual_request != "appreciation_graph" and key not in self.available_outputs:
+        if key not in self.available_outputs:
             raise VisualizationError(f"'{key}' is not a valid option")
 
         return self.available_visuals[visual_request](key, **kwargs)
@@ -451,8 +447,9 @@ class Visualize:
 class DependencyGraph:
     """This class deals with the creation of the dependency graph"""
 
-    def __init__(self, input_dict):
-        # Initialize the input dictionary
+    def __init__(self, input_dict): # Initialize the input dictionary
+        """Set up the input dictionary and empty containers for the network, matrix, and coordinates."""
+
         self.input_dict = input_dict
         self.network = None
         self.inc_mat = None
@@ -583,127 +580,45 @@ class DependencyGraph:
         normalized = {rank: i for i, rank in enumerate(unique_ranks)}
         self.x_coords = {node: normalized[rank] for node, rank in self.x_coords.items()}
 
-    def _get_successor_avg_position(self, node, next_layer_positions):
-        """Calculate average y-position of successors in next layer."""
-        successors = [n for n in self.network.successors(node) if n in next_layer_positions]
-        if not successors:
-            return float("inf")
-        return sum(next_layer_positions[s] for s in successors) / len(successors)
-
-    def _get_predecessor_avg_position(self, node, prev_layer_positions):
-        """Calculate average y-position of predecessors in previous layer."""
-        predecessors = [n for n in self.network.predecessors(node) if n in prev_layer_positions]
-        if not predecessors:
-            return float("inf")
-        return sum(prev_layer_positions[p] for p in predecessors) / len(predecessors)
-
-    def _sort_by_successor(self, layer_nodes, pos_map):
-        """Sort nodes by average successor position with stable name tie-breaker."""
-        return sorted(layer_nodes, key=lambda n: (self._get_successor_avg_position(n, pos_map), n))
-
-    def _sort_by_predecessor(self, layer_nodes, pos_map):
-        """Sort nodes by average predecessor position with stable name tie-breaker."""
-        return sorted(layer_nodes, key=lambda n: (self._get_predecessor_avg_position(n, pos_map), n))
-
-    def _get_input_hierarchy_weight(self, node):
-        """Return a hierarchy weight for an input node based on the highest
-        hierarchy of its downstream destination(s)."""
-        destinations = []
-        for idx, destination in enumerate(self.input_dict["destination"]):
-            arg_1 = self.input_dict["argument_1"][idx]
-            arg_2 = self.input_dict["argument_2"][idx]
-            if node in (arg_1, arg_2):
-                destinations.append(destination)
-
-        if not destinations:
-            return 0
-
-        destination_hierarchy = {
-            destination: self.input_dict["hierarchy"][idx]
-            for idx, destination in enumerate(self.input_dict["destination"])
-        }
-        return max(destination_hierarchy.get(destination, 0) for destination in destinations)
-
-    # pylint: disable=too-many-branches, disable=too-many-arguments, disable=too-many-positional-arguments
-    # pylint: disable=too-many-locals, disable=too-many-statements
     def create_y_coords(self):
-        """Assign y-coordinates with the same behavior as create_y_coords in a shorter pipeline."""
-        layers = {}
-        for node, layer in self.x_coords.items():
-            layers.setdefault(layer, []).append(node)
+        """
+        This functions creates the y coordinates for the network
+        """
+        # First calculate the y-coordinates for the destinations
+        weight = 0
+        prev_hier = 1
+        count = 0
+        for key in self.x_coords.keys():
+            if key in list(self.inc_mat.columns):
+                if prev_hier != self.x_coords[key]:
+                    weight += 0
 
-        sorted_layer_keys = sorted(layers.keys())
-        if not sorted_layer_keys:
-            self.y_coords = {}
-            return
+                self.y_coords[key] = -4 * (count - weight)
+                count += 1
+                prev_hier = self.x_coords[key]
 
-        for layer_key in sorted_layer_keys:
-            layers[layer_key] = sorted(layers[layer_key], key=str)
+        # Now create the y coordinates of the fixed inputs
+        list_coords = []
+        list_nodes = []
+        for node in self.inc_mat:
+            pres = list(self.network.predecessors(node))
+            coor_dest = self.y_coords[node]
 
-        if len(sorted_layer_keys) > 1:
-            second_layer = layers[sorted_layer_keys[1]]
-            second_pos = {node: idx for idx, node in enumerate(second_layer)}
-            first_layer_key = sorted_layer_keys[0]
-            layers[first_layer_key] = self._sort_by_successor(layers[first_layer_key], second_pos)
+            # Place them on almost the same height as their destination if possible
+            while coor_dest in list_coords:
+                coor_dest = coor_dest - 4
+            for j, node1 in enumerate(pres):
+                if node1 in list_nodes or node1 in self.inc_mat.columns or not isinstance(node1, str):
+                    continue
 
-        for _ in range(3):
-            for i in range(len(sorted_layer_keys) - 1):
-                layer_key = sorted_layer_keys[i]
-                next_layer = layers[sorted_layer_keys[i + 1]]
-                next_pos = {node: idx for idx, node in enumerate(next_layer)}
-                layers[layer_key] = self._sort_by_successor(layers[layer_key], next_pos)
+                direction = 1 if self.is_even(j) else -1
+                offset = 2 if self.is_even(j) else 1
 
-            for i in range(len(sorted_layer_keys) - 1, 0, -1):
-                layer_key = sorted_layer_keys[i]
-                prev_layer = layers[sorted_layer_keys[i - 1]]
-                prev_pos = {node: idx for idx, node in enumerate(prev_layer)}
-                layers[layer_key] = self._sort_by_predecessor(layers[layer_key], prev_pos)
+                self.y_coords[node1] = coor_dest + direction * ((j + offset) / 2)
+                list_nodes.append(node1)
 
-        node_height = 6
-        all_y = {}
-        for layer_key in sorted_layer_keys:
-            nodes_in_layer = layers[layer_key]
-            start_y = -((len(nodes_in_layer) - 1) * node_height) / 2
-            for idx, node in enumerate(nodes_in_layer):
-                all_y[node] = start_y + idx * node_height
+            list_coords.append(coor_dest)
 
-        if len(sorted_layer_keys) > 1:
-            first_layer_nodes = layers[sorted_layer_keys[0]]
-            second_layer_nodes = layers[sorted_layer_keys[1]]
-            second_layer_pos = {node: idx for idx, node in enumerate(second_layer_nodes)}
-            second_layer_mid = (len(second_layer_nodes) - 1) / 2 if second_layer_nodes else 0
-
-            above_center, below_center, neutral_nodes = [], [], []
-            for node in first_layer_nodes:
-                successor_avg = self._get_successor_avg_position(node, second_layer_pos)
-                hierarchy_weight = self._get_input_hierarchy_weight(node)
-                row = (node, hierarchy_weight, successor_avg)
-                if successor_avg == float("inf"):
-                    neutral_nodes.append(row)
-                elif successor_avg < second_layer_mid:
-                    above_center.append(row)
-                elif successor_avg > second_layer_mid:
-                    below_center.append(row)
-                else:
-                    neutral_nodes.append(row)
-
-            for row in sorted(neutral_nodes, key=lambda item: (item[1], str(item[0]))):
-                if len(above_center) <= len(below_center):
-                    above_center.append(row)
-                else:
-                    below_center.append(row)
-
-            above_center = sorted(above_center, key=lambda item: (item[1], item[2], str(item[0])))
-            below_center = sorted(below_center, key=lambda item: (item[1], item[2], str(item[0])))
-            for idx, (node, _, _) in enumerate(above_center, start=1):
-                all_y[node] = -idx * node_height
-            for idx, (node, _, _) in enumerate(below_center, start=1):
-                all_y[node] = idx * node_height
-
-        self.y_coords = all_y
-
-    # pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals,
-    # too-many-branches, too-many-statements
     def draw_graph(
         self,
         selected_ko,
@@ -713,113 +628,48 @@ class DependencyGraph:
         sc_dir=Path.cwd() / "images",
         sc_window_size="1920x1080",
         return_html=False,
-        return_json=False,
     ):
         """
         This functions draws the network graph
         :param selected_ko: the key output
         :param max_gen: the maximum of generations of predecessors one wants in its network
         :param save: a boolean parameter if there has to be made a screenshot from the graph
-        :param return_react_flow_data: If True, returns data in ReactFlow format (JSON/Dict).
-        :return: the dependency graph (html string or ReactFlow data dict)
+        :return: the dependency graph
         """
+        # Create the incidence matrix
         self.create_inc_mat()
 
+        # Create the graph based on incidence matrix
         self.create_network()
 
+        # Filter out the network of a key output if wanted
         if selected_ko not in self.input_dict["key_outputs"]:
-            raise VisualizationError(f"'{selected_ko}' is not a valid option among key outputs.")
-        if not isinstance(max_gen, int) and max_gen is not None:
-            raise VisualizationError(f"'{max_gen}' is not a valid option for max_gen (must be int or None).")
+            raise VisualizationError(f"'{selected_ko}' is not a valid option")
+        if isinstance(max_gen, int) is False and max_gen is not None:
+            raise VisualizationError(f"'{max_gen}' is not a valid option")
 
         if max_gen is None:
             tot_gen = self.ko_filter(selected_ko, max_gen)
             minus_gen = 1
-            while self.network and self.network.number_of_nodes() > 30 and (tot_gen - minus_gen) >= 0:
+            while self.network.number_of_nodes() > 30:
                 self.ko_filter(selected_ko, tot_gen - minus_gen)
                 minus_gen += 1
-            if self.network and self.network.number_of_nodes() > 30:
-                self.ko_filter(selected_ko, 0)
         else:
             self.ko_filter(selected_ko, max_gen)
 
-        if not self.network or self.network.number_of_nodes() == 0:
-            if return_json:
-                return {"nodes": [], "edges": []}
-            if return_html:
-                return "<html><body><p>No graph to display for the given key output and filters.</p></body></html>"
-            return None
-
+        # Create the x and y coordinates
         self.create_x_coords()
+
         self.create_y_coords()
 
-        self.pos = {node: [self.x_coords.get(node, 0), self.y_coords.get(node, 0)] for node in self.network.nodes()}
+        # Add coordinates to the position dictionary
+        self.pos = nx.spring_layout(self.network)
 
-        x_scale = 200
-        y_scale = 10
+        for node in self.pos.keys():
+            self.pos[node][0] = self.x_coords[node]
+            self.pos[node][1] = self.y_coords[node]
 
-        if return_json:
-            react_flow_nodes = []
-            react_flow_edges = []
-            for node_id in self.network.nodes():
-                x = self.x_coords.get(node_id, 0) * x_scale
-                y = self.y_coords.get(node_id, 0) * y_scale
-
-                node_label = str(node_id)
-
-                node_type = "default"
-                if node_id == selected_ko:
-                    node_type = "output"
-                elif node_id in self.inc_mat.index and node_id not in self.inc_mat.columns:
-                    node_type = "input"
-
-                node_data = {
-                    "label": node_label,
-                    "originalId": str(node_id),
-                    "isKeyOutput": node_id == selected_ko,
-                }
-
-                react_flow_nodes.append(
-                    {
-                        "id": str(node_id),
-                        "type": node_type,
-                        "data": node_data,
-                        "position": {"x": float(x), "y": float(y)},
-                        "sourcePosition": "right",
-                        "targetPosition": "left",
-                    }
-                )
-
-            for source_node, target_node in self.network.edges():
-                edge_id = f"e-{source_node}-{target_node}"
-
-                edge_label = ""
-                edge_data = {}
-
-                for i, (dep_dest, dep_arg1, dep_arg2) in enumerate(
-                    zip(self.input_dict["destination"], self.input_dict["argument_1"], self.input_dict["argument_2"])
-                ):
-
-                    if dep_dest == target_node and source_node in (dep_arg1, dep_arg2):
-                        if "dependency_label" in self.input_dict and i < len(self.input_dict["dependency_label"]):
-                            edge_label = self.input_dict["dependency_label"][i]
-
-                        break
-
-                react_flow_edges.append(
-                    {
-                        "id": edge_id,
-                        "source": str(source_node),
-                        "target": str(target_node),
-                        "type": "default",
-                        "animated": True,
-                        "label": edge_label,
-                        "data": edge_data,
-                    }
-                )
-
-            return {"nodes": react_flow_nodes, "edges": react_flow_edges}
-
+        # Create the pyvis network
         if save is True:
             net = Network(
                 notebook=True, directed=True, height="800px", width="100%", layout=False, cdn_resources="in_line"
@@ -839,14 +689,10 @@ class DependencyGraph:
 
         net.from_nx(self.network)
 
+        # Reshape the graph and set colors
         for node in net.nodes:
-            if node["id"] in self.pos:
-                node["y"] = self.pos[node["id"]][1] * y_scale  # Uses y_scale from above
-                node["x"] = self.pos[node["id"]][0] * x_scale  # Uses x_scale from above
-            else:
-                node["y"] = 0
-                node["x"] = 0
-
+            node["y"] = self.pos[node["id"]][1] * 10
+            node["x"] = self.pos[node["id"]][0] * 140
             node["size"] = 4
             node["font"] = {"size": 8}
             node["color"] = "black"
@@ -862,11 +708,12 @@ class DependencyGraph:
                     "face": "Arial",
                     "size": 14,
                     "color": "#000000",
-                    "vadjust": -8,
+                    "vadjust": -8,  # Pas de verticale positie van de labels aan
                 }
             },
         }
 
+        # Create the directory if it doesn't exist
         if not Path(graph_dir).exists():
             Path(graph_dir).mkdir(parents=True)
 
@@ -877,16 +724,19 @@ class DependencyGraph:
 
         net.save_graph(graph_location)
 
+        # Make a screenshot of the graph if save == true, otherwise open a tab and show the graph
         if save is True:
-
+            # Use Selenium to take a screenshot
             service = Service(ChromeDriverManager().install())
             options = webdriver.ChromeOptions()
             options.add_argument("headless")
             options.add_argument(f"window-size={sc_window_size}")
             driver = webdriver.Chrome(service=service, options=options)
 
+            # Navigate to the dependency graph
             driver.get(Path(graph_location).resolve().as_uri())
 
+            # Wait for the page to fully load
             time.sleep(2)
 
             # Take and store the screenshot
@@ -899,4 +749,3 @@ class DependencyGraph:
             driver.quit()
         elif save is False:
             os.system(f"open '{graph_location}'")
-        return None
