@@ -483,33 +483,30 @@ class Visualize:
 
         if key == "theme_weight":
             total_theme_weight = sum(self.input_dict["theme_weight"])
-            theme_groups = {}
+            theme_representative_wedge = {}
             for wedge, theme in zip(wedges, self.input_dict["key_output_theme"]):
-                theme_groups.setdefault(theme, []).append(wedge)
+                if theme not in theme_representative_wedge:
+                    theme_representative_wedge[theme] = wedge
 
-            for theme, group_wedges in theme_groups.items():
-                angles = [(w.theta1 + w.theta2) / 2 for w in group_wedges]
-                mid_angle = sum(angles) / len(angles)
-                x = 1.2 * np.cos(np.deg2rad(mid_angle))
-                y = 1.2 * np.sin(np.deg2rad(mid_angle))
-                theme_pct = theme_weight_by_name[theme] / total_theme_weight * 100
-                axis.annotate(
-                    f"{theme}: {theme_pct:.1f}%", xy=(x, y), ha="center", va="center", fontsize=11, fontweight="bold"
-                )
-        else:
-            axis.legend(
-                wedges,
-                labels,
-                loc="upper center",
-                bbox_to_anchor=(0.5, 0.02),
-                ncol=1,
-                frameon=False,
-                fontsize=10,
-                handlelength=1,
-                handleheight=1,
-            )
-            if not show_legend:
-                axis.legend_ = None
+            wedges = list(theme_representative_wedge.values())
+            labels = [
+                f"{theme}: {theme_weight_by_name[theme] / total_theme_weight * 100:.1f}%"
+                for theme in theme_representative_wedge
+            ]
+
+        axis.legend(
+            wedges,
+            labels,
+            loc="upper center",
+            bbox_to_anchor=(0.5, 0.02),
+            ncol=1,
+            frameon=False,
+            fontsize=10,
+            handlelength=1,
+            handleheight=1,
+        )
+        if not show_legend:
+            axis.legend_ = None
 
         if "save" in kwargs:
             plt.savefig("images" + "/figure_" + key + ".png", bbox_inches="tight")
