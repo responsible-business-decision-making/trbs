@@ -242,6 +242,7 @@ class Visualize:
 
         return dataframe, name_str
 
+    # pylint: disable=too-many-branches
     def _create_table(self, key: str, **kwargs) -> pd.DataFrame.style:
         """
         This function creates a 2- or 3-dimensional table depending on the key.
@@ -308,7 +309,7 @@ class Visualize:
             styled_df = self._table_styler(table_data.style, table_name)
         return styled_df
 
-    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def _create_table_n_col(self, dataframe, col_names, col_values, row_names, left_col_header) -> pd.DataFrame:
         """
         This function makes it possible to iterate over all cells in a table
@@ -418,6 +419,7 @@ class DependencyGraph:
 
         warnings.simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
 
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def find_all_predecessors(
         self, node, max_generation, predecessors=None, current_generation=0, current_max_generation=0
     ):

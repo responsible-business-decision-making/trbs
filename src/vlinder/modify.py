@@ -5,7 +5,7 @@ This module contains the Modify class, which performs a modification in the inpu
 import numpy as np
 
 
-class Modify:
+class Modify:  # pylint: disable=too-few-public-methods
     """
     The Modify class performs a modification in the input dict.
     """
@@ -17,7 +17,7 @@ class Modify:
     def modify(self, input_dict_key, element_key, new_value):
         """
         This function modifies a specific value in the input dict.
-        """       
+        """
         supported_input_keys = ["key_output_weight", "scenario_weight", "theme_weight"]
 
         if input_dict_key not in supported_input_keys:
@@ -29,5 +29,5 @@ class Modify:
 
         self.input_dict[input_dict_key][index] = new_value
 
-        print(f"The weight for {element_key} in {input_dict_key} is changed from {old_value[0]} to {new_value}.") 
+        print(f"The weight for {element_key} in {input_dict_key} is changed from {old_value[0]} to {new_value}.")
         return self.input_dict

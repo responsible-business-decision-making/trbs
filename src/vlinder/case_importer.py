@@ -163,7 +163,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         :return: hierarchy level of either 1 or 2
         """
         args_with_known_value = sum(
-            [(row[arg] in all_inputs or check_numeric(row[arg])) for arg in ["argument_1", "argument_2"]]
+            (row[arg] in all_inputs or check_numeric(row[arg])) for arg in ["argument_1", "argument_2"]
         )
         # if both values of the args are known return level 1, else return level 2
         if args_with_known_value == 2:

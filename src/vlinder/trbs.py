@@ -46,7 +46,7 @@ class CaseError(Exception):
         return f"Case Error: {self.message}"
 
 
-class TheResponsibleBusinessSimulator:
+class TheResponsibleBusinessSimulator:  # pylint: disable=too-many-instance-attributes
     """
     This class is the base class of an tRBS-case and contains all necessary information to import data, evaluate
     dependencies and calculate appreciations.

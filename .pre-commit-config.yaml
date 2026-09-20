@@ -31,5 +31,6 @@ repos:
         - --max-attributes=10
         - --ignore-imports=yes
         - -d duplicate-code
+        - -d cyclic-import
         - --disable=E0401
         - --max-line-length=119
