@@ -11,7 +11,6 @@ import os
 import copy
 
 import matplotlib
-import pandas as pd
 import vlinder as vl
 from vlinder.modify import Modify
 from vlinder.case_exporter import CaseExporter
@@ -46,7 +45,7 @@ class CaseError(Exception):
         return f"Case Error: {self.message}"
 
 
-class TheResponsibleBusinessSimulator:
+class TheResponsibleBusinessSimulator:  # pylint: disable=too-many-instance-attributes
     """
     This class is the base class of an tRBS-case and contains all necessary information to import data, evaluate
     dependencies and calculate appreciations.
@@ -62,6 +61,7 @@ class TheResponsibleBusinessSimulator:
         self.visualizer = None
         self.exporter = None
         self.report = None
+        self.optimization_result = None
 
         self.possible_status = {0: "build", 1: "evaluate", 2: "appreciate", 3: "optimize"}
         self.status = {}
@@ -181,25 +181,59 @@ class TheResponsibleBusinessSimulator:
         location_report = self.report.create_report(scenario, output_path)
         print(location_report)
 
-    def optimize(self, scenario, **kwargs):
+    def optimize(self, scenario, method="basin_hopping", spend_all=True, max_calculation_time=60, **kwargs):
         """
-        This function deals with finding the optimal distribution of decision maker options.
+        This function finds the optimal distribution of internal inputs for a scenario.
+
+        ``method`` is a single method name or a list of names. With a list, every method runs,
+        each method's appreciation and allocation is printed, and only the best is written back.
+        Supported methods: ``"grid"`` (combinatorial grid search), ``"slsqp"`` (continuous
+        multi-start SLSQP) and ``"basin_hopping"`` (SLSQP with an escape loop for surfaces with
+        more than one optimum).
+
+        Each run optimizes one scenario. Optimizing for several scenarios means running once per
+        scenario. Each run gets its own decision-maker option.
+
+        The case can set an ``Optimize_DMO_name``. That is a free label the user chooses, for
+        example "Show me what you got". It becomes the base of the name: "Show me what you got
+        (grid) (Base case)". A ``dmo_name`` passed here overrides it, but the method and the
+        scenario are still added.
+
         :param scenario: the selected scenario of the case
+        :param method: a method name or a list of names. The default is ``"basin_hopping"``,
+            because it was the most reliable method in the benchmarks behind this optimizer: on
+            a surface with one optimum it returns what SLSQP finds, and on a surface with several
+            it keeps searching for the best one.
+        :param spend_all: when True (the default), every solver spends the budget exactly
+            (``sum(x) = B``); when False, under-spending is allowed (``sum(x) <= B``), for cases
+            where leaving budget unspent may pay.
+        :param max_calculation_time: seconds a run may take, 60 by default. Every solver stops
+            itself once the time is spent and reports the best answer found so far; grid search
+            spends the time refining its lattice. Pass ``None`` to remove the limit.
+        :param kwargs: ``dmo_name`` for the optimizer's decision-maker option, plus the
+            parameters of the chosen solver. Grid takes ``max_combinations`` (default 60000);
+            slsqp takes ``n_starts`` (default 100) and ``seed``; basin_hopping takes ``n_hops``,
+            ``n_starts``, ``temperature``, ``step_frac`` and ``seed``. A parameter passed
+            directly goes to every method that runs. To give two methods different parameters,
+            pass ``method_kwargs`` as ``{method name: {setting: value}}``; those win over the
+            direct ones.
+        :return: the updated ``input_dict``. The full
+            :class:`~vlinder.optimize.OptimizationResult` of this run is available as
+            ``self.optimization_result``.
         """
         self._status_check([0, 1, 2])
         case_optimizer = Optimize(self.input_dict, self.output_dict)
 
-        try:
-            index = list(self.input_dict["configurations"]).index("Optimize_DMO_name")
-            optimized_dmo_name = self.input_dict["configuration_value"][index] + "_" + scenario
-
-            if pd.isna(optimized_dmo_name):
-                raise CaseError("Optimized DMO name is NaN")
-
-            self.input_dict = case_optimizer.optimize_single_scenario(
-                scenario, kwargs.get("new_dmo_name", optimized_dmo_name), kwargs.get("max_combinations", 60000)
-            )
-            self.name = kwargs.get("new_case_name", f"{self.name} - Optimized")
-
-        except (ValueError, IndexError, KeyError) as error:
-            raise CaseError("cannot find optimized DMO name") from error
+        result = case_optimizer.run(
+            scenario,
+            method=method,
+            dmo_name=kwargs.pop("dmo_name", None),
+            spend_all=spend_all,
+            max_calculation_time=max_calculation_time,
+            **kwargs,
+        )
+        self.input_dict = case_optimizer.input_dict
+        self.optimization_result = result
+        self.name = f"{self.name} - Optimized ({result.method}) ({result.scenario})"
+        self._set_and_reset_status(3)
+        return self.input_dict

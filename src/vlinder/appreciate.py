@@ -11,10 +11,21 @@ from vlinder.utils import get_values_from_target
 class Appreciate:
     """This class deals with the calculation of appreciations"""
 
-    def __init__(self, input_dict, output_dict):
+    def __init__(self, input_dict, output_dict, start_and_end_points=None):
+        """
+        :param input_dict: tRBS case input dictionary
+        :param output_dict: dictionary holding the calculated key output values
+        :param start_and_end_points: precomputed appreciation boundaries. Optional; when
+            omitted they are derived from ``output_dict`` as usual. An optimizer that has
+            frozen the boundaries for the duration of its run (``key_output_automatic``
+            all zero) passes them in, because they are then constant across evaluations
+            while deriving them costs a pandas DataFrame per objective evaluation.
+        """
         self.input_dict = input_dict
         self.output_dict = output_dict
-        self.start_and_end_points = self._get_start_and_end_points()
+        self.start_and_end_points = (
+            self._get_start_and_end_points() if start_and_end_points is None else start_and_end_points
+        )
 
     # pylint: disable=too-many-locals
     def _get_start_and_end_points(self) -> dict:

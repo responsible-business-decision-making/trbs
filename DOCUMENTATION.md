@@ -207,10 +207,18 @@ case.optimize("SCENARIO_NAME")
 # or use a copy if you do not want to change the original case
 case_optimizer = case.copy()
 case_optimizer.optimize("SCENARIO_NAME")
+
+# or name another method: "grid" enumerates, "slsqp" is multi-start gradient search
+case.optimize("SCENARIO_NAME", method="grid")
+
+# the details of the last run
+print(case.optimization_result.summary())
 ```
 **What does it do?**
-- Determines an improved budget allocation for the decision maker options in a selected scenario using a grid search. If the user has specified an optimized name in the case configurations, you assume it is a budget allocation case.
-- Adds this allocation as a DMO to the input_dict, using as its name the configured optimized name, followed by _ and the scenario for which it was optimized.
+- Determines an improved budget allocation for the decision maker options in a selected scenario. By default it uses basin-hopping, a continuous solver that searches for more than one optimum; `method="grid"` and `method="slsqp"` are the alternatives.
+- Spends the whole budget by default (`spend_all=True`); `spend_all=False` allows under-spending. A run stops after 60 seconds by default (`max_calculation_time=60`); `None` removes the limit.
+- Adds this allocation as a DMO to the input_dict, named after the configured `Optimize_DMO_name` (or a `dmo_name` you pass), followed by the method and the scenario it was optimized for.
+- Returns the updated input_dict. The full result of the run (allocation, appreciation, budget spent, calculation time, evaluations) is kept on `case.optimization_result`.
 
 ## 🖨️ copy()
 **Usage:**
