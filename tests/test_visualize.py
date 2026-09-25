@@ -4,7 +4,7 @@ This module contains all tests for the Visualize() and the DependencyGraph() cla
 NOT case dependent. Therefore, an arbitrary outcome dictionary is used in these unit tests.
 
 The following functions are skipped: _table_styler, _graph_styler, _create_table (returns styler class),
-The following functions are partly tested: _create_barchart (only errors), create_visuals (only errors)
+The following functions are partly tested: _create_barchart (only errors),_create_piechart (only error), create_visuals (only errors)
 """
 import pytest
 import numpy as np
@@ -195,6 +195,15 @@ def test_create_barchart_error(test_outcomes):
     expected_error = "Visualization Error: Too many dimensions (3). Please specify a scenario"
     assert str(visualization_error.value) == expected_error
 
+def test_create_piechart_error(test_outcomes):
+    """
+    This function tests _create_piechart to raise an error when an invalid key is provided
+    :param test_outcomes: a Visualize class
+    """
+    with pytest.raises(VisualizationError) as visualization_error:
+        test_outcomes._create_piechart("not_a_real_key")
+    expected_error = "Visualization Error: 'not_a_real_key' is not a valid option for a piechart"
+    assert str(visualization_error.value) == expected_error
 
 @pytest.mark.parametrize(
     "visual_request, key, expected_error",
