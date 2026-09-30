@@ -396,10 +396,10 @@ class Visualize:
         :param key: name of the key output to plot the appreciation function for
         :return: a plotted line chart
         """
-        if key not in self.outcomes.get("appreciation_functions", {}):
+        if key not in self.appreciation_functions:
             raise VisualizationError(f"'{key}' is not a valid option")
 
-        grid_data = self.outcomes["appreciation_functions"][key]
+        grid_data = self.appreciation_functions[key]
         graph_data = pd.DataFrame(grid_data)
 
         axis = graph_data.plot(

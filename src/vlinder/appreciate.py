@@ -128,8 +128,7 @@ class Appreciate:
 
     def calculate_appreciation_functions(self, n_points: int = 100) -> None:
         """
-        This function calculates the appreciation grid for every key output and stores the result in the
-        output_dict, under the 'appreciation_functions' key. Unlike the other appreciation results, this is not
+        This function calculates the appreciation grid for every key output and stores the result in self.appreciation_functions, under the 'appreciation_functions' key. Unlike the other appreciation results, this is not
         nested per scenario/decision makers option, since the appreciation grid of a key output does not depend on
         those - it only depends on the key output itself.
         :param n_points: number of grid points to generate per key output
