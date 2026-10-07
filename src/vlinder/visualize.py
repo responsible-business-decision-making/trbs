@@ -74,7 +74,35 @@ class Visualize:
             "fixed_inputs",
             "decision_makers_options",
             "scenario_appreciations",
+            "strategic_challenge",
+            "theme_weights",
+            "key_output_weights",
+            "scenario_weights",
+            "dependencies",
+            "appreciation_settings",
         ]
+        # tables that show input_dict values: {table key: {column header: input_dict key}}
+        self.input_tables = {
+            "theme_weights": {"theme": "themes", "weight": "theme_weight"},
+            "key_output_weights": {"key output": "key_outputs", "weight": "key_output_weight"},
+            "scenario_weights": {"scenario": "scenarios", "weight": "scenario_weight"},
+            "dependencies": {
+                "destination": "destination",
+                "argument 1": "argument_1",
+                "operator": "operator",
+                "argument 2": "argument_2",
+            },
+            "appreciation_settings": {
+                "key output": "key_outputs",
+                "monetary": "key_output_monetary",
+                "smaller the better": "key_output_smaller_the_better",
+                "linear": "key_output_linear",
+                "automatic": "key_output_automatic",
+                "start": "key_output_start",
+                "end": "key_output_end",
+                "threshold": "key_output_threshold",
+            },
+        }
         self.available_kwargs = [
             "scenario",
             "decision_makers_option",
@@ -152,7 +180,7 @@ class Visualize:
 
         # Apply number formatting only to numeric columns
         numeric_columns = styler.data.select_dtypes(include=[np.number]).columns
-        styler.format({col: number_formatter for col in numeric_columns})
+        styler.format({col: number_formatter for col in numeric_columns}, na_rep="-")
 
         styler.set_caption(table_name)
         if "input_variables" not in kwargs:
@@ -294,19 +322,76 @@ class Visualize:
                 name_table = "/table" + str(key) + str(number_of_iter)
             if "save" in kwargs:
                 dfi.export(styled_df, "images" + name_table + ".png", table_conversion="matplotlib")
+        elif key == "strategic_challenge" or key in self.input_tables:
+            styled_df = self._create_styled_input_table(key, **kwargs)
         else:
             table_data = self._format_data_for_visual(key)
             # Filter the data based on potentially provided arguments by the user.
             table_data, name_str = self._apply_filters(table_data, **kwargs)
-            table_data = (
-                table_data.set_index(["scenario", key])
-                .pivot(columns="decision_makers_option", values="value")
-                .rename_axis((None, None))
-                .rename_axis(None, axis=1)
+            # numeric outputs (e.g. scenario_appreciations) have no extra column next to scenario
+            row_index = ["scenario", key] if key in table_data.columns else ["scenario"]
+            table_data = self._apply_input_order(
+                table_data.pivot(index=row_index, columns="decision_makers_option", values="value")
             )
+            table_data = table_data.rename_axis([None] * len(row_index)).rename_axis(None, axis=1)
             table_name = f"Values of {self._str_snake_case_to_text(key)}{name_str}"
             styled_df = self._table_styler(table_data.style, table_name)
         return styled_df
+
+    def _create_input_table(self, key: str) -> pd.DataFrame:
+        """
+        This function creates a dataframe with values from the input_dict for the given table key.
+        :param key: key of the table, either 'strategic_challenge' or a key of self.input_tables
+        :return: a dataframe with the requested input values
+        """
+        if key == "strategic_challenge":
+            text_elements = list(self.input_dict["case_text_elements"])
+            text = "Not defined in template"
+            if "strategic_challenge" in text_elements:
+                value = self.input_dict["case_text_element_value"][text_elements.index("strategic_challenge")]
+                text = text if str(value) == "nan" else value
+            return pd.DataFrame({"strategic challenge": [text]})
+        # optional input columns (e.g. key_output_start) are skipped when they are not in the case
+        return pd.DataFrame(
+            {
+                header: self.input_dict[input_key]
+                for header, input_key in self.input_tables[key].items()
+                if input_key in self.input_dict
+            }
+        )
+
+    def _create_styled_input_table(self, key: str, **kwargs) -> pd.DataFrame.style:
+        """
+        This function creates a styled table with values from the input_dict and saves it when requested.
+        :param key: key of the table, either 'strategic_challenge' or a key of self.input_tables
+        :return: a styled table
+        """
+        kwargs["input_variables"] = True
+        dataframe = self._create_input_table(key)
+        number_of_iter = kwargs.get("number_iteration", -1)
+        if number_of_iter != -1:
+            start_idx = number_of_iter * 10
+            dataframe = dataframe[start_idx : start_idx + 10]
+        table_name = f"Values of {self._str_snake_case_to_text(key)}"
+        styled_df = self._table_styler(dataframe.style.hide(axis="index"), table_name, **kwargs)
+        if "save" in kwargs:
+            suffix = "" if number_of_iter == -1 else str(number_of_iter)
+            dfi.export(styled_df, "images/table" + key + suffix + ".png", table_conversion="matplotlib")
+        return styled_df
+
+    def _apply_input_order(self, table_data: pd.DataFrame) -> pd.DataFrame:
+        """
+        This function orders rows and columns as defined by the user in the input (pivot sorts them alphabetically).
+        :param table_data: pivoted dataframe
+        :return: dataframe with the user defined order
+        """
+        order = {
+            name: idx
+            for input_key in ["scenarios", "key_outputs", "decision_makers_options"]
+            for idx, name in enumerate(self.input_dict[input_key])
+        }
+        table_data = table_data.sort_index(axis=0, key=lambda labels: labels.map(order), sort_remaining=False)
+        return table_data.sort_index(axis=1, key=lambda labels: labels.map(order))
 
     # pylint: disable=too-many-arguments
     def _create_table_n_col(self, dataframe, col_names, col_values, row_names, left_col_header) -> pd.DataFrame:
