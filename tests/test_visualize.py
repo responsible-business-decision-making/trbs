@@ -393,3 +393,51 @@ def test_draw_graph(selected_ko, max_gen, save, expected_parts):
     error_message = str(visualization_error.value)
     for expected_part in expected_parts:
         assert expected_part in error_message
+
+@pytest.mark.parametrize(
+    "key, expected_columns",
+    [
+        ("strategic_challenge", ["strategic challenge"]),
+        ("theme_weights", ["theme", "weight"]),
+        ("key_output_weights", ["key output", "weight"]),
+        ("scenario_weights", ["scenario", "weight"]),
+        ("dependencies", ["destination", "argument 1", "operator", "argument 2"]),
+        (
+            "appreciation_settings",
+            ["key output", "monetary", "smaller the better", "linear", "automatic", "start", "end", "threshold"],
+        ),
+    ],
+)
+def test_create_input_table(test_outcomes, key, expected_columns):
+    """
+    This function tests _create_input_table to return a dataframe with the expected columns
+    :param test_outcomes: a Visualize class
+    :param key: name of the requested input table
+    :param expected_columns: expected column headers of the table
+    """
+    result = test_outcomes._create_input_table(key)
+    assert list(result.columns) == expected_columns
+
+
+def test_create_input_table_strategic_challenge_missing(test_outcomes):
+    """
+    This function tests _create_input_table to return a default text when the strategic challenge is 'nan'
+    :param test_outcomes: a Visualize class
+    """
+    result = test_outcomes._create_input_table("strategic_challenge")
+    assert result["strategic challenge"][0] == "Not defined in template"
+
+
+def test_apply_input_order(test_outcomes):
+    """
+    This function tests _apply_input_order to order rows and columns as in the input_dict instead of alphabetically
+    :param test_outcomes: a Visualize class
+    """
+    dataframe = pd.DataFrame(
+        [[1, 2], [3, 4]],
+        index=["Production cost reduction", "Water use reduction"],
+        columns=["Focus on water recycling", "Equal spread"],
+    )
+    result = test_outcomes._apply_input_order(dataframe)
+    assert list(result.index) == ["Water use reduction", "Production cost reduction"]
+    assert list(result.columns) == ["Equal spread", "Focus on water recycling"]
