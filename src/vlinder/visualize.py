@@ -36,11 +36,12 @@ class VisualizationError(Exception):
 class Visualize:
     """This class deals with the creation of all graphs and tables"""
 
-    def __init__(self, input_dict, outcomes, options):
+    def __init__(self, input_dict, outcomes, options, appreciation_functions=None):
         # for visualization purposes two digits is sufficient
         self.input_dict = input_dict
         self.outcomes = round_all_dict_values(outcomes)
         self.options = options
+        self.appreciation_functions = appreciation_functions or {}
         self.colors = [
             "#295477",
             "#F3DD8C",
@@ -63,6 +64,7 @@ class Visualize:
         self.available_visuals = {
             "table": self._create_table,
             "barchart": self._create_barchart,
+            "appreciation_graph": self._create_appreciation_graph,
         }
         self.available_outputs = [
             "key_outputs",
@@ -385,6 +387,48 @@ class Visualize:
         else:
             plt.show()
 
+    def _create_appreciation_graph(self, key: str, **kwargs) -> None:
+        """
+        This function creates and shows a line chart of the appreciation function of a single key output: for every
+        value on the grid between its start and end point (see Appreciate.calculate_appreciation_functions), it
+        plots the corresponding appreciation. Unlike the other visuals, this does not depend on a scenario or
+        decision makers option, since the appreciation function of a key output does not depend on those either.
+        :param key: name of the key output to plot the appreciation function for
+        :return: a plotted line chart
+        """
+        if key not in self.appreciation_functions:
+            raise VisualizationError(f"'{key}' is not a valid option")
+
+        grid_data = self.appreciation_functions[key]
+        graph_data = pd.DataFrame(grid_data)
+
+        axis = graph_data.plot(
+            x="key_output_value", y="appreciation", legend=False, color=self.colors[0], figsize=(10, 5)
+        )
+        axis.set_ylim(0, 100)
+        axis.set_xlabel(key)
+        axis.set_ylabel("Appreciation")
+        axis.set_title(f"Appreciation function of {self._str_snake_case_to_text(key)}", color="#777777", fontsize=12)
+        axis.grid(True, linestyle="--", alpha=0.4)
+        # highlight the min and max key output value with a marker + label
+        start_x, start_y = grid_data["key_output_value"][0], grid_data["appreciation"][0]
+        end_x, end_y = grid_data["key_output_value"][-1], grid_data["appreciation"][-1]
+        for x_value, y_value in [(start_x, start_y), (end_x, end_y)]:
+            axis.plot(x_value, y_value, marker="o", color=self.colors[0])
+            axis.annotate(
+                f"({x_value:.2f}, {y_value:.0f})",
+                xy=(x_value, y_value),
+                xytext=(5, 5),
+                textcoords="offset points",
+                fontsize=9,
+            )
+
+        if "save" in kwargs:
+            plt.savefig("images" + "/figure_appreciation_" + key + ".png", bbox_inches="tight")
+            plt.close()
+        else:
+            plt.show()
+
     def create_visual(self, visual_request: str, key: str, **kwargs):
         """
         This function redirects the visual_request based on the requested format to the correct helper function.
@@ -398,7 +442,7 @@ class Visualize:
         self._validate_kwargs(**kwargs)
         if visual_request not in self.available_visuals:
             raise VisualizationError(f"'{visual_request}' is not a valid chart type")
-        if key not in self.available_outputs:
+        if visual_request != "appreciation_graph" and key not in self.available_outputs:
             raise VisualizationError(f"'{key}' is not a valid option")
 
         return self.available_visuals[visual_request](key, **kwargs)
