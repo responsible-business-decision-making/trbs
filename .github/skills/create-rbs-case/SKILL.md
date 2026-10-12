@@ -60,7 +60,7 @@ pipenv run python .github/skills/create-rbs-case/scripts/build_case.py \
 - Confirm the build raises no `TemplateError` / `EvaluationError`.
 - Show the per-scenario appreciation ranking and sanity-check that options are
   differentiated and the ordering is plausible.
-- Iterate on numbers, weights, or structure as the user requests.
+- Iterate on numbers, weights, or structure as the user requests
 
 ## Resources
 - [references/schema.md](./references/schema.md) — the 11 tables, operators, patterns, and validation rules.
