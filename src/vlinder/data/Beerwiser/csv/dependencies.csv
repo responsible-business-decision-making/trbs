@@ -1,14 +1,14 @@
 destination;argument_1;argument_2;operator
-AR_1;Invest in training of employees;AR_sp;/
-AR_2;AR_1;1;min
-AR_3;AR_2;AR_acc;*
-AR_4;AR_3;AR_pos;*
-Accidents reduction %;AR_4;AR_me;*
-WURWE_1;Invest in water recycling;WURWE_sp;/
-WURWE_2;WURWE_1;1;min
-WURWE_3;WURWE_2;WURWE_acc;*
-WURWE_4;WURWE_3;WURWE_pos;*
-Water use reduction % when effective;WURWE_4;WURWE_me;*
+AccidentReduction_1;Invest in training of employees;AccidentReduction_saturationpoint;/
+AccidentReduction_2;AccidentReduction_1;1;min
+AccidentReduction_3;AccidentReduction_2;AccidentReduction_accessiblepopulation;*
+AccidentReduction_4;AccidentReduction_3;AccidentReduction_probabilityofsuccess;*
+Accidents reduction %;AccidentReduction_4;AccidentReduction_maximumeffect;*
+WaterUseReductionWhenEffective_1;Invest in water recycling;WaterUseReductionWhenEffective_saturationpoint;/
+WaterUseReductionWhenEffective_2;WaterUseReductionWhenEffective_1;1;min
+WaterUseReductionWhenEffective_3;WaterUseReductionWhenEffective_2;WaterUseReductionWhenEffective_accessiblepopulation;*
+WaterUseReductionWhenEffective_4;WaterUseReductionWhenEffective_3;WaterUseReductionWhenEffective_probabilityofsuccess;*
+Water use reduction % when effective;WaterUseReductionWhenEffective_4;WaterUseReductionWhenEffective_maximumeffect;*
 Water use reduction %;Water use reduction % when effective;Effectiveness water recycling;*
 Accidents reduction;Current # accidents;Accidents reduction %;*
 Water use reduction;Water use reduction %;Current water use;*

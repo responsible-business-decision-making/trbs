@@ -30,72 +30,72 @@
     "data":[
         {
             "index":0,
-            "destination":"AR_1",
+            "destination":"AccidentReduction_1",
             "argument_1":"Invest in training of employees",
-            "argument_2":"AR_sp",
+            "argument_2":"AccidentReduction_saturationpoint",
             "operator":"\/"
         },
         {
             "index":1,
-            "destination":"AR_2",
-            "argument_1":"AR_1",
+            "destination":"AccidentReduction_2",
+            "argument_1":"AccidentReduction_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":2,
-            "destination":"AR_3",
-            "argument_1":"AR_2",
-            "argument_2":"AR_acc",
+            "destination":"AccidentReduction_3",
+            "argument_1":"AccidentReduction_2",
+            "argument_2":"AccidentReduction_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":3,
-            "destination":"AR_4",
-            "argument_1":"AR_3",
-            "argument_2":"AR_pos",
+            "destination":"AccidentReduction_4",
+            "argument_1":"AccidentReduction_3",
+            "argument_2":"AccidentReduction_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":4,
             "destination":"Accidents reduction %",
-            "argument_1":"AR_4",
-            "argument_2":"AR_me",
+            "argument_1":"AccidentReduction_4",
+            "argument_2":"AccidentReduction_maximumeffect",
             "operator":"*"
         },
         {
             "index":5,
-            "destination":"WURWE_1",
+            "destination":"WaterUseReductionWhenEffective_1",
             "argument_1":"Invest in water recycling",
-            "argument_2":"WURWE_sp",
+            "argument_2":"WaterUseReductionWhenEffective_saturationpoint",
             "operator":"\/"
         },
         {
             "index":6,
-            "destination":"WURWE_2",
-            "argument_1":"WURWE_1",
+            "destination":"WaterUseReductionWhenEffective_2",
+            "argument_1":"WaterUseReductionWhenEffective_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":7,
-            "destination":"WURWE_3",
-            "argument_1":"WURWE_2",
-            "argument_2":"WURWE_acc",
+            "destination":"WaterUseReductionWhenEffective_3",
+            "argument_1":"WaterUseReductionWhenEffective_2",
+            "argument_2":"WaterUseReductionWhenEffective_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":8,
-            "destination":"WURWE_4",
-            "argument_1":"WURWE_3",
-            "argument_2":"WURWE_pos",
+            "destination":"WaterUseReductionWhenEffective_4",
+            "argument_1":"WaterUseReductionWhenEffective_3",
+            "argument_2":"WaterUseReductionWhenEffective_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":9,
             "destination":"Water use reduction % when effective",
-            "argument_1":"WURWE_4",
-            "argument_2":"WURWE_me",
+            "argument_1":"WaterUseReductionWhenEffective_4",
+            "argument_2":"WaterUseReductionWhenEffective_maximumeffect",
             "operator":"*"
         },
         {
