@@ -47,42 +47,42 @@
         },
         {
             "index":5,
-            "fixed_input":"AR_me",
+            "fixed_input":"AccidentReduction_maximumeffect",
             "value":0.48
         },
         {
             "index":6,
-            "fixed_input":"AR_acc",
+            "fixed_input":"AccidentReduction_accessiblepopulation",
             "value":0.95
         },
         {
             "index":7,
-            "fixed_input":"AR_pos",
+            "fixed_input":"AccidentReduction_probabilityofsuccess",
             "value":0.9
         },
         {
             "index":8,
-            "fixed_input":"AR_sp",
+            "fixed_input":"AccidentReduction_saturationpoint",
             "value":300000.0
         },
         {
             "index":9,
-            "fixed_input":"WURWE_me",
+            "fixed_input":"WaterUseReductionWhenEffective_maximumeffect",
             "value":0.5
         },
         {
             "index":10,
-            "fixed_input":"WURWE_acc",
+            "fixed_input":"WaterUseReductionWhenEffective_accessiblepopulation",
             "value":1.0
         },
         {
             "index":11,
-            "fixed_input":"WURWE_pos",
+            "fixed_input":"WaterUseReductionWhenEffective_probabilityofsuccess",
             "value":1.0
         },
         {
             "index":12,
-            "fixed_input":"WURWE_sp",
+            "fixed_input":"WaterUseReductionWhenEffective_saturationpoint",
             "value":275000.0
         }
     ]
