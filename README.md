@@ -69,6 +69,15 @@ jupyter notebook
 ### That's all! 🎉 ###
 You're now able to play around with the `vlinder_demo` notebook.
 
+## 🤖 Building a new case with Copilot
+
+This repo ships a Copilot skill, `create-rbs-case`, that guides you through building a new
+RBS case for any topic. In VS Code Copilot Chat, type `/create-rbs-case` (or just ask to
+"create a new RBS case about ..."). The skill interviews you about the strategic challenge,
+decision maker options, KPIs/themes and scenarios, then authors the 11 CSV tables, builds
+and validates the case, and transforms it to xlsx. See
+[.github/skills/create-rbs-case/SKILL.md](.github/skills/create-rbs-case/SKILL.md) for details.
+
 ## 🔗 Contributing
 
 Please refer to the [CONTRIBUTING.MD](https://github.com/responsible-business-decision-making/trbs/blob/main/CONTRIBUTING.md)
