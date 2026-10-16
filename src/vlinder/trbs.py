@@ -1,5 +1,6 @@
 # pylint: disable=no-member
 # pylint: disable=W0511
+# pylint: disable=cyclic-import
 
 """
 This module contains the tRBS class. This is the parent class that deals with anything related to a Responsible
@@ -46,6 +47,7 @@ class CaseError(Exception):
         return f"Case Error: {self.message}"
 
 
+# pylint: disable=too-many-instance-attributes
 class TheResponsibleBusinessSimulator:
     """
     This class is the base class of an tRBS-case and contains all necessary information to import data, evaluate

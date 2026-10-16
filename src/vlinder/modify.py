@@ -5,6 +5,7 @@ This module contains the Modify class, which performs a modification in the inpu
 import numpy as np
 
 
+# pylint: disable=too-few-public-methods
 class Modify:
     """
     The Modify class performs a modification in the input dict.

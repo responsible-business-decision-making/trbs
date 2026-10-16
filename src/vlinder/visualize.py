@@ -1,4 +1,4 @@
-# pylint: disable=cyclic-import, protected-access
+# pylint: disable=cyclic-import, protected-access, too-many-lines
 """
 This file contains the Visualize class that deals with the creation of all graphs and tables
 """
@@ -355,7 +355,7 @@ class Visualize:
         table_name = f"Values of {self._str_snake_case_to_text(key)}{name_str}"
         return self._table_styler(table_data.style, table_name)
 
-    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def _create_table_n_col(self, dataframe, col_names, col_values, row_names, left_col_header) -> pd.DataFrame:
         """
         This function makes it possible to iterate over all cells in a table
@@ -391,6 +391,7 @@ class Visualize:
         unique_themes = list(dict.fromkeys(self.input_dict["key_output_theme"]))
         return {theme: self.colors[i % len(self.colors)] for i, theme in enumerate(unique_themes)}
 
+    # pylint: disable=too-many-locals
     def _create_barchart(self, key: str, **kwargs) -> None:
         """
         This function creates and shows a barchart for a given data key.
@@ -440,6 +441,7 @@ class Visualize:
         else:
             plt.show()
 
+    # pylint: disable=too-many-locals
     def _create_piechart(self, key: str, **kwargs) -> None:
         """
         This function creates and shows a piechart for a given weight key.
@@ -593,6 +595,7 @@ class DependencyGraph:
 
         warnings.simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
 
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def find_all_predecessors(
         self, node, max_generation, predecessors=None, current_generation=0, current_max_generation=0
     ):
