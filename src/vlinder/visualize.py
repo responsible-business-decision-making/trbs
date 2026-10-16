@@ -459,7 +459,7 @@ class Visualize:
             theme_weight_by_name = dict(zip(self.input_dict["themes"], self.input_dict["theme_weight"]))
             theme_totals = {}
             for theme, relative_weight in zip(
-                    self.input_dict["key_output_theme"], self.input_dict["key_output_relative_weight"]
+                self.input_dict["key_output_theme"], self.input_dict["key_output_relative_weight"]
             ):
                 theme_totals[theme] = theme_totals.get(theme, 0) + relative_weight
 
@@ -581,7 +581,7 @@ class Visualize:
 class DependencyGraph:
     """This class deals with the creation of the dependency graph"""
 
-    def __init__(self, input_dict): # Initialize the input dictionary
+    def __init__(self, input_dict):  # Initialize the input dictionary
         """Set up the input dictionary and empty containers for the network, matrix, and coordinates."""
 
         self.input_dict = input_dict

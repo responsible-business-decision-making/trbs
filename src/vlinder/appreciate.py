@@ -84,6 +84,7 @@ class Appreciate:
         #   - if STB = 0: sin(0.5 * pi * (val - start) / (end - start) + 0) * 100
         core_part = (value - start_and_end[0]) / (start_and_end[1] - start_and_end[0])
         return ([1, -1][stb_ind] * math.sin(0.5 * math.pi * core_part) + stb_ind) * 100
+
     def _create_appreciation_grid(self, key_output: str, n_points: int = 100) -> np.array:
         """
         This function creates a grid of evenly spaced values between the start and end point of a given key output.
@@ -128,9 +129,10 @@ class Appreciate:
 
     def calculate_appreciation_functions(self, n_points: int = 100) -> None:
         """
-        This function calculates the appreciation grid for every key output and stores the result in self.appreciation_functions, under the 'appreciation_functions' key. Unlike the other appreciation results, this is not
-        nested per scenario/decision makers option, since the appreciation grid of a key output does not depend on
-        those - it only depends on the key output itself.
+        This function calculates the appreciation grid for every key output and stores the result in
+        self.appreciation_functions, under the 'appreciation_functions' key. Unlike the other appreciation
+        results, this is not nested per scenario/decision makers option, since the appreciation grid of a
+        key output does not depend on those - it only depends on the key output itself.
         :param n_points: number of grid points to generate per key output
         :return: None as results are stored within the output_dict
         """
