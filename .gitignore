@@ -20,5 +20,6 @@ __pycache__
 build/
 data/
 reports/
+images/
 vlinder.egg-info
 dist/

@@ -126,7 +126,7 @@ class MakeReport:
     This class deals with the transformation into a different format and export of output of an RBS case.
     """
 
-    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def __init__(self, output_path, name, input_dict, output_dict, visualize, page_dict=None):
         page_dict = page_dict or {}
         self.output_path = Path(output_path)
@@ -247,6 +247,7 @@ class MakeReport:
             text = "Not defined in template"
         return text
 
+    # pylint: disable=too-many-locals, too-many-branches, too-many-statements
     def make_slides_pdf(self, scenario):
         """
         This function present different visualisation on different slides in a PDF format
