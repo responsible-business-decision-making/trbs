@@ -50,6 +50,7 @@ Run the bundled script, which builds → evaluates → appreciates → prints an
 ranking → transforms to the requested format(s):
 
 ```
+pipenv install vlinder 
 pipenv run python .github/skills/create-rbs-case/scripts/build_case.py \
   --name <CaseName> --path <path> --from csv --to xlsx
 ```
@@ -71,4 +72,3 @@ pipenv run python .github/skills/create-rbs-case/scripts/build_case.py \
   hand-edit binary xlsx.
 - The `language` configuration value is only stored, not used to switch text; write the
   text elements directly in the desired language.
-- Reference working example: the Futsal case under `data/Futsal/`.
