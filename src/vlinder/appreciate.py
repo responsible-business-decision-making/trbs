@@ -171,8 +171,9 @@ class Appreciate:
         :param value_dict_in: dictionary corresponding with given scenario
         :return: None as results are stored within the output_dict
         """
-        for _, value_dict_out in value_dict_in.items():
-            self.appreciate_single_decision_maker_option(value_dict_out)
+        for key, value_dict_out in value_dict_in.items():
+            if key in self.input_dict["decision_makers_options"]:
+                self.appreciate_single_decision_maker_option(value_dict_out)
 
     def appreciate_all_scenarios(self) -> None:
         """
@@ -269,8 +270,9 @@ class Appreciate:
             max_sum = 0
             best_option = ""
             for dmo in self.output_dict[scenario].keys():
-                sum_dmo = sum(self.output_dict[scenario][dmo]["weighted_appreciations"].values())
-                if sum_dmo > max_sum:
-                    max_sum = sum_dmo
-                    best_option = dmo
+                if dmo in self.input_dict["decision_makers_options"]:
+                    sum_dmo = sum(self.output_dict[scenario][dmo]["weighted_appreciations"].values())
+                    if sum_dmo > max_sum:
+                        max_sum = sum_dmo
+                        best_option = dmo
             self.output_dict[scenario]["highest_weighted_dmo"] = best_option
