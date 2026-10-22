@@ -1094,7 +1094,8 @@ class DependencyGraph:
         if return_html:
             return net.generate_html()
 
-        net.save_graph(graph_location)
+        # Write with explicit UTF-8 encoding; pyvis' save_graph uses the platform default (cp1252 on Windows)
+        Path(graph_location).write_text(net.generate_html(), encoding="utf-8")
 
         if save is True:
 
