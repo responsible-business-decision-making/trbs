@@ -405,6 +405,8 @@ def test_draw_graph(selected_ko, max_gen, save, expected_parts):
     error_message = str(visualization_error.value)
     for expected_part in expected_parts:
         assert expected_part in error_message
+
+
 @pytest.mark.parametrize(
     "key, expected_columns",
     [

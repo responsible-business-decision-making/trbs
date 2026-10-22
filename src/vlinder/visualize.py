@@ -383,6 +383,7 @@ class Visualize:
         table_data = table_data.rename_axis([None] * len(row_index)).rename_axis(None, axis=1)
         table_name = f"Values of {self._str_snake_case_to_text(key)}{name_str}"
         return self._table_styler(table_data.style, table_name)
+
     def _get_input_dict_dataframe(self, key: str) -> pd.DataFrame:
         """
         This function creates a dataframe with values from the input_dict for the given table key.
@@ -416,7 +417,8 @@ class Visualize:
         number_of_iter = kwargs.get("number_iteration", -1)
         if number_of_iter != -1:
             start_idx = number_of_iter * 10
-            dataframe = dataframe[start_idx : start_idx + 10]
+            end_idx = number_of_iter + 10
+            dataframe = dataframe[start_idx:end_idx]
         table_name = f"Values of {self._str_snake_case_to_text(key)}"
         styled_df = self._table_styler(dataframe.style.hide(axis="index"), table_name, **kwargs)
         if "save" in kwargs:
