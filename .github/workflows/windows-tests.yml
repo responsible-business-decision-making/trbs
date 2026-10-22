@@ -1,11 +1,11 @@
-name: Windows unit tests
+name: Tests for Windows
 
 on:
   pull_request:
     branches:
       - dev
       - main
-      - dev-rebased
+      - dev-rebased # DELETE BEFORE MERGE Include the dev-rebased branch for pull request testing
 
 jobs:
   unittests-windows:
@@ -26,3 +26,9 @@ jobs:
 
     - name: Run unit tests
       run: pipenv run python -m pytest --import-mode=append tests/
+
+    - name: Install nbmake
+      run: pipenv run pip install nbmake
+
+    - name: Run demo notebook
+      run: pipenv run python -m pytest --nbmake --nbmake-timeout=900 vlinder_demo.ipynb
