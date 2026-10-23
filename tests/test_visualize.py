@@ -4,7 +4,8 @@ This module contains all tests for the Visualize() and the DependencyGraph() cla
 NOT case dependent. Therefore, an arbitrary outcome dictionary is used in these unit tests.
 
 The following functions are skipped: _table_styler, _graph_styler, _create_table (returns styler class),
-The following functions are partly tested: _create_barchart (only errors), create_visuals (only errors)
+The following functions are partly tested: _create_barchart (only errors),_create_piechart (only error),
+create_visuals (only errors)
 """
 import pytest
 import numpy as np
@@ -193,6 +194,17 @@ def test_create_barchart_error(test_outcomes):
     with pytest.raises(VisualizationError) as visualization_error:
         test_outcomes._create_barchart("val1")
     expected_error = "Visualization Error: Too many dimensions (3). Please specify a scenario"
+    assert str(visualization_error.value) == expected_error
+
+
+def test_create_piechart_error(test_outcomes):
+    """
+    This function tests _create_piechart to raise an error when an invalid key is provided
+    :param test_outcomes: a Visualize class
+    """
+    with pytest.raises(VisualizationError) as visualization_error:
+        test_outcomes._create_piechart("not_a_real_key")
+    expected_error = "Visualization Error: 'not_a_real_key' is not a valid option for a piechart"
     assert str(visualization_error.value) == expected_error
 
 
@@ -393,3 +405,52 @@ def test_draw_graph(selected_ko, max_gen, save, expected_parts):
     error_message = str(visualization_error.value)
     for expected_part in expected_parts:
         assert expected_part in error_message
+
+
+@pytest.mark.parametrize(
+    "key, expected_columns",
+    [
+        ("strategic_challenge", ["strategic challenge"]),
+        ("theme_weights", ["theme", "weight"]),
+        ("key_output_weights", ["key output", "weight"]),
+        ("scenario_weights", ["scenario", "weight"]),
+        ("dependencies", ["destination", "argument 1", "operator", "argument 2"]),
+        (
+            "appreciation_settings",
+            ["key output", "monetary", "smaller the better", "linear", "automatic", "start", "end", "threshold"],
+        ),
+    ],
+)
+def test_get_input_dict_dataframe(test_outcomes, key, expected_columns):
+    """
+    This function tests _get_input_dict_dataframe to return a dataframe with the expected columns
+    :param test_outcomes: a Visualize class
+    :param key: name of the requested input table
+    :param expected_columns: expected column headers of the table
+    """
+    result = test_outcomes._get_input_dict_dataframe(key)
+    assert list(result.columns) == expected_columns
+
+
+def test_get_input_dict_dataframe_strategic_challenge_missing(test_outcomes):
+    """
+    This function tests _get_input_dict_dataframe to return a default text when the strategic challenge is 'nan'
+    :param test_outcomes: a Visualize class
+    """
+    result = test_outcomes._get_input_dict_dataframe("strategic_challenge")
+    assert result["strategic challenge"][0] == "Not defined in template"
+
+
+def test_apply_input_order(test_outcomes):
+    """
+    This function tests _apply_input_order to order rows and columns as in the input_dict instead of alphabetically
+    :param test_outcomes: a Visualize class
+    """
+    dataframe = pd.DataFrame(
+        [[1, 2], [3, 4]],
+        index=["Production cost reduction", "Water use reduction"],
+        columns=["Focus on water recycling", "Equal spread"],
+    )
+    result = test_outcomes._apply_input_order(dataframe)
+    assert list(result.index) == ["Water use reduction", "Production cost reduction"]
+    assert list(result.columns) == ["Equal spread", "Focus on water recycling"]

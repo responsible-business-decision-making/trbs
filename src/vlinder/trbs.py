@@ -1,5 +1,6 @@
 # pylint: disable=no-member
 # pylint: disable=W0511
+# pylint: disable=cyclic-import
 
 """
 This module contains the tRBS class. This is the parent class that deals with anything related to a Responsible
@@ -46,6 +47,7 @@ class CaseError(Exception):
         return f"Case Error: {self.message}"
 
 
+# pylint: disable=too-many-instance-attributes
 class TheResponsibleBusinessSimulator:
     """
     This class is the base class of an tRBS-case and contains all necessary information to import data, evaluate
@@ -59,6 +61,7 @@ class TheResponsibleBusinessSimulator:
         self.input_dict = {}
         self.dataframe_dict = {}
         self.output_dict = {}
+        self.appreciation_functions = {}
         self.visualizer = None
         self.exporter = None
         self.report = None
@@ -135,6 +138,7 @@ class TheResponsibleBusinessSimulator:
         self._status_check([0, 1])
         case_appreciation = Appreciate(self.input_dict, self.output_dict)
         case_appreciation.appreciate_all_scenarios()
+        self.appreciation_functions = case_appreciation.appreciation_functions
         self._set_and_reset_status(2)
 
     def visualize(self, visual_request, key, **kwargs):
@@ -145,7 +149,9 @@ class TheResponsibleBusinessSimulator:
             dependency_tree = DependencyGraph(self.input_dict)
             return dependency_tree.draw_graph(key, **kwargs)
 
-        self.visualizer = Visualize(self.input_dict, self.output_dict, self._get_options())
+        self.visualizer = Visualize(
+            self.input_dict, self.output_dict, self._get_options(), appreciation_functions=self.appreciation_functions
+        )
         return self.visualizer.create_visual(visual_request, key, **kwargs)
 
     def transform(self, requested_format, output_path=None):

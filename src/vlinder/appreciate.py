@@ -14,6 +14,7 @@ class Appreciate:
     def __init__(self, input_dict, output_dict):
         self.input_dict = input_dict
         self.output_dict = output_dict
+        self.appreciation_functions = {}
         self.start_and_end_points = self._get_start_and_end_points()
 
     # pylint: disable=too-many-locals
@@ -84,6 +85,62 @@ class Appreciate:
         core_part = (value - start_and_end[0]) / (start_and_end[1] - start_and_end[0])
         return ([1, -1][stb_ind] * math.sin(0.5 * math.pi * core_part) + stb_ind) * 100
 
+    def _create_appreciation_grid(self, key_output: str, n_points: int = 100) -> np.array:
+        """
+        This function creates a grid of evenly spaced values between the start and end point of a given key output.
+        This grid is used to plot the appreciation function of a key output, independent of any scenario or
+        decision makers option.
+        :param key_output: name of the key output
+        :param n_points: number of grid points to generate
+        :return: a numpy array of n_points values, evenly spaced between the start and end point
+        """
+        start, end = self.start_and_end_points[key_output]
+        return np.linspace(start, end, n_points)
+
+    def _get_appreciation_args(self, key_output: str) -> dict:
+        """
+        This function looks up the STB- (smaller the better) and linear-indicator for a given key output. These
+        two indicators, together with the key output name, are all that '_appreciate_single_key_output' needs
+        to appreciate a value of this key output.
+        :param key_output: name of the key output
+        :return: a dictionary with the key output name, STB-indicator and linear-indicator
+        """
+        index = list(self.input_dict["key_outputs"]).index(key_output)
+        return {
+            "key_output": key_output,
+            "key_output_smaller_the_better": self.input_dict["key_output_smaller_the_better"][index],
+            "key_output_linear": self.input_dict["key_output_linear"][index],
+        }
+
+    def _appreciate_grid_single_key_output(self, key_output: str, n_points: int = 100) -> dict:
+        """
+        This function calculates the appreciation grid (key output values and their corresponding appreciation) for
+        a single key output. This grid is independent of any scenario or decision makers option: it only depends on
+        the start/end point, STB-indicator and linear-indicator of the given key output.
+        :param key_output: name of the key output
+        :param n_points: number of grid points to generate
+        :return: a dictionary with the grid values ('key_output_value') and their appreciation ('appreciation')
+        """
+        appreciation_args = self._get_appreciation_args(key_output)
+        grid = self._create_appreciation_grid(key_output, n_points)
+        appreciations = [self._appreciate_single_key_output(value, appreciation_args) for value in grid]
+
+        return {"key_output_value": grid.tolist(), "appreciation": appreciations}
+
+    def calculate_appreciation_functions(self, n_points: int = 100) -> None:
+        """
+        This function calculates the appreciation grid for every key output and stores the result in
+        self.appreciation_functions, under the 'appreciation_functions' key. Unlike the other appreciation
+        results, this is not nested per scenario/decision makers option, since the appreciation grid of a
+        key output does not depend on those - it only depends on the key output itself.
+        :param n_points: number of grid points to generate per key output
+        :return: None as results are stored within the output_dict
+        """
+        self.appreciation_functions = {
+            key_output: self._appreciate_grid_single_key_output(key_output, n_points)
+            for key_output in self.input_dict["key_outputs"]
+        }
+
     def appreciate_single_decision_maker_option(self, value_dict_in: dict) -> None:
         """
         This function calculates the appreciation values, both weighted as well as unweighted for the key outputs for a
@@ -96,11 +153,7 @@ class Appreciate:
         value_dict_in["appreciations"] = {}
         for index, key_output in enumerate(self.input_dict["key_outputs"]):
             key_output_value = value_dict_in["key_outputs"][key_output]
-            appreciation_args = {
-                "key_output": key_output,
-                "key_output_smaller_the_better": self.input_dict["key_output_smaller_the_better"][index],
-                "key_output_linear": self.input_dict["key_output_linear"][index],
-            }
+            appreciation_args = self._get_appreciation_args(key_output)
             appreciation = self._appreciate_single_key_output(key_output_value, appreciation_args)
 
             value_dict_in["appreciations"][key_output] = appreciation
@@ -118,8 +171,9 @@ class Appreciate:
         :param value_dict_in: dictionary corresponding with given scenario
         :return: None as results are stored within the output_dict
         """
-        for _, value_dict_out in value_dict_in.items():
-            self.appreciate_single_decision_maker_option(value_dict_out)
+        for key, value_dict_out in value_dict_in.items():
+            if key in self.input_dict["decision_makers_options"]:
+                self.appreciate_single_decision_maker_option(value_dict_out)
 
     def appreciate_all_scenarios(self) -> None:
         """
@@ -131,6 +185,7 @@ class Appreciate:
             self.appreciate_single_scenario(value_dict)
         self._calculate_best_dmo()
         self._apply_scenario_weights()
+        self.calculate_appreciation_functions()
         print("Key output values have been processed | Appreciated, weighted & aggregated")
 
     @staticmethod
@@ -215,8 +270,9 @@ class Appreciate:
             max_sum = 0
             best_option = ""
             for dmo in self.output_dict[scenario].keys():
-                sum_dmo = sum(self.output_dict[scenario][dmo]["weighted_appreciations"].values())
-                if sum_dmo > max_sum:
-                    max_sum = sum_dmo
-                    best_option = dmo
+                if dmo in self.input_dict["decision_makers_options"]:
+                    sum_dmo = sum(self.output_dict[scenario][dmo]["weighted_appreciations"].values())
+                    if sum_dmo > max_sum:
+                        max_sum = sum_dmo
+                        best_option = dmo
             self.output_dict[scenario]["highest_weighted_dmo"] = best_option

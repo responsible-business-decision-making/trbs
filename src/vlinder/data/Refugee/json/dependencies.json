@@ -30,37 +30,37 @@
     "data":[
         {
             "index":0,
-            "destination":"TECU_1",
+            "destination":"TertiaryEducationCompletedUkrainians_1",
             "argument_1":"Education after 18",
-            "argument_2":"TECU_sp",
+            "argument_2":"TertiaryEducationCompletedUkrainians_saturationpoint",
             "operator":"\/"
         },
         {
             "index":1,
-            "destination":"TECU_2",
-            "argument_1":"TECU_1",
+            "destination":"TertiaryEducationCompletedUkrainians_2",
+            "argument_1":"TertiaryEducationCompletedUkrainians_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":2,
-            "destination":"TECU_3",
-            "argument_1":"TECU_2",
-            "argument_2":"TECU_acc",
+            "destination":"TertiaryEducationCompletedUkrainians_3",
+            "argument_1":"TertiaryEducationCompletedUkrainians_2",
+            "argument_2":"TertiaryEducationCompletedUkrainians_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":3,
-            "destination":"TECU_4",
-            "argument_1":"TECU_3",
-            "argument_2":"TECU_pos",
+            "destination":"TertiaryEducationCompletedUkrainians_4",
+            "argument_1":"TertiaryEducationCompletedUkrainians_3",
+            "argument_2":"TertiaryEducationCompletedUkrainians_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":4,
             "destination":"Tertiary education completed Ukrainians",
-            "argument_1":"TECU_4",
-            "argument_2":"TECU_me",
+            "argument_1":"TertiaryEducationCompletedUkrainians_4",
+            "argument_2":"TertiaryEducationCompletedUkrainians_maximumeffect",
             "operator":"*"
         },
         {
@@ -149,72 +149,72 @@
         },
         {
             "index":17,
-            "destination":"LAUS_1",
+            "destination":"LanguageAcquisitionUkrainians_Sports_1",
             "argument_1":"Sports and association",
-            "argument_2":"LAUS_sp",
+            "argument_2":"LanguageAcquisitionUkrainians_Sports_saturationpoint",
             "operator":"\/"
         },
         {
             "index":18,
-            "destination":"LAUS_2",
-            "argument_1":"LAUS_1",
+            "destination":"LanguageAcquisitionUkrainians_Sports_2",
+            "argument_1":"LanguageAcquisitionUkrainians_Sports_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":19,
-            "destination":"LAUS_3",
-            "argument_1":"LAUS_2",
-            "argument_2":"LAUS_acc",
+            "destination":"LanguageAcquisitionUkrainians_Sports_3",
+            "argument_1":"LanguageAcquisitionUkrainians_Sports_2",
+            "argument_2":"LanguageAcquisitionUkrainians_Sports_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":20,
-            "destination":"LAUS_4",
-            "argument_1":"LAUS_3",
-            "argument_2":"LAUS_pos",
+            "destination":"LanguageAcquisitionUkrainians_Sports_4",
+            "argument_1":"LanguageAcquisitionUkrainians_Sports_3",
+            "argument_2":"LanguageAcquisitionUkrainians_Sports_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":21,
             "destination":"Language acquisition Ukrainians Sports",
-            "argument_1":"LAUS_4",
-            "argument_2":"LAUS_me",
+            "argument_1":"LanguageAcquisitionUkrainians_Sports_4",
+            "argument_2":"LanguageAcquisitionUkrainians_Sports_maximumeffect",
             "operator":"*"
         },
         {
             "index":22,
-            "destination":"LAUI_1",
+            "destination":"LanguageAcquisitionUkrainians_Integration_1",
             "argument_1":"Language and integration course",
-            "argument_2":"LAUI_sp",
+            "argument_2":"LanguageAcquisitionUkrainians_Integration_saturationpoint",
             "operator":"\/"
         },
         {
             "index":23,
-            "destination":"LAUI_2",
-            "argument_1":"LAUI_1",
+            "destination":"LanguageAcquisitionUkrainians_Integration_2",
+            "argument_1":"LanguageAcquisitionUkrainians_Integration_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":24,
-            "destination":"LAUI_3",
-            "argument_1":"LAUI_2",
-            "argument_2":"LAUI_acc",
+            "destination":"LanguageAcquisitionUkrainians_Integration_3",
+            "argument_1":"LanguageAcquisitionUkrainians_Integration_2",
+            "argument_2":"LanguageAcquisitionUkrainians_Integration_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":25,
-            "destination":"LAUI_4",
-            "argument_1":"LAUI_3",
-            "argument_2":"LAUI_pos",
+            "destination":"LanguageAcquisitionUkrainians_Integration_4",
+            "argument_1":"LanguageAcquisitionUkrainians_Integration_3",
+            "argument_2":"LanguageAcquisitionUkrainians_Integration_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":26,
             "destination":"Language acquisition Ukrainians Integration",
-            "argument_1":"LAUI_4",
-            "argument_2":"LAUI_me",
+            "argument_1":"LanguageAcquisitionUkrainians_Integration_4",
+            "argument_2":"LanguageAcquisitionUkrainians_Integration_maximumeffect",
             "operator":"*"
         },
         {
@@ -240,37 +240,37 @@
         },
         {
             "index":30,
-            "destination":"URUE_1",
+            "destination":"UnemploymentReductionUkrainians_Employment_1",
             "argument_1":"Employment",
-            "argument_2":"URUE_sp",
+            "argument_2":"UnemploymentReductionUkrainians_Employment_saturationpoint",
             "operator":"\/"
         },
         {
             "index":31,
-            "destination":"URUE_2",
-            "argument_1":"URUE_1",
+            "destination":"UnemploymentReductionUkrainians_Employment_2",
+            "argument_1":"UnemploymentReductionUkrainians_Employment_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":32,
-            "destination":"URUE_3",
-            "argument_1":"URUE_2",
-            "argument_2":"URUE_acc",
+            "destination":"UnemploymentReductionUkrainians_Employment_3",
+            "argument_1":"UnemploymentReductionUkrainians_Employment_2",
+            "argument_2":"UnemploymentReductionUkrainians_Employment_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":33,
-            "destination":"URUE_4",
-            "argument_1":"URUE_3",
-            "argument_2":"URUE_pos",
+            "destination":"UnemploymentReductionUkrainians_Employment_4",
+            "argument_1":"UnemploymentReductionUkrainians_Employment_3",
+            "argument_2":"UnemploymentReductionUkrainians_Employment_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":34,
             "destination":"Unemployment reduction Ukrainians Employment",
-            "argument_1":"URUE_4",
-            "argument_2":"URUE_me",
+            "argument_1":"UnemploymentReductionUkrainians_Employment_4",
+            "argument_2":"UnemploymentReductionUkrainians_Employment_maximumeffect",
             "operator":"*"
         },
         {
@@ -562,72 +562,72 @@
         },
         {
             "index":76,
-            "destination":"SCUS_1",
+            "destination":"SocialCohesionUkrainians_Sports_1",
             "argument_1":"Sports and association",
-            "argument_2":"SCUS_sp",
+            "argument_2":"SocialCohesionUkrainians_Sports_saturationpoint",
             "operator":"\/"
         },
         {
             "index":77,
-            "destination":"SCUS_2",
-            "argument_1":"SCUS_1",
+            "destination":"SocialCohesionUkrainians_Sports_2",
+            "argument_1":"SocialCohesionUkrainians_Sports_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":78,
-            "destination":"SCUS_3",
-            "argument_1":"SCUS_2",
-            "argument_2":"SCUS_acc",
+            "destination":"SocialCohesionUkrainians_Sports_3",
+            "argument_1":"SocialCohesionUkrainians_Sports_2",
+            "argument_2":"SocialCohesionUkrainians_Sports_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":79,
-            "destination":"SCUS_4",
-            "argument_1":"SCUS_3",
-            "argument_2":"SCUS_pos",
+            "destination":"SocialCohesionUkrainians_Sports_4",
+            "argument_1":"SocialCohesionUkrainians_Sports_3",
+            "argument_2":"SocialCohesionUkrainians_Sports_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":80,
             "destination":"Social cohesion Ukrainians Sports",
-            "argument_1":"SCUS_4",
-            "argument_2":"SCUS_me",
+            "argument_1":"SocialCohesionUkrainians_Sports_4",
+            "argument_2":"SocialCohesionUkrainians_Sports_maximumeffect",
             "operator":"*"
         },
         {
             "index":81,
-            "destination":"SCUT_1",
+            "destination":"SocialCohesionUkrainians_Transport_1",
             "argument_1":"Access to transport",
-            "argument_2":"SCUT_sp",
+            "argument_2":"SocialCohesionUkrainians_Transport_saturationpoint",
             "operator":"\/"
         },
         {
             "index":82,
-            "destination":"SCUT_2",
-            "argument_1":"SCUT_1",
+            "destination":"SocialCohesionUkrainians_Transport_2",
+            "argument_1":"SocialCohesionUkrainians_Transport_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":83,
-            "destination":"SCUT_3",
-            "argument_1":"SCUT_2",
-            "argument_2":"SCUT_acc",
+            "destination":"SocialCohesionUkrainians_Transport_3",
+            "argument_1":"SocialCohesionUkrainians_Transport_2",
+            "argument_2":"SocialCohesionUkrainians_Transport_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":84,
-            "destination":"SCUT_4",
-            "argument_1":"SCUT_3",
-            "argument_2":"SCUT_pos",
+            "destination":"SocialCohesionUkrainians_Transport_4",
+            "argument_1":"SocialCohesionUkrainians_Transport_3",
+            "argument_2":"SocialCohesionUkrainians_Transport_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":85,
             "destination":"Social cohesion Ukrainians Transport",
-            "argument_1":"SCUT_4",
-            "argument_2":"SCUT_me",
+            "argument_1":"SocialCohesionUkrainians_Transport_4",
+            "argument_2":"SocialCohesionUkrainians_Transport_maximumeffect",
             "operator":"*"
         },
         {
@@ -709,72 +709,72 @@
         },
         {
             "index":97,
-            "destination":"HUSA_1",
+            "destination":"HealthUkrainians_SportsandAssociation_1",
             "argument_1":"Sports and association",
-            "argument_2":"HUSA_sp",
+            "argument_2":"HealthUkrainians_SportsandAssociation_saturationpoint",
             "operator":"\/"
         },
         {
             "index":98,
-            "destination":"HUSA_2",
-            "argument_1":"HUSA_1",
+            "destination":"HealthUkrainians_SportsandAssociation_2",
+            "argument_1":"HealthUkrainians_SportsandAssociation_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":99,
-            "destination":"HUSA_3",
-            "argument_1":"HUSA_2",
-            "argument_2":"HUSA_acc",
+            "destination":"HealthUkrainians_SportsandAssociation_3",
+            "argument_1":"HealthUkrainians_SportsandAssociation_2",
+            "argument_2":"HealthUkrainians_SportsandAssociation_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":100,
-            "destination":"HUSA_4",
-            "argument_1":"HUSA_3",
-            "argument_2":"HUSA_pos",
+            "destination":"HealthUkrainians_SportsandAssociation_4",
+            "argument_1":"HealthUkrainians_SportsandAssociation_3",
+            "argument_2":"HealthUkrainians_SportsandAssociation_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":101,
             "destination":"Health Ukrainians",
-            "argument_1":"HUSA_4",
-            "argument_2":"HUSA_me",
+            "argument_1":"HealthUkrainians_SportsandAssociation_4",
+            "argument_2":"HealthUkrainians_SportsandAssociation_maximumeffect",
             "operator":"*"
         },
         {
             "index":102,
-            "destination":"SPUAT_1",
+            "destination":"SocialParticipationUkrainians_AccessToTransport_1",
             "argument_1":"Access to transport",
-            "argument_2":"SPUAT_sp",
+            "argument_2":"SocialParticipationUkrainians_AccessToTransport_saturationpoint",
             "operator":"\/"
         },
         {
             "index":103,
-            "destination":"SPUAT_2",
-            "argument_1":"SPUAT_1",
+            "destination":"SocialParticipationUkrainians_AccessToTransport_2",
+            "argument_1":"SocialParticipationUkrainians_AccessToTransport_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":104,
-            "destination":"SPUAT_3",
-            "argument_1":"SPUAT_2",
-            "argument_2":"SPUAT_acc",
+            "destination":"SocialParticipationUkrainians_AccessToTransport_3",
+            "argument_1":"SocialParticipationUkrainians_AccessToTransport_2",
+            "argument_2":"SocialParticipationUkrainians_AccessToTransport_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":105,
-            "destination":"SPUAT_4",
-            "argument_1":"SPUAT_3",
-            "argument_2":"SPUAT_pos",
+            "destination":"SocialParticipationUkrainians_AccessToTransport_4",
+            "argument_1":"SocialParticipationUkrainians_AccessToTransport_3",
+            "argument_2":"SocialParticipationUkrainians_AccessToTransport_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":106,
             "destination":"Social participation Ukrainians",
-            "argument_1":"SPUAT_4",
-            "argument_2":"SPUAT_me",
+            "argument_1":"SocialParticipationUkrainians_AccessToTransport_4",
+            "argument_2":"SocialParticipationUkrainians_AccessToTransport_maximumeffect",
             "operator":"*"
         },
         {
