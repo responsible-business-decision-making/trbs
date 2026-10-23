@@ -550,8 +550,20 @@ class Visualize:
             ):
                 theme_totals[theme] = theme_totals.get(theme, 0) + relative_weight
 
+            zero_weight_themes = sorted({theme for theme, total in theme_totals.items() if total == 0})
+            if zero_weight_themes:
+                warnings.warn(
+                    f"The following themes have a total relative key output weight of 0 and are "
+                    f"therefore shown as 0 in the pie chart: {zero_weight_themes}.",
+                    stacklevel=2,
+                )
+
             values = [
-                (relative_weight / theme_totals[theme]) * theme_weight_by_name[theme]
+                (
+                    (relative_weight / theme_totals[theme]) * theme_weight_by_name[theme]
+                    if theme_totals[theme] != 0
+                    else 0
+                )
                 for theme, relative_weight in zip(
                     self.input_dict["key_output_theme"], self.input_dict["key_output_relative_weight"]
                 )
@@ -580,7 +592,8 @@ class Visualize:
 
             wedges = list(theme_representative_wedge.values())
             labels = [
-                f"{theme}: {theme_weight_by_name[theme] / total_theme_weight * 100:.1f}%"
+                f"{theme}: "
+                f"{(theme_weight_by_name[theme] / total_theme_weight * 100) if total_theme_weight else 0:.1f}%"
                 for theme in theme_representative_wedge
             ]
 
@@ -613,6 +626,14 @@ class Visualize:
         :param key: name of the key output to plot the appreciation function for
         :return: a plotted line chart
         """
+        if not self.appreciation_functions:
+            warnings.warn(
+                "No appreciation functions are available. Run .appreciate() on the case before "
+                "plotting an appreciation graph.",
+                stacklevel=2,
+            )
+            return
+
         if key not in self.appreciation_functions:
             raise VisualizationError(f"'{key}' is not a valid option")
 

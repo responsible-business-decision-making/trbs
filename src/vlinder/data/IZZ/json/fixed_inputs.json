@@ -107,22 +107,22 @@
         },
         {
             "index":17,
-            "fixed_input":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__maximumeffect",
+            "fixed_input":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_maximumeffect",
             "value":0.3
         },
         {
             "index":18,
-            "fixed_input":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__accessiblepopulation",
+            "fixed_input":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_accessiblepopulation",
             "value":0.19
         },
         {
             "index":19,
-            "fixed_input":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__probabilityofsuccess",
+            "fixed_input":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_probabilityofsuccess",
             "value":0.5
         },
         {
             "index":20,
-            "fixed_input":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__saturationpoint",
+            "fixed_input":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_saturationpoint",
             "value":200.0
         },
         {
@@ -207,22 +207,22 @@
         },
         {
             "index":37,
-            "fixed_input":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__maximumeffect",
+            "fixed_input":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_maximumeffect",
             "value":0.5
         },
         {
             "index":38,
-            "fixed_input":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__accessiblepopulation",
+            "fixed_input":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_accessiblepopulation",
             "value":0.19
         },
         {
             "index":39,
-            "fixed_input":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__probabilityofsuccess",
+            "fixed_input":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_probabilityofsuccess",
             "value":0.5
         },
         {
             "index":40,
-            "fixed_input":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__saturationpoint",
+            "fixed_input":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_saturationpoint",
             "value":200.0
         },
         {
@@ -307,22 +307,22 @@
         },
         {
             "index":57,
-            "fixed_input":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__maximumeffect",
+            "fixed_input":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_maximumeffect",
             "value":0.57
         },
         {
             "index":58,
-            "fixed_input":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__accessiblepopulation",
+            "fixed_input":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_accessiblepopulation",
             "value":0.19
         },
         {
             "index":59,
-            "fixed_input":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__probabilityofsuccess",
+            "fixed_input":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_probabilityofsuccess",
             "value":0.5
         },
         {
             "index":60,
-            "fixed_input":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__saturationpoint",
+            "fixed_input":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_saturationpoint",
             "value":200.0
         },
         {

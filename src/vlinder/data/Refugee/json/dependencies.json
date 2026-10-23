@@ -184,37 +184,37 @@
         },
         {
             "index":22,
-            "destination":"LanguageAcquisitionUkrainians_Integration1",
+            "destination":"LanguageAcquisitionUkrainians_Integration_1",
             "argument_1":"Language and integration course",
-            "argument_2":"LanguageAcquisitionUkrainians_Integrationsaturationpoint",
+            "argument_2":"LanguageAcquisitionUkrainians_Integration_saturationpoint",
             "operator":"\/"
         },
         {
             "index":23,
-            "destination":"LanguageAcquisitionUkrainians_Integration2",
-            "argument_1":"LanguageAcquisitionUkrainians_Integration1",
+            "destination":"LanguageAcquisitionUkrainians_Integration_2",
+            "argument_1":"LanguageAcquisitionUkrainians_Integration_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":24,
-            "destination":"LanguageAcquisitionUkrainians_Integration3",
-            "argument_1":"LanguageAcquisitionUkrainians_Integration2",
-            "argument_2":"LanguageAcquisitionUkrainians_Integrationaccessiblepopulation",
+            "destination":"LanguageAcquisitionUkrainians_Integration_3",
+            "argument_1":"LanguageAcquisitionUkrainians_Integration_2",
+            "argument_2":"LanguageAcquisitionUkrainians_Integration_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":25,
-            "destination":"LanguageAcquisitionUkrainians_Integration4",
-            "argument_1":"LanguageAcquisitionUkrainians_Integration3",
-            "argument_2":"LanguageAcquisitionUkrainians_Integrationprobabilityofsuccess",
+            "destination":"LanguageAcquisitionUkrainians_Integration_4",
+            "argument_1":"LanguageAcquisitionUkrainians_Integration_3",
+            "argument_2":"LanguageAcquisitionUkrainians_Integration_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":26,
             "destination":"Language acquisition Ukrainians Integration",
-            "argument_1":"LanguageAcquisitionUkrainians_Integration4",
-            "argument_2":"LanguageAcquisitionUkrainians_Integrationmaximumeffect",
+            "argument_1":"LanguageAcquisitionUkrainians_Integration_4",
+            "argument_2":"LanguageAcquisitionUkrainians_Integration_maximumeffect",
             "operator":"*"
         },
         {
@@ -744,37 +744,37 @@
         },
         {
             "index":102,
-            "destination":"SocialParticipationUkrainians_AccesToTransport_1",
+            "destination":"SocialParticipationUkrainians_AccessToTransport_1",
             "argument_1":"Access to transport",
-            "argument_2":"SocialParticipationUkrainians_AccesToTransport_saturationpoint",
+            "argument_2":"SocialParticipationUkrainians_AccessToTransport_saturationpoint",
             "operator":"\/"
         },
         {
             "index":103,
-            "destination":"SocialParticipationUkrainians_AccesToTransport_2",
-            "argument_1":"SocialParticipationUkrainians_AccesToTransport_1",
+            "destination":"SocialParticipationUkrainians_AccessToTransport_2",
+            "argument_1":"SocialParticipationUkrainians_AccessToTransport_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":104,
-            "destination":"SocialParticipationUkrainians_AccesToTransport_3",
-            "argument_1":"SocialParticipationUkrainians_AccesToTransport_2",
-            "argument_2":"SocialParticipationUkrainians_AccesToTransport_accessiblepopulation",
+            "destination":"SocialParticipationUkrainians_AccessToTransport_3",
+            "argument_1":"SocialParticipationUkrainians_AccessToTransport_2",
+            "argument_2":"SocialParticipationUkrainians_AccessToTransport_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":105,
-            "destination":"SocialParticipationUkrainians_AccesToTransport_4",
-            "argument_1":"SocialParticipationUkrainians_AccesToTransport_3",
-            "argument_2":"SocialParticipationUkrainians_AccesToTransport_probabilityofsuccess",
+            "destination":"SocialParticipationUkrainians_AccessToTransport_4",
+            "argument_1":"SocialParticipationUkrainians_AccessToTransport_3",
+            "argument_2":"SocialParticipationUkrainians_AccessToTransport_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":106,
             "destination":"Social participation Ukrainians",
-            "argument_1":"SocialParticipationUkrainians_AccesToTransport_4",
-            "argument_2":"SocialParticipationUkrainians_AccesToTransport_maximumeffect",
+            "argument_1":"SocialParticipationUkrainians_AccessToTransport_4",
+            "argument_2":"SocialParticipationUkrainians_AccessToTransport_maximumeffect",
             "operator":"*"
         },
         {

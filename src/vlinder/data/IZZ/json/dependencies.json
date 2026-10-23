@@ -177,37 +177,37 @@
         },
         {
             "index":21,
-            "destination":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__1",
+            "destination":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_1",
             "argument_1":"Physical strain reduction",
-            "argument_2":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__saturationpoint",
+            "argument_2":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_saturationpoint",
             "operator":"\/"
         },
         {
             "index":22,
-            "destination":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__2",
-            "argument_1":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__1",
+            "destination":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_2",
+            "argument_1":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":23,
-            "destination":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__3",
-            "argument_1":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__2",
-            "argument_2":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__accessiblepopulation",
+            "destination":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_3",
+            "argument_1":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_2",
+            "argument_2":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":24,
-            "destination":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__4",
-            "argument_1":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__3",
-            "argument_2":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__probabilityofsuccess",
+            "destination":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_4",
+            "argument_1":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_3",
+            "argument_2":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":25,
             "destination":"Relative decrease in absenteeism % excluding uncertainty",
-            "argument_1":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__4",
-            "argument_2":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction__maximumeffect",
+            "argument_1":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_4",
+            "argument_2":"RelativeDecreaseAbsenteeism_PhysicalStrainReduction_maximumeffect",
             "operator":"*"
         },
         {
@@ -387,37 +387,37 @@
         },
         {
             "index":51,
-            "destination":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__1",
+            "destination":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_1",
             "argument_1":"Physical strain reduction",
-            "argument_2":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__saturationpoint",
+            "argument_2":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_saturationpoint",
             "operator":"\/"
         },
         {
             "index":52,
-            "destination":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__2",
-            "argument_1":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__1",
+            "destination":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_2",
+            "argument_1":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":53,
-            "destination":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__3",
-            "argument_1":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__2",
-            "argument_2":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__accessiblepopulation",
+            "destination":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_3",
+            "argument_1":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_2",
+            "argument_2":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":54,
-            "destination":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__4",
-            "argument_1":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__3",
-            "argument_2":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__probabilityofsuccess",
+            "destination":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_4",
+            "argument_1":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_3",
+            "argument_2":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":55,
             "destination":"Relative decrease in staff turnover % excluding uncertainty",
-            "argument_1":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__4",
-            "argument_2":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction__maximumeffect",
+            "argument_1":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_4",
+            "argument_2":"RelativeDecreaseStaffTurnover_PhysicalStrainReduction_maximumeffect",
             "operator":"*"
         },
         {
@@ -527,37 +527,37 @@
         },
         {
             "index":71,
-            "destination":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__1",
+            "destination":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_1",
             "argument_1":"Physical strain reduction",
-            "argument_2":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__saturationpoint",
+            "argument_2":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_saturationpoint",
             "operator":"\/"
         },
         {
             "index":72,
-            "destination":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__2",
-            "argument_1":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__1",
+            "destination":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_2",
+            "argument_1":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_1",
             "argument_2":1,
             "operator":"min"
         },
         {
             "index":73,
-            "destination":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__3",
-            "argument_1":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__2",
-            "argument_2":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__accessiblepopulation",
+            "destination":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_3",
+            "argument_1":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_2",
+            "argument_2":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_accessiblepopulation",
             "operator":"*"
         },
         {
             "index":74,
-            "destination":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__4",
-            "argument_1":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__3",
-            "argument_2":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__probabilityofsuccess",
+            "destination":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_4",
+            "argument_1":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_3",
+            "argument_2":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_probabilityofsuccess",
             "operator":"*"
         },
         {
             "index":75,
             "destination":"Relative increase in employee satisfaction excluding uncertainty",
-            "argument_1":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__4",
-            "argument_2":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction__maximumeffect",
+            "argument_1":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_4",
+            "argument_2":"RelativeIncreaseEmployeeSatisfaction_PhysicalStrainReduction_maximumeffect",
             "operator":"*"
         },
         {

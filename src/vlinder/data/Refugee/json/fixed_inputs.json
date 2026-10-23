@@ -287,22 +287,22 @@
         },
         {
             "index":53,
-            "fixed_input":"LanguageAcquisitionUkrainians_Integrationmaximumeffect",
+            "fixed_input":"LanguageAcquisitionUkrainians_Integration_maximumeffect",
             "value":0.65
         },
         {
             "index":54,
-            "fixed_input":"LanguageAcquisitionUkrainians_Integrationaccessiblepopulation",
+            "fixed_input":"LanguageAcquisitionUkrainians_Integration_accessiblepopulation",
             "value":1.0
         },
         {
             "index":55,
-            "fixed_input":"LanguageAcquisitionUkrainians_Integrationprobabilityofsuccess",
+            "fixed_input":"LanguageAcquisitionUkrainians_Integration_probabilityofsuccess",
             "value":0.7
         },
         {
             "index":56,
-            "fixed_input":"LanguageAcquisitionUkrainians_Integrationsaturationpoint",
+            "fixed_input":"LanguageAcquisitionUkrainians_Integration_saturationpoint",
             "value":7946938.7560000001
         },
         {
@@ -387,22 +387,22 @@
         },
         {
             "index":73,
-            "fixed_input":"SocialParticipationUkrainians_AccesToTransport_maximumeffect",
+            "fixed_input":"SocialParticipationUkrainians_AccessToTransport_maximumeffect",
             "value":0.537
         },
         {
             "index":74,
-            "fixed_input":"SocialParticipationUkrainians_AccesToTransport_accessiblepopulation",
+            "fixed_input":"SocialParticipationUkrainians_AccessToTransport_accessiblepopulation",
             "value":1.0
         },
         {
             "index":75,
-            "fixed_input":"SocialParticipationUkrainians_AccesToTransport_probabilityofsuccess",
+            "fixed_input":"SocialParticipationUkrainians_AccessToTransport_probabilityofsuccess",
             "value":0.6
         },
         {
             "index":76,
-            "fixed_input":"SocialParticipationUkrainians_AccesToTransport_saturationpoint",
+            "fixed_input":"SocialParticipationUkrainians_AccessToTransport_saturationpoint",
             "value":15216753.9100000001
         }
     ]
