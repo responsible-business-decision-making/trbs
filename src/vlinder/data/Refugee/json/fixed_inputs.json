@@ -247,162 +247,162 @@
         },
         {
             "index":45,
-            "fixed_input":"TECU_me",
+            "fixed_input":"TertiaryEducationCompletedUkrainians_maximumeffect",
             "value":0.47
         },
         {
             "index":46,
-            "fixed_input":"TECU_acc",
+            "fixed_input":"TertiaryEducationCompletedUkrainians_accessiblepopulation",
             "value":1.0
         },
         {
             "index":47,
-            "fixed_input":"TECU_pos",
+            "fixed_input":"TertiaryEducationCompletedUkrainians_probabilityofsuccess",
             "value":0.71
         },
         {
             "index":48,
-            "fixed_input":"TECU_sp",
+            "fixed_input":"TertiaryEducationCompletedUkrainians_saturationpoint",
             "value":13774010.7200000007
         },
         {
             "index":49,
-            "fixed_input":"LAUS_me",
+            "fixed_input":"LanguageAcquisitionUkrainians_Sports_maximumeffect",
             "value":0.42
         },
         {
             "index":50,
-            "fixed_input":"LAUS_acc",
+            "fixed_input":"LanguageAcquisitionUkrainians_Sports_accessiblepopulation",
             "value":1.0
         },
         {
             "index":51,
-            "fixed_input":"LAUS_pos",
+            "fixed_input":"LanguageAcquisitionUkrainians_Sports_probabilityofsuccess",
             "value":0.7
         },
         {
             "index":52,
-            "fixed_input":"LAUS_sp",
+            "fixed_input":"LanguageAcquisitionUkrainians_Sports_saturationpoint",
             "value":1630189.054
         },
         {
             "index":53,
-            "fixed_input":"LAUI_me",
+            "fixed_input":"LanguageAcquisitionUkrainians_Integration_maximumeffect",
             "value":0.65
         },
         {
             "index":54,
-            "fixed_input":"LAUI_acc",
+            "fixed_input":"LanguageAcquisitionUkrainians_Integration_accessiblepopulation",
             "value":1.0
         },
         {
             "index":55,
-            "fixed_input":"LAUI_pos",
+            "fixed_input":"LanguageAcquisitionUkrainians_Integration_probabilityofsuccess",
             "value":0.7
         },
         {
             "index":56,
-            "fixed_input":"LAUI_sp",
+            "fixed_input":"LanguageAcquisitionUkrainians_Integration_saturationpoint",
             "value":7946938.7560000001
         },
         {
             "index":57,
-            "fixed_input":"URUE_me",
+            "fixed_input":"UnemploymentReductionUkrainians_Employment_maximumeffect",
             "value":0.68
         },
         {
             "index":58,
-            "fixed_input":"URUE_acc",
+            "fixed_input":"UnemploymentReductionUkrainians_Employment_accessiblepopulation",
             "value":1.0
         },
         {
             "index":59,
-            "fixed_input":"URUE_pos",
+            "fixed_input":"UnemploymentReductionUkrainians_Employment_probabilityofsuccess",
             "value":0.6
         },
         {
             "index":60,
-            "fixed_input":"URUE_sp",
+            "fixed_input":"UnemploymentReductionUkrainians_Employment_saturationpoint",
             "value":8150945.2719999999
         },
         {
             "index":61,
-            "fixed_input":"SCUS_me",
+            "fixed_input":"SocialCohesionUkrainians_Sports_maximumeffect",
             "value":0.12
         },
         {
             "index":62,
-            "fixed_input":"SCUS_acc",
+            "fixed_input":"SocialCohesionUkrainians_Sports_accessiblepopulation",
             "value":1.0
         },
         {
             "index":63,
-            "fixed_input":"SCUS_pos",
+            "fixed_input":"SocialCohesionUkrainians_Sports_probabilityofsuccess",
             "value":0.7
         },
         {
             "index":64,
-            "fixed_input":"SCUS_sp",
+            "fixed_input":"SocialCohesionUkrainians_Sports_saturationpoint",
             "value":1630189.054
         },
         {
             "index":65,
-            "fixed_input":"SCUT_me",
+            "fixed_input":"SocialCohesionUkrainians_Transport_maximumeffect",
             "value":0.014
         },
         {
             "index":66,
-            "fixed_input":"SCUT_acc",
+            "fixed_input":"SocialCohesionUkrainians_Transport_accessiblepopulation",
             "value":1.0
         },
         {
             "index":67,
-            "fixed_input":"SCUT_pos",
+            "fixed_input":"SocialCohesionUkrainians_Transport_probabilityofsuccess",
             "value":0.6
         },
         {
             "index":68,
-            "fixed_input":"SCUT_sp",
+            "fixed_input":"SocialCohesionUkrainians_Transport_saturationpoint",
             "value":15216753.9100000001
         },
         {
             "index":69,
-            "fixed_input":"HUSA_me",
+            "fixed_input":"HealthUkrainians_SportsandAssociation_maximumeffect",
             "value":0.22
         },
         {
             "index":70,
-            "fixed_input":"HUSA_acc",
+            "fixed_input":"HealthUkrainians_SportsandAssociation_accessiblepopulation",
             "value":1.0
         },
         {
             "index":71,
-            "fixed_input":"HUSA_pos",
+            "fixed_input":"HealthUkrainians_SportsandAssociation_probabilityofsuccess",
             "value":0.7
         },
         {
             "index":72,
-            "fixed_input":"HUSA_sp",
+            "fixed_input":"HealthUkrainians_SportsandAssociation_saturationpoint",
             "value":1630189.054
         },
         {
             "index":73,
-            "fixed_input":"SPUAT_me",
+            "fixed_input":"SocialParticipationUkrainians_AccessToTransport_maximumeffect",
             "value":0.537
         },
         {
             "index":74,
-            "fixed_input":"SPUAT_acc",
+            "fixed_input":"SocialParticipationUkrainians_AccessToTransport_accessiblepopulation",
             "value":1.0
         },
         {
             "index":75,
-            "fixed_input":"SPUAT_pos",
+            "fixed_input":"SocialParticipationUkrainians_AccessToTransport_probabilityofsuccess",
             "value":0.6
         },
         {
             "index":76,
-            "fixed_input":"SPUAT_sp",
+            "fixed_input":"SocialParticipationUkrainians_AccessToTransport_saturationpoint",
             "value":15216753.9100000001
         }
     ]

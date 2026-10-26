@@ -1,23 +1,27 @@
-# pylint: disable=cyclic-import, protected-access
+# pylint: disable=cyclic-import, protected-access, too-many-lines
 """
 This file contains the Visualize class that deals with the creation of all graphs and tables
 """
 
+import os
 import re
 import time
-import os
 import warnings
 from pathlib import Path
-import pandas as pd
-import numpy as np
+from typing import Optional, Tuple
+
+import dataframe_image as dfi
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from webdriver_manager.chrome import ChromeDriverManager
+import networkx as nx
+import numpy as np
+import pandas as pd
+from pandas.io.formats.style import Styler
+from pyvis.network import Network
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-import networkx as nx
-from pyvis.network import Network
-import dataframe_image as dfi
+from webdriver_manager.chrome import ChromeDriverManager
+
 from vlinder.utils import round_all_dict_values, number_formatter, get_values_from_target, check_list_content
 
 
@@ -27,20 +31,56 @@ class VisualizationError(Exception):
     """
 
     def __init__(self, message):  # ignore warning about super-init | pylint: disable=W0231
+        """Store the error message that will be shown when this exception is raised."""
+
         self.message = message
 
     def __str__(self):
+        """Return the formatted error message for this VisualizationError."""
+
         return f"Visualization Error: {self.message}"
 
 
 class Visualize:
     """This class deals with the creation of all graphs and tables"""
 
-    def __init__(self, input_dict, outcomes, options):
+    # dispatch config for _create_table
+    _TABLE_CONFIG = {
+        "key_outputs_theme": {
+            "kind": "simple",
+            "col": "key_outputs",
+            "value_col": "key_output_theme",
+            "display_key": "key_outputs",
+        },
+        "fixed_inputs": {
+            "kind": "simple",
+            "col": "fixed_inputs",
+            "value_col": "fixed_input_value",
+            "display_key": "fixed_inputs",
+        },
+        "scenarios": {
+            "kind": "multi",
+            "col_values": "scenario_value",
+            "row_names": "external_variable_inputs",
+            "left_col_header": "External variable input",
+            "display_key": "scenarios",
+        },
+        "decision_makers_options": {
+            "kind": "multi",
+            "col_values": "decision_makers_option_value",
+            "row_names": "internal_variable_inputs",
+            "left_col_header": "Internal variable input",
+            "display_key": "decision_makers_options",
+        },
+    }
+
+    def __init__(self, input_dict, outcomes, options, appreciation_functions=None):
+        """Set up the input data, rounded outcomes, and color palettes used to build all visuals."""
         # for visualization purposes two digits is sufficient
         self.input_dict = input_dict
         self.outcomes = round_all_dict_values(outcomes)
         self.options = options
+        self.appreciation_functions = appreciation_functions or {}
         self.colors = [
             "#295477",
             "#F3DD8C",
@@ -63,6 +103,8 @@ class Visualize:
         self.available_visuals = {
             "table": self._create_table,
             "barchart": self._create_barchart,
+            "appreciation_graph": self._create_appreciation_graph,
+            "piechart": self._create_piechart,
         }
         self.available_outputs = [
             "key_outputs",
@@ -74,7 +116,37 @@ class Visualize:
             "fixed_inputs",
             "decision_makers_options",
             "scenario_appreciations",
+            "theme_weight",
+            "scenario_weight",
+            "key_output_relative_weight",
+            "strategic_challenge",
+            "theme_weights",
+            "key_output_weights",
+            "scenario_weights",
+            "dependencies",
+            "appreciation_settings",
         ]
+        self.input_tables = {
+            "theme_weights": {"theme": "themes", "weight": "theme_weight"},
+            "key_output_weights": {"key output": "key_outputs", "weight": "key_output_weight"},
+            "scenario_weights": {"scenario": "scenarios", "weight": "scenario_weight"},
+            "dependencies": {
+                "destination": "destination",
+                "argument 1": "argument_1",
+                "operator": "operator",
+                "argument 2": "argument_2",
+            },
+            "appreciation_settings": {
+                "key output": "key_outputs",
+                "monetary": "key_output_monetary",
+                "smaller the better": "key_output_smaller_the_better",
+                "linear": "key_output_linear",
+                "automatic": "key_output_automatic",
+                "start": "key_output_start",
+                "end": "key_output_end",
+                "threshold": "key_output_threshold",
+            },
+        }
         self.available_kwargs = [
             "scenario",
             "decision_makers_option",
@@ -95,7 +167,7 @@ class Visualize:
             if argument not in self.available_kwargs:
                 raise VisualizationError(f"Invalid argument '{argument}'")
 
-    def _find_dimension_level(self, my_dict: dict, target_key: str, level: int = 1) -> int or None:
+    def _find_dimension_level(self, my_dict: dict, target_key: str, level: int = 1) -> Optional[int]:
         """
         This recursive function returns the dimension level (level of nesting) for a given dictionary and target key.
         For example in dictionary {A: {B: {C: 1.23, ..}, ..}, ..}. 'A' is nested at level 1, B at level 2 & C level 3.
@@ -139,7 +211,7 @@ class Visualize:
         return truncated_list
 
     @staticmethod
-    def _table_styler(styler: pd.DataFrame.style, table_name: str, **kwargs) -> pd.DataFrame.style:
+    def _table_styler(styler: Styler, table_name: str, **kwargs) -> Styler:
         """
         This function adds a coherent style for all generated tables
         :param styler: a Pandas styler object
@@ -152,7 +224,7 @@ class Visualize:
 
         # Apply number formatting only to numeric columns
         numeric_columns = styler.data.select_dtypes(include=[np.number]).columns
-        styler.format({col: number_formatter for col in numeric_columns})
+        styler.format({col: number_formatter for col in numeric_columns}, na_rep="-")
 
         styler.set_caption(table_name)
         if "input_variables" not in kwargs:
@@ -219,7 +291,7 @@ class Visualize:
         return formatted_data
 
     @staticmethod
-    def _apply_filters(dataframe: pd.DataFrame, drop_used: bool = False, **kwargs) -> pd.DataFrame and str:
+    def _apply_filters(dataframe: pd.DataFrame, drop_used: bool = False, **kwargs) -> Tuple[pd.DataFrame, str]:
         """
         This function applies filters, based on **kwargs arguments, on the dataframe and generates a corresponding
         name for the visual.
@@ -242,73 +314,133 @@ class Visualize:
 
         return dataframe, name_str
 
-    def _create_table(self, key: str, **kwargs) -> pd.DataFrame.style:
+    def _create_table(self, key: str, **kwargs) -> Styler:
         """
         This function creates a 2- or 3-dimensional table depending on the key.
         :param key: key of the values for the table
         :return: a styled table
         """
-        if key in ["scenarios", "fixed_inputs", "decision_makers_options", "key_outputs_theme"]:
-            dataframe = pd.DataFrame()
-            kwargs["input_variables"] = True
-            number_of_iter = kwargs.get("number_iteration", -1)
-            start_idx = number_of_iter * 10
-            end_idx = start_idx + 10
-            if key == "key_outputs_theme":
-                key = key[:-6]
-                key_value = key[:-1] + "_theme"
-                if number_of_iter == -1:
-                    dataframe[key] = self.input_dict[key]
-                    dataframe[key_value] = self.input_dict[key_value]
-                else:
-                    dataframe[key] = self.input_dict[key][start_idx:end_idx]
-                    dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
+        if key in self._TABLE_CONFIG:
+            return self._create_input_table(key, **kwargs)
+        if key == "strategic_challenge" or key in self.input_tables:
+            return self._create_input_dict_table(key, **kwargs)
+        return self._create_outcome_table(key, **kwargs)
 
-            elif key == "fixed_inputs":
-                key_value = key[:-1] + "_value"
-                if number_of_iter == -1:
-                    dataframe[key] = self.input_dict[key]
-                    dataframe[key_value] = self.input_dict[key_value]
-                else:
-                    dataframe[key] = self.input_dict[key][start_idx:end_idx]
+    def _create_input_table(self, key: str, **kwargs) -> Styler:
+        """
+        This function builds a table for an input key (scenarios, fixed_inputs, decision_makers_options or
+        key_outputs_theme), based on the matching entry in _TABLE_CONFIG.
+        :param key: key of the values for the table, must be present in _TABLE_CONFIG
+        :return: a styled table
+        """
+        config = self._TABLE_CONFIG[key]
+        kwargs["input_variables"] = True
+        number_of_iter = kwargs.get("number_iteration", -1)
+        start_idx = number_of_iter * 10
+        end_idx = start_idx + 10
 
-                    dataframe[key_value] = self.input_dict[key_value][start_idx:end_idx]
-            elif key == "scenarios":
-                dataframe = self._create_table_n_col(
-                    dataframe, key, key[:-1] + "_value", "external_variable_inputs", "External variable input"
-                )
-                if number_of_iter != -1:
-                    dataframe = dataframe[start_idx:end_idx]
-            elif key == "decision_makers_options":
-                dataframe = self._create_table_n_col(
-                    dataframe, key, key[:-1] + "_value", "internal_variable_inputs", "Internal variable input"
-                )
-                if number_of_iter != -1:
-                    dataframe = dataframe[start_idx:end_idx]
-
-            table_name = f"Values of {self._str_snake_case_to_text(key)}"
-            styled_df = self._table_styler(dataframe.style, table_name, **kwargs)
-            if number_of_iter == -1:
-                name_table = "/table" + str(key)
-            else:
-                name_table = "/table" + str(key) + str(number_of_iter)
-            if "save" in kwargs:
-                dfi.export(styled_df, "images" + name_table + ".png", table_conversion="matplotlib")
-        else:
-            table_data = self._format_data_for_visual(key)
-            # Filter the data based on potentially provided arguments by the user.
-            table_data, name_str = self._apply_filters(table_data, **kwargs)
-            table_data = (
-                table_data.set_index(["scenario", key])
-                .pivot(columns="decision_makers_option", values="value")
-                .rename_axis((None, None))
-                .rename_axis(None, axis=1)
+        if config["kind"] == "simple":
+            dataframe = pd.DataFrame(
+                {
+                    config["col"]: self.input_dict[config["col"]],
+                    config["value_col"]: self.input_dict[config["value_col"]],
+                }
             )
-            table_name = f"Values of {self._str_snake_case_to_text(key)}{name_str}"
-            styled_df = self._table_styler(table_data.style, table_name)
+        else:
+            dataframe = self._create_table_n_col(
+                pd.DataFrame(), key, config["col_values"], config["row_names"], config["left_col_header"]
+            )
+
+        if number_of_iter != -1:
+            dataframe = dataframe[start_idx:end_idx]
+
+        display_key = config["display_key"]
+        table_name = f"Values of {self._str_snake_case_to_text(display_key)}"
+        styled_df = self._table_styler(dataframe.style, table_name, **kwargs)
+
+        if number_of_iter == -1:
+            name_table = "/table" + str(display_key)
+        else:
+            name_table = "/table" + str(display_key) + str(number_of_iter)
+        if "save" in kwargs:
+            dfi.export(styled_df, "images" + name_table + ".png", table_conversion="matplotlib")
         return styled_df
 
-    # pylint: disable=too-many-arguments
+    def _create_outcome_table(self, key: str, **kwargs) -> Styler:
+        """
+        This function builds a pivoted table for an outcome key (e.g. key_outputs, appreciations).
+        :param key: key of the values for the table
+        :return: a styled table
+        """
+        table_data = self._format_data_for_visual(key)
+        # Filter the data based on potentially provided arguments by the user.
+        table_data, name_str = self._apply_filters(table_data, **kwargs)
+        # numeric outputs (e.g. scenario_appreciations) have no extra column next to scenario
+        row_index = ["scenario", key] if key in table_data.columns else ["scenario"]
+        table_data = self._apply_input_order(
+            table_data.pivot(index=row_index, columns="decision_makers_option", values="value")
+        )
+        table_data = table_data.rename_axis([None] * len(row_index)).rename_axis(None, axis=1)
+        table_name = f"Values of {self._str_snake_case_to_text(key)}{name_str}"
+        return self._table_styler(table_data.style, table_name)
+
+    def _get_input_dict_dataframe(self, key: str) -> pd.DataFrame:
+        """
+        This function creates a dataframe with values from the input_dict for the given table key.
+        :param key: key of the table, either 'strategic_challenge' or a key of self.input_tables
+        :return: a dataframe with the requested input values
+        """
+        if key == "strategic_challenge":
+            text_elements = list(self.input_dict["case_text_elements"])
+            text = "Not defined in template"
+            if "strategic_challenge" in text_elements:
+                value = self.input_dict["case_text_element_value"][text_elements.index("strategic_challenge")]
+                text = text if str(value) == "nan" else value
+            return pd.DataFrame({"strategic challenge": [text]})
+        # optional input columns (e.g. key_output_start) are skipped when they are not in the case
+        return pd.DataFrame(
+            {
+                header: self.input_dict[input_key]
+                for header, input_key in self.input_tables[key].items()
+                if input_key in self.input_dict
+            }
+        )
+
+    def _create_input_dict_table(self, key: str, **kwargs) -> Styler:
+        """
+        This function creates a styled table with values from the input_dict and saves it when requested.
+        :param key: key of the table, either 'strategic_challenge' or a key of self.input_tables
+        :return: a styled table
+        """
+        kwargs["input_variables"] = True
+        dataframe = self._get_input_dict_dataframe(key)
+        number_of_iter = kwargs.get("number_iteration", -1)
+        if number_of_iter != -1:
+            start_idx = number_of_iter * 10
+            end_idx = number_of_iter + 10
+            dataframe = dataframe[start_idx:end_idx]
+        table_name = f"Values of {self._str_snake_case_to_text(key)}"
+        styled_df = self._table_styler(dataframe.style.hide(axis="index"), table_name, **kwargs)
+        if "save" in kwargs:
+            suffix = "" if number_of_iter == -1 else str(number_of_iter)
+            dfi.export(styled_df, "images/table" + key + suffix + ".png", table_conversion="matplotlib")
+        return styled_df
+
+    def _apply_input_order(self, table_data: pd.DataFrame) -> pd.DataFrame:
+        """
+        This function orders rows and columns as defined by the user in the input (pivot sorts them alphabetically).
+        :param table_data: pivoted dataframe
+        :return: dataframe with the user defined order
+        """
+        order = {
+            name: idx
+            for input_key in ["scenarios", "key_outputs", "decision_makers_options"]
+            for idx, name in enumerate(self.input_dict[input_key])
+        }
+        table_data = table_data.sort_index(axis=0, key=lambda labels: labels.map(order), sort_remaining=False)
+        return table_data.sort_index(axis=1, key=lambda labels: labels.map(order))
+
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def _create_table_n_col(self, dataframe, col_names, col_values, row_names, left_col_header) -> pd.DataFrame:
         """
         This function makes it possible to iterate over all cells in a table
@@ -335,6 +467,16 @@ class Visualize:
         index = np.where(self.input_dict["key_outputs"] == dmo)[0][0]
         return self.input_dict["key_output_theme"][index]
 
+    def _get_theme_colors(self) -> dict:
+        """
+        This function maps each unique theme to a color, using a consistent order so that
+        the same theme always gets the same color across all charts.
+        :return: a dictionary mapping theme name to a color
+        """
+        unique_themes = list(dict.fromkeys(self.input_dict["key_output_theme"]))
+        return {theme: self.colors[i % len(self.colors)] for i, theme in enumerate(unique_themes)}
+
+    # pylint: disable=too-many-locals
     def _create_barchart(self, key: str, **kwargs) -> None:
         """
         This function creates and shows a barchart for a given data key.
@@ -344,43 +486,183 @@ class Visualize:
         dims = self._find_dimension_level(self.outcomes, key)
         if dims > 2 and "scenario" not in kwargs and not ("stacked" in kwargs and key == "scenario_appreciations"):
             raise VisualizationError(f"Too many dimensions ({dims}). Please specify a scenario")
-        stacked = kwargs["stacked"] if "stacked" in kwargs else True
-        show_legend = kwargs["show_legend"] if "show_legend" in kwargs else True
+
+        stacked = kwargs.get("stacked", True)
+        show_legend = kwargs.get("show_legend", True)
+
+        # keys with a fixed color palette; any other key gets colors derived per theme instead
+        fixed_colors = {
+            "scenario_appreciations": self.colors_scen,
+            "decision_makers_option_appreciation": self.colors,
+        }
 
         appreciations = self._format_data_for_visual(key)
         bar_data, name_str = self._apply_filters(appreciations, drop_used=True, **kwargs)
-        if (key == "decision_makers_option_appreciation") | (key == "scenario_appreciations"):
-            rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
-            bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
-            if key == "scenario_appreciations":
-                axis = bar_data.plot.bar(
-                    x="decision_makers_option", stacked=stacked, color=self.colors_scen, figsize=(10, 5)
-                )
-            else:
-                axis = bar_data.plot.bar(
-                    x="decision_makers_option", stacked=stacked, color=self.colors, figsize=(10, 5)
-                )
-            self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
+
+        if key in fixed_colors:
+            colors = fixed_colors[key]
+            add_border = False
         else:
             # Apply the function to the "weighted_appreciations" column and add as new column
             bar_data["themes"] = bar_data[key].apply(self.map_values)
-            # Create a dictionary to map themes to colors
-            unique_themes = bar_data["themes"].unique()
-            # give each decision makers options belonging to the same theme, the same color
-            theme_colors = {theme: self.colors[i % len(self.colors)] for i, theme in enumerate(unique_themes)}
-            # Map the colors to the themes
-            bar_colors = bar_data["themes"].map(theme_colors)
-            rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
-            bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
-            axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=bar_colors, figsize=(10, 5))
-            # Add border to each bar
+            theme_colors = self._get_theme_colors()
+            colors = bar_data["themes"].map(theme_colors)
+            add_border = True
+
+        rest_cols = [col for col in bar_data.columns if col not in ["decision_makers_option", "value"]]
+        bar_data = bar_data.pivot(index="decision_makers_option", columns=rest_cols, values="value").reset_index()
+        axis = bar_data.plot.bar(x="decision_makers_option", stacked=stacked, color=colors, figsize=(10, 5))
+
+        if add_border:
             for patch in axis.patches:
                 patch.set_edgecolor("white")
                 patch.set_linewidth(1)
-            self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
+
+        self._graph_styler(axis, f"Values of {self._str_snake_case_to_text(key)}{name_str}", show_legend)
 
         if "save" in kwargs:
             plt.savefig("images" + "/figure_" + key + ".png", bbox_inches="tight")
+            plt.close()
+        else:
+            plt.show()
+
+    # pylint: disable=too-many-locals
+    def _create_piechart(self, key: str, **kwargs) -> None:
+        """
+        This function creates and shows a piechart for a given weight key.
+        :param key: name of the weight to visualise ("theme_weight", "scenario_weight" or "key_output_relative_weight")
+        :return: a plotted piechart
+        """
+        show_legend = kwargs["show_legend"] if "show_legend" in kwargs else True
+
+        if key == "key_output_relative_weight":
+            labels = [
+                f"{key_output} (Theme: {theme})"
+                for key_output, theme in zip(self.input_dict["key_outputs"], self.input_dict["key_output_theme"])
+            ]
+            values = self.input_dict["key_output_relative_weight"]
+            colors = [self.colors[i % len(self.colors)] for i in range(len(self.input_dict["key_outputs"]))]
+        elif key == "theme_weight":
+            theme_weight_by_name = dict(zip(self.input_dict["themes"], self.input_dict["theme_weight"]))
+            theme_totals = {}
+            for theme, relative_weight in zip(
+                self.input_dict["key_output_theme"], self.input_dict["key_output_relative_weight"]
+            ):
+                theme_totals[theme] = theme_totals.get(theme, 0) + relative_weight
+
+            zero_weight_themes = sorted({theme for theme, total in theme_totals.items() if total == 0})
+            if zero_weight_themes:
+                warnings.warn(
+                    f"The following themes have a total relative key output weight of 0 and are "
+                    f"therefore shown as 0 in the pie chart: {zero_weight_themes}.",
+                    stacklevel=2,
+                )
+
+            values = [
+                (
+                    (relative_weight / theme_totals[theme]) * theme_weight_by_name[theme]
+                    if theme_totals[theme] != 0
+                    else 0
+                )
+                for theme, relative_weight in zip(
+                    self.input_dict["key_output_theme"], self.input_dict["key_output_relative_weight"]
+                )
+            ]
+            theme_colors = self._get_theme_colors()
+            colors = [theme_colors[theme] for theme in self.input_dict["key_output_theme"]]
+        elif key == "scenario_weight":
+            labels = self.input_dict["scenarios"]
+            values = self.input_dict["scenario_weight"]
+            colors = self.colors_scen[: len(labels)]
+        else:
+            raise VisualizationError(f"'{key}' is not a valid option for a piechart")
+
+        _figure, axis = plt.subplots(figsize=(6, 6))
+        wedges, _slice_labels, _percentage_labels = axis.pie(
+            values, colors=colors, autopct="%1.1f%%", wedgeprops={"edgecolor": "white", "linewidth": 2}
+        )
+        axis.set_title(f"Values of {self._str_snake_case_to_text(key)}", color="#777777", fontsize=12)
+
+        if key == "theme_weight":
+            total_theme_weight = sum(self.input_dict["theme_weight"])
+            theme_representative_wedge = {}
+            for wedge, theme in zip(wedges, self.input_dict["key_output_theme"]):
+                if theme not in theme_representative_wedge:
+                    theme_representative_wedge[theme] = wedge
+
+            wedges = list(theme_representative_wedge.values())
+            labels = [
+                f"{theme}: "
+                f"{(theme_weight_by_name[theme] / total_theme_weight * 100) if total_theme_weight else 0:.1f}%"
+                for theme in theme_representative_wedge
+            ]
+
+        axis.legend(
+            wedges,
+            labels,
+            loc="upper center",
+            bbox_to_anchor=(0.5, 0.02),
+            ncol=1,
+            frameon=False,
+            fontsize=10,
+            handlelength=1,
+            handleheight=1,
+        )
+        if not show_legend:
+            axis.legend_ = None
+
+        if "save" in kwargs:
+            plt.savefig("images" + "/figure_" + key + ".png", bbox_inches="tight")
+            plt.close()
+        else:
+            plt.show()
+
+    def _create_appreciation_graph(self, key: str, **kwargs) -> None:
+        """
+        This function creates and shows a line chart of the appreciation function of a single key output: for every
+        value on the grid between its start and end point (see Appreciate.calculate_appreciation_functions), it
+        plots the corresponding appreciation. Unlike the other visuals, this does not depend on a scenario or
+        decision makers option, since the appreciation function of a key output does not depend on those either.
+        :param key: name of the key output to plot the appreciation function for
+        :return: a plotted line chart
+        """
+        if not self.appreciation_functions:
+            warnings.warn(
+                "No appreciation functions are available. Run .appreciate() on the case before "
+                "plotting an appreciation graph.",
+                stacklevel=2,
+            )
+            return
+
+        if key not in self.appreciation_functions:
+            raise VisualizationError(f"'{key}' is not a valid option")
+
+        grid_data = self.appreciation_functions[key]
+        graph_data = pd.DataFrame(grid_data)
+
+        axis = graph_data.plot(
+            x="key_output_value", y="appreciation", legend=False, color=self.colors[0], figsize=(10, 5)
+        )
+        axis.set_ylim(0, 100)
+        axis.set_xlabel(key)
+        axis.set_ylabel("Appreciation")
+        axis.set_title(f"Appreciation function of {self._str_snake_case_to_text(key)}", color="#777777", fontsize=12)
+        axis.grid(True, linestyle="--", alpha=0.4)
+        # highlight the min and max key output value with a marker + label
+        start_x, start_y = grid_data["key_output_value"][0], grid_data["appreciation"][0]
+        end_x, end_y = grid_data["key_output_value"][-1], grid_data["appreciation"][-1]
+        for x_value, y_value in [(start_x, start_y), (end_x, end_y)]:
+            axis.plot(x_value, y_value, marker="o", color=self.colors[0])
+            axis.annotate(
+                f"({x_value:.2f}, {y_value:.0f})",
+                xy=(x_value, y_value),
+                xytext=(5, 5),
+                textcoords="offset points",
+                fontsize=9,
+            )
+
+        if "save" in kwargs:
+            plt.savefig("images" + "/figure_appreciation_" + key + ".png", bbox_inches="tight")
             plt.close()
         else:
             plt.show()
@@ -398,7 +680,7 @@ class Visualize:
         self._validate_kwargs(**kwargs)
         if visual_request not in self.available_visuals:
             raise VisualizationError(f"'{visual_request}' is not a valid chart type")
-        if key not in self.available_outputs:
+        if visual_request != "appreciation_graph" and key not in self.available_outputs:
             raise VisualizationError(f"'{key}' is not a valid option")
 
         return self.available_visuals[visual_request](key, **kwargs)
@@ -407,8 +689,9 @@ class Visualize:
 class DependencyGraph:
     """This class deals with the creation of the dependency graph"""
 
-    def __init__(self, input_dict):
-        # Initialize the input dictionary
+    def __init__(self, input_dict):  # Initialize the input dictionary
+        """Set up the input dictionary and empty containers for the network, matrix, and coordinates."""
+
         self.input_dict = input_dict
         self.network = None
         self.inc_mat = None
@@ -418,6 +701,7 @@ class DependencyGraph:
 
         warnings.simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
 
+    # pylint: disable=too-many-arguments, too-many-positional-arguments
     def find_all_predecessors(
         self, node, max_generation, predecessors=None, current_generation=0, current_max_generation=0
     ):
@@ -831,7 +1115,8 @@ class DependencyGraph:
         if return_html:
             return net.generate_html()
 
-        net.save_graph(graph_location)
+        # Write with explicit UTF-8 encoding; pyvis' save_graph uses the platform default (cp1252 on Windows)
+        Path(graph_location).write_text(net.generate_html(), encoding="utf-8")
 
         if save is True:
 
