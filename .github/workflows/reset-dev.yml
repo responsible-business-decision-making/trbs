@@ -3,7 +3,7 @@ name: Reset dev to main
 on:
   push:
     branches:
-      - add-rebase-workflow # TMP - DO NOT FORGET TO CHANGE BACK TO MAIN 
+      - main
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   reset-dev:
-    if: github.ref == 'refs/heads/add-rebase-workflow' # TMP - DO NOT FORGET TO CHANGE BACK TO MAIN .
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
