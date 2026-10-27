@@ -3,7 +3,7 @@ name: Reset dev to main
 on:
   push:
     branches:
-      - main
+      - add-rebase-workflow # TMP - DO NOT FORGET TO CHANGE BACK TO MAIN 
   workflow_dispatch:
 
 permissions:
