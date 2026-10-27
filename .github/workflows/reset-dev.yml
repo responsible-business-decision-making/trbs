@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   reset-dev:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/add-rebase-workflow' # TMP - DO NOT FORGET TO CHANGE BACK TO MAIN 
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -26,7 +26,7 @@ jobs:
           app-id: ${{ vars.DEV_SYNC_APP_ID }}
           private-key: ${{ secrets.DEV_SYNC_APP_PRIVATE_KEY }}
           permission-contents: write
-            permission-workflows: write
+          permission-workflows: write
 
       - name: Check out main
         uses: actions/checkout@v4
