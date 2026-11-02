@@ -2,12 +2,12 @@ fixed_input;value
 Average costs of a day lost through absenteeism;450.0
 Average costs of staff turnover;3000.0
 Average wage costs per employee;40000.0
-Current absenteeism %;0.00064
+Current absenteeism %;0.064
 Current customer satisfaction;6.5
 Current employee satisfaction;6.0
 Current number of employees;1200.0
-Current productivity %;0.007
-Current staff turnover %;0.00086
+Current productivity %;0.7
+Current staff turnover %;0.086
 Indirect effect employee satisfaction on customer satisfaction;0.26
 Indirect effect employee satisfaction on productivity %;0.23
 Threshold salary increase effect;0.5

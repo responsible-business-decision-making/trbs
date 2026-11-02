@@ -37,8 +37,8 @@ Unemployment reduction Ukrainians Employment;UnemploymentReductionUkrainians_Emp
 Unemployment reduction Ukrainians Employment;Unemployment reduction Ukrainians Employment;Reduction employment effect conditional;-*
 Unemployment reduction Ukrainians Language Acq;Language acquisition Ukrainians;Effect of language acquisition Ukrainians on unemployment reduction Ukrainians;*
 Unemployment reduction Ukrainians Education Compl;Tertiary education completed Ukrainians;Effect of tertiary education completed Ukrainians on unemployment reduction Ukrainians;*
-Umployment reduction Ukrainians Interventions;Unemployment reduction Ukrainians Employment;Unemployment reduction Ukrainians Language Acq;+
-Umployment reduction Ukrainians Interventions;Unemployment reduction Ukrainians Education Compl;0;+
+Unemployment reduction Ukrainians Interventions;Unemployment reduction Ukrainians Employment;Unemployment reduction Ukrainians Language Acq;+
+Unemployment reduction Ukrainians Interventions;Unemployment reduction Ukrainians Education Compl;0;+
 Increase in income Ukrainians Employment;Unemployment reduction Ukrainians Employment;Effect of unemployment reduction Ukrainians on income Ukrainians;*
 Increase in income Ukrainians Language Acq;Language acquisition Ukrainians;Effect of language acquisition Ukrainians on income Ukrainians;*
 Increase in income Ukrainians Education Compl;Tertiary education completed Ukrainians;Effect of tertiary education completed Ukrainians on income Ukrainians;*
@@ -55,14 +55,15 @@ Number of additional jobs other refugees;Number of additional jobs;Effect of add
 Number of additional jobs inhabitants;Number of additional jobs;Effect of additional jobs on number of additional jobs inhabitants;*
 Economic impact Investing;Sports and association;Language and integration course;+
 Economic impact Investing;Employment;Education after 18;+
+Economic impact Investing;Access to transport;0;+
 Unemployment reduction other refugees;Number of additional jobs other refugees;Number of other refugees workforce;/
 Increase in income other refugees;Unemployment reduction other refugees;Effect of unemployment reduction other refugees on income other refugees;*
 Quality of life other refugees Unemployment reduction;Unemployment reduction other refugees;Effect of unemployment reduction other refugees on QoL other refugees;*
 Unemployment reduction inhabitants;Number of additional jobs inhabitants;Number of inhabitants workforce;/
-Unemployment reduction Ukrainians;Umployment reduction Ukrainians Interventions;0;+
+Unemployment reduction Ukrainians;Unemployment reduction Ukrainians Interventions;0;+
 Unemployment reduction Ukrainians;Number of additional jobs Ukrainians;Number of Ukrainian refugees workforce;/
 Quality of life Ukrainians Unemployment reduction;Unemployment reduction Ukrainians;Effect of unemployment reduction Ukrainians on QoL Ukrainians;*
-Change in number of employed Ukrainian refugees;Umployment reduction Ukrainians Interventions;Number of Ukrainian refugees workforce;*
+Change in number of employed Ukrainian refugees;Unemployment reduction Ukrainians Interventions;Number of Ukrainian refugees workforce;*
 Economic impact Ukrainians;Change in number of employed Ukrainian refugees;Average yearly salary Ukrainians;*
 Economic impact Employment;Economic impact Ukrainians;0;+
 Economic impact social benefits Ukr 1;Number of additional jobs Ukrainians;Social benefits Ukrainian refugees;*

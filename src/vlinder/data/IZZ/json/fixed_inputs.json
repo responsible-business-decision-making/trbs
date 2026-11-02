@@ -38,7 +38,7 @@
         {
             "index":3,
             "fixed_input":"Current absenteeism %",
-            "value":0.00064
+            "value":0.064
         },
         {
             "index":4,
@@ -58,12 +58,12 @@
         {
             "index":7,
             "fixed_input":"Current productivity %",
-            "value":0.007
+            "value":0.7
         },
         {
             "index":8,
             "fixed_input":"Current staff turnover %",
-            "value":0.00086
+            "value":0.086
         },
         {
             "index":9,
