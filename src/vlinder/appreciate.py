@@ -80,11 +80,10 @@ class Appreciate:
         if args["key_output_linear"]:
             return [-1, 1][stb_ind] * (start_and_end[stb_ind] - value) / (start_and_end[1] - start_and_end[0]) * 100
         # Option 2: Non-linear appreciation
-        #- if STB = 1: (-sin(0.5 * pi * (val-start) / (end - start) + 1) * 100
-        #- if STB = 0: sin(0.5 * pi * (val - start) / (end - start) + 0) * 100
+        # - if STB = 1: (-sin(0.5 * pi * (val-start) / (end - start) + 1) * 100
+        # - if STB = 0: sin(0.5 * pi * (val - start) / (end - start) + 0) * 100
         core_part = (value - start_and_end[0]) / (start_and_end[1] - start_and_end[0])
         return ([1, -1][stb_ind] * math.sin(0.5 * math.pi * core_part) + stb_ind) * 100
-
 
     def _create_appreciation_grid(self, key_output: str, n_points: int = 100) -> np.array:
         """
