@@ -66,13 +66,13 @@ class Appreciate:
         start_and_end = self.start_and_end_points[args["key_output"]]
         stb_ind = args["key_output_smaller_the_better"]
 
-        # Option 0A: values lie outside the boundaries. Return maximum or minimum based on STB
-        if value <= start_and_end[0] or value >= start_and_end[1]:
-            return stb_ind * (value <= start_and_end[0]) * 100 + (1 - stb_ind) * (value >= start_and_end[1]) * 100
-
-        # Option 0B: start and end value are the same --> indifferent so return 0
+        # Option 0A: start and end value are the same --> indifferent so return 0
         if start_and_end[1] - start_and_end[0] < 1e-6:
             return 0
+
+        # Option 0B: values lie outside the boundaries. Return maximum or minimum based on STB
+        if value <= start_and_end[0] or value >= start_and_end[1]:
+            return stb_ind * (value <= start_and_end[0]) * 100 + (1 - stb_ind) * (value >= start_and_end[1]) * 100
 
         # Option 1: Linear appreciation
         #   - if STB = 1: (end - val) / (end - start) * 100
@@ -80,10 +80,11 @@ class Appreciate:
         if args["key_output_linear"]:
             return [-1, 1][stb_ind] * (start_and_end[stb_ind] - value) / (start_and_end[1] - start_and_end[0]) * 100
         # Option 2: Non-linear appreciation
-        #   - if STB = 1: (-sin(0.5 * pi * (val-start) / (end - start) + 1) * 100
-        #   - if STB = 0: sin(0.5 * pi * (val - start) / (end - start) + 0) * 100
+        #- if STB = 1: (-sin(0.5 * pi * (val-start) / (end - start) + 1) * 100
+        #- if STB = 0: sin(0.5 * pi * (val - start) / (end - start) + 0) * 100
         core_part = (value - start_and_end[0]) / (start_and_end[1] - start_and_end[0])
         return ([1, -1][stb_ind] * math.sin(0.5 * math.pi * core_part) + stb_ind) * 100
+
 
     def _create_appreciation_grid(self, key_output: str, n_points: int = 100) -> np.array:
         """

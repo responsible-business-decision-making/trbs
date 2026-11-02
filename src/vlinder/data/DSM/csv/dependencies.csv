@@ -20,9 +20,9 @@ Use REC partner;Price REC partner;Price REC market;<=
 % REC market total;% REC market;% REC market optimised;+
 # REC partner;Energy demand;% REC partner total;*
 # REC market;Energy demand;% REC market total;*
-Demand % RE partner;% RS partner;% REC partner total;min
+Demand % RE partner;Demand % RS partner;% REC partner total;min
 Demand RE partner;Energy demand;Demand % RE partner;*
-Demand RS partner;Energy demand;% RS partner;*
+Demand RS partner;Energy demand;Demand % RS partner;*
 Demand RS partner;0;Demand RE partner;-
 Demand % RE market;% RS market;% REC market total;min
 Demand RE market;Energy demand;Demand % RE market;*
@@ -64,5 +64,5 @@ New employee recommendation rate;New employee engagement score;Engaged employee 
 New employee recommendation rate;New employee disengagement score;Disengaged employee recommendation rate;*
 Increase in employee recommendation rate;New employee recommendation rate;Current employee recommendation rate;-
 ICP condition;Internal carbon price;0;>
-Increase in Net Promotor Score;ICP condition;Effect of using an internal carbon price on employee engagement;*
-Increase in Net Promotor Score;0;Effect of employee engagement on customer satisfaction;*
+Increase in employee engagement score;ICP condition;Effect of using an internal carbon price on employee engagement;*
+Increase in Net Promotor Score;Increase in employee engagement score;Effect of employee engagement on customer satisfaction;*

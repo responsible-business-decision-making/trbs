@@ -137,7 +137,7 @@
             "key_output":"Total investment",
             "theme":"Profit",
             "monetary":1,
-            "smaller_the_better":0,
+            "smaller_the_better":1,
             "linear":0,
             "automatic":1,
             "start":null,

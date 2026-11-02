@@ -404,6 +404,11 @@
             "index":76,
             "fixed_input":"SocialParticipationUkrainians_AccessToTransport_saturationpoint",
             "value":15216753.9100000001
+        },
+        {
+            "index":77,
+            "fixed_input":"Reduction employment effect",
+            "value":0.7
         }
     ]
 }
