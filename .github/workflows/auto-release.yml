@@ -1,4 +1,4 @@
-name: Auto PR checks
+name: Auto release checks
 
 on:
   pull_request:
