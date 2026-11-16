@@ -1,16 +1,26 @@
-name: Auto release checks
+name: Release package
 
 on:
   pull_request:
     branches:
-      - dev
+      - main
+    types: [opened, synchronize, reopened, edited]
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-package-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
 
 jobs:
   version-check:
     name: Check package version increase
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,7 +31,7 @@ jobs:
           python-version: '3.11'
       - name: Install version parser
         run: python -m pip install packaging
-      - name: Compare PR version with main
+      - name: Compare PR version with target branch
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
@@ -42,10 +52,121 @@ jobs:
           with Path("pyproject.toml").open("rb") as project_file:
               pr_version = Version(tomllib.load(project_file)["project"]["version"])
 
-          print(f"main version: {base_version}; PR version: {pr_version}")
+          print(f"Target branch version: {base_version}; PR version: {pr_version}")
           if pr_version <= base_version:
               raise SystemExit(
                   "::error file=pyproject.toml::Increase [project].version "
-                  f"above {base_version} before merging into main."
+                  f"above {base_version} before merging."
               )
           PY
+
+  build:
+    name: Test and build distributions
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: macos-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install build tools
+        run: python -m pip install build twine packaging
+      - name: Read and validate package version
+        id: version
+        run: |
+          python - <<'PY'
+          import os
+          import tomllib
+
+          from packaging.version import Version
+
+          with open("pyproject.toml", "rb") as project_file:
+              version = tomllib.load(project_file)["project"]["version"]
+          parsed_version = Version(version)
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output_file:
+              output_file.write(f"version={version}\ntag=v{version}\n")
+              output_file.write(f"prerelease={str(parsed_version.is_prerelease).lower()}\n")
+          PY
+      - name: Check existing release tag
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if git show-ref --verify --quiet "refs/tags/$TAG"; then
+            tag_sha=$(git rev-parse "$TAG^{commit}")
+            if [[ "$tag_sha" != "$GITHUB_SHA" ]]; then
+              echo "::error::Tag $TAG already belongs to another commit. Increase the package version."
+              exit 1
+            fi
+          fi
+      - name: Build and check distributions
+        run: |
+          python -m build
+          python -m twine check dist/*
+      - name: Install built wheel and test dependencies
+        run: python -m pip install dist/*.whl 'pytest~=8.4.1'
+      - name: Run unit tests against built package
+        run: python -m pytest --import-mode=append tests/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: python-distributions
+          path: dist/*
+          if-no-files-found: error
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/vlinder/${{ needs.build.outputs.version }}/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: python-distributions
+          path: dist/
+      - name: Publish distributions with Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
+
+  github-release:
+    name: Create GitHub release
+    needs: [build, publish]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: python-distributions
+          path: dist/
+      - name: Create release and attach distributions
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ needs.build.outputs.tag }}
+          VERSION: ${{ needs.build.outputs.version }}
+          PRERELEASE: ${{ needs.build.outputs.prerelease }}
+        run: |
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" dist/* --clobber
+          else
+            prerelease_args=()
+            if [[ "$PRERELEASE" == "true" ]]; then
+              prerelease_args+=(--prerelease)
+            fi
+            gh release create "$TAG" dist/* \
+              --target "$GITHUB_SHA" \
+              --title "vlinder $VERSION" \
+              --generate-notes \
+              "${prerelease_args[@]}"
+          fi
