@@ -1,3 +1,5 @@
+# WARNING: Renaming this file WILL break PyPI publishing and the release flow
+# unless the workflow filename is also updated in PyPI's Trusted Publisher settings.
 name: Release package
 
 on:
