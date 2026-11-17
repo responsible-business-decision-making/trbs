@@ -72,7 +72,7 @@
         },
         {
             "index":6,
-            "destination":"IncreaseVisitorSatisfactionIntermediate",
+            "destination":"IncreaseVisitorSatisfaction",
             "argument_1":"PianoTent",
             "argument_2":"VisitorSatisfactionSensitivityPianoTent",
             "operator":"*"
@@ -93,7 +93,7 @@
         },
         {
             "index":9,
-            "destination":"IncreaseVisitorSatisfactionIntermediate",
+            "destination":"IncreaseVisitorSatisfaction",
             "argument_1":"DividedAreaGardening",
             "argument_2":"VisitorSatisfactionSensitivityGardening",
             "operator":"*"
@@ -114,14 +114,14 @@
         },
         {
             "index":12,
-            "destination":"IncreaseVisitorSatisfactionIntermediate",
+            "destination":"IncreaseVisitorSatisfaction",
             "argument_1":"DividedAreaPlanterSteps",
             "argument_2":"VisitorSatisfactionSensitivityPlanterSteps",
             "operator":"*"
         },
         {
             "index":13,
-            "destination":"IncreaseVisitorSatisfactionIntermediate",
+            "destination":"IncreaseVisitorSatisfaction",
             "argument_1":"VisitorPath",
             "argument_2":"VisitorSatisfactionSensitivityVisitorPath",
             "operator":"*"
@@ -135,241 +135,241 @@
         },
         {
             "index":15,
+            "destination":"TotalAreaPVField",
+            "argument_1":0,
+            "argument_2":"PVFieldBarRoof",
+            "operator":"+"
+        },
+        {
+            "index":16,
             "destination":"DividedAreaPVField",
             "argument_1":"TotalAreaPVField",
             "argument_2":"AvailableArea",
             "operator":"\/"
         },
         {
-            "index":16,
-            "destination":"IncreaseVisitorSatisfactionIntermediate",
+            "index":17,
+            "destination":"IncreaseVisitorSatisfaction",
             "argument_1":"DividedAreaPVField",
             "argument_2":"VisitorSatisfactionSensitivityPVField",
             "operator":"*"
         },
         {
-            "index":17,
+            "index":18,
             "destination":"DividedAreaPVSteps",
             "argument_1":"PVStepsLowerRoof",
             "argument_2":"AreaLowerRoof",
             "operator":"\/"
         },
         {
-            "index":18,
+            "index":19,
             "destination":"IncreaseVisitorSatisfaction",
             "argument_1":"DividedAreaPVSteps",
             "argument_2":"VisitorSatisfactionSensitivityPVSteps",
             "operator":"*"
         },
         {
-            "index":19,
+            "index":20,
             "destination":"IncreaseVisitorSatisfaction",
             "argument_1":"MontanaWindmills",
             "argument_2":"VisitorSatisfactionSensitivityMontanaWindmills",
             "operator":"*"
         },
         {
-            "index":20,
+            "index":21,
             "destination":"IncreaseVisitorSatisfaction",
             "argument_1":"SkystreamWindmills",
             "argument_2":"VisitorSatisfactionSensitivitySkystreamWindmills",
             "operator":"*"
         },
         {
-            "index":21,
+            "index":22,
             "destination":"IncreaseVisitorSatisfaction",
             "argument_1":"AmpyxPowerPlanes",
             "argument_2":"VisitorSatisfactionSensitivityAmpyxPowerPlanes",
             "operator":"*"
         },
         {
-            "index":22,
+            "index":23,
             "destination":"IncreaseVisitorSatisfaction",
             "argument_1":"PianoMills",
             "argument_2":"VisitorSatisfactionSensitivityPianoMills",
             "operator":"*"
         },
         {
-            "index":23,
+            "index":24,
             "destination":"IncreaseLandmarkValue",
             "argument_1":"PianoTent",
             "argument_2":"LandmarkSensitivityPianoTent",
             "operator":"*"
         },
         {
-            "index":24,
+            "index":25,
             "destination":"IncreaseLandmarkValue",
             "argument_1":"DividedAreaGardening",
             "argument_2":"LandmarkSensitivityGardening",
             "operator":"*"
         },
         {
-            "index":25,
+            "index":26,
             "destination":"IncreaseLandmarkValue",
             "argument_1":"DividedAreaPlanterSteps",
             "argument_2":"LandmarkSensitivityPlanterSteps",
             "operator":"*"
         },
         {
-            "index":26,
+            "index":27,
             "destination":"IncreaseLandmarkValue",
             "argument_1":"VisitorPath",
             "argument_2":"LandmarkSensitivityVisitorPath",
             "operator":"*"
         },
         {
-            "index":27,
+            "index":28,
             "destination":"IncreaseLandmarkValue",
-            "argument_1":"PVFieldUpperRoof",
+            "argument_1":"DividedAreaPVField",
             "argument_2":"LandmarkSensitivityPVField",
             "operator":"*"
         },
         {
-            "index":28,
+            "index":29,
             "destination":"IncreaseLandmarkValue",
             "argument_1":"DividedAreaPVSteps",
             "argument_2":"LandmarkSensitivityPVSteps",
             "operator":"*"
         },
         {
-            "index":29,
+            "index":30,
             "destination":"IncreaseLandmarkValue",
             "argument_1":"MontanaWindmills",
             "argument_2":"LandmarkSensitivityMontanaWindmills",
             "operator":"*"
         },
         {
-            "index":30,
+            "index":31,
             "destination":"IncreaseLandmarkValue",
             "argument_1":"SkystreamWindmills",
             "argument_2":"LandmarkSensitivitySkystreamWindmills",
             "operator":"*"
         },
         {
-            "index":31,
+            "index":32,
             "destination":"IncreaseLandmarkValue",
             "argument_1":"AmpyxPowerPlanes",
             "argument_2":"LandmarkSensitivityAmpyxPowerPlanes",
             "operator":"*"
         },
         {
-            "index":32,
+            "index":33,
             "destination":"IncreaseLandmarkValue",
             "argument_1":"PianoMills",
             "argument_2":"LandmarkSensitivityPianoMills",
             "operator":"*"
         },
         {
-            "index":33,
+            "index":34,
             "destination":"Capex",
             "argument_1":"UpperRoofRepair",
             "argument_2":"CapexUpperRoofRepair",
             "operator":"*"
         },
         {
-            "index":34,
+            "index":35,
             "destination":"Capex",
             "argument_1":"LowerRoofRepair",
             "argument_2":"CapexLowerRoofRepair",
             "operator":"*"
         },
         {
-            "index":35,
+            "index":36,
             "destination":"IsolationAreaUpper",
             "argument_1":"ExtraIsolation",
             "argument_2":"AreaUpperRoof",
             "operator":"*"
         },
         {
-            "index":36,
+            "index":37,
             "destination":"IsolationAreaLower",
             "argument_1":"ExtraIsolation",
             "argument_2":"AreaLowerRoof",
             "operator":"*"
         },
         {
-            "index":37,
+            "index":38,
             "destination":"IsolationAreaTotal",
             "argument_1":"IsolationAreaUpper",
             "argument_2":"IsolationAreaLower",
             "operator":"+"
         },
         {
-            "index":38,
+            "index":39,
             "destination":"DividedIsolationArea",
             "argument_1":"IsolationAreaTotal",
             "argument_2":"AreaLowerAndUpperRoof",
             "operator":"\/"
         },
         {
-            "index":39,
+            "index":40,
             "destination":"Capex",
             "argument_1":"DividedIsolationArea",
             "argument_2":"CapexExtraIsolation",
             "operator":"*"
         },
         {
-            "index":40,
+            "index":41,
             "destination":"Capex",
             "argument_1":"PianoTent",
             "argument_2":"CapexPianoTent",
             "operator":"*"
         },
         {
-            "index":41,
+            "index":42,
             "destination":"Capex",
             "argument_1":"ExternalElevator",
             "argument_2":"CapexExternalElevator",
             "operator":"*"
         },
         {
-            "index":42,
+            "index":43,
             "destination":"GardeningCapexShares",
             "argument_1":"ShareGardeningIntensive",
             "argument_2":"CapexGardeningIntensive",
             "operator":"*"
         },
         {
-            "index":43,
+            "index":44,
             "destination":"GardeningCapexShares",
             "argument_1":"ShareGardeningExtensive",
             "argument_2":"CapexGardeningExtensive",
             "operator":"*"
         },
         {
-            "index":44,
+            "index":45,
             "destination":"GardeningCapex",
             "argument_1":"TotalAreaGardening",
             "argument_2":"GardeningCapexShares",
             "operator":"*"
         },
         {
-            "index":45,
+            "index":46,
             "destination":"Capex",
             "argument_1":"GardeningCapex",
             "argument_2":0,
             "operator":"+"
         },
         {
-            "index":46,
+            "index":47,
             "destination":"Capex",
             "argument_1":"TotalAreaPlanterSteps",
             "argument_2":"CapexPlanterSteps",
             "operator":"*"
         },
         {
-            "index":47,
+            "index":48,
             "destination":"Capex",
             "argument_1":"VisitorPath",
             "argument_2":"CapexVisitorPath",
             "operator":"*"
-        },
-        {
-            "index":48,
-            "destination":"TotalAreaPVField",
-            "argument_1":"PVFieldBarRoof",
-            "argument_2":0,
-            "operator":"+"
         },
         {
             "index":49,
@@ -697,7 +697,7 @@
             "index":95,
             "destination":"VisitorsIncrease",
             "argument_1":"ExtraVisitorSatisfaction",
-            "argument_2":"IncreaseVisitorSatisfactionIntermediate",
+            "argument_2":"IncreaseVisitorSatisfaction",
             "operator":"*"
         },
         {

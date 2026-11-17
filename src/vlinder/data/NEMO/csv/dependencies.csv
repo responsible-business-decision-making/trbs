@@ -5,17 +5,18 @@ AreaTerraceLowerRoof;0;GardeningLowerRoof;-
 AreaTerraceLowerRoof;0;PlanterStepsLowerRoof;-
 AvailableArea;AreaUpperRoof;AreaLowerRoof;+
 AvailableArea;AreaTerraceLowerRoof;1;-*
-IncreaseVisitorSatisfactionIntermediate;PianoTent;VisitorSatisfactionSensitivityPianoTent;*
+IncreaseVisitorSatisfaction;PianoTent;VisitorSatisfactionSensitivityPianoTent;*
 TotalAreaGardening;GardeningLowerRoof;GardeningUpperRoof;+
 DividedAreaGardening;TotalAreaGardening;AvailableArea;/
-IncreaseVisitorSatisfactionIntermediate;DividedAreaGardening;VisitorSatisfactionSensitivityGardening;*
+IncreaseVisitorSatisfaction;DividedAreaGardening;VisitorSatisfactionSensitivityGardening;*
 TotalAreaPlanterSteps;PlanterStepsLowerRoof;PlanterStepsUpperRoof;+
 DividedAreaPlanterSteps;TotalAreaPlanterSteps;AvailableArea;/
-IncreaseVisitorSatisfactionIntermediate;DividedAreaPlanterSteps;VisitorSatisfactionSensitivityPlanterSteps;*
-IncreaseVisitorSatisfactionIntermediate;VisitorPath;VisitorSatisfactionSensitivityVisitorPath;*
+IncreaseVisitorSatisfaction;DividedAreaPlanterSteps;VisitorSatisfactionSensitivityPlanterSteps;*
+IncreaseVisitorSatisfaction;VisitorPath;VisitorSatisfactionSensitivityVisitorPath;*
 TotalAreaPVField;PVFieldUpperRoof;PVFieldLowerRoof;+
+TotalAreaPVField;0;PVFieldBarRoof;+
 DividedAreaPVField;TotalAreaPVField;AvailableArea;/
-IncreaseVisitorSatisfactionIntermediate;DividedAreaPVField;VisitorSatisfactionSensitivityPVField;*
+IncreaseVisitorSatisfaction;DividedAreaPVField;VisitorSatisfactionSensitivityPVField;*
 DividedAreaPVSteps;PVStepsLowerRoof;AreaLowerRoof;/
 IncreaseVisitorSatisfaction;DividedAreaPVSteps;VisitorSatisfactionSensitivityPVSteps;*
 IncreaseVisitorSatisfaction;MontanaWindmills;VisitorSatisfactionSensitivityMontanaWindmills;*
@@ -26,7 +27,7 @@ IncreaseLandmarkValue;PianoTent;LandmarkSensitivityPianoTent;*
 IncreaseLandmarkValue;DividedAreaGardening;LandmarkSensitivityGardening;*
 IncreaseLandmarkValue;DividedAreaPlanterSteps;LandmarkSensitivityPlanterSteps;*
 IncreaseLandmarkValue;VisitorPath;LandmarkSensitivityVisitorPath;*
-IncreaseLandmarkValue;PVFieldUpperRoof;LandmarkSensitivityPVField;*
+IncreaseLandmarkValue;DividedAreaPVField;LandmarkSensitivityPVField;*
 IncreaseLandmarkValue;DividedAreaPVSteps;LandmarkSensitivityPVSteps;*
 IncreaseLandmarkValue;MontanaWindmills;LandmarkSensitivityMontanaWindmills;*
 IncreaseLandmarkValue;SkystreamWindmills;LandmarkSensitivitySkystreamWindmills;*
@@ -47,7 +48,6 @@ GardeningCapex;TotalAreaGardening;GardeningCapexShares;*
 Capex;GardeningCapex;0;+
 Capex;TotalAreaPlanterSteps;CapexPlanterSteps;*
 Capex;VisitorPath;CapexVisitorPath;*
-TotalAreaPVField;PVFieldBarRoof;0;+
 ShareEnergySponsorsCalculation;1;CapexCoveredBySponsoring;-
 CapexPVFieldIntermediate;TotalAreaPVField;CapexPVField;*
 Capex;CapexPVFieldIntermediate;ShareEnergySponsorsCalculation;*
@@ -94,7 +94,7 @@ Energy savings in kilowatt-hours;PianoMills;KwHEnergySavingsPianoMill;*
 Energy savings in euros;PricePerKwH;Energy savings in kilowatt-hours;*
 ExtraVisitorSatisfaction;IncreaseAnnualVisitorsCustomerSatisfaction;1;*
 ExtraVisitorLandmark;IncreaseAnnualVisitorsLandmarkValue;1;*
-VisitorsIncrease;ExtraVisitorSatisfaction;IncreaseVisitorSatisfactionIntermediate;*
+VisitorsIncrease;ExtraVisitorSatisfaction;IncreaseVisitorSatisfaction;*
 VisitorsIncrease;ExtraVisitorLandmark;IncreaseLandmarkValue;*
 ExtraEntranceFees;VisitorsIncrease;EntranceFee;*
 BarMarginIncreaseExternalElevatorTrue;ExternalElevator;ElevatorRestaurantRevenues;*
