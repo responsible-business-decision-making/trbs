@@ -7,6 +7,7 @@ import os
 import warnings
 import pandas as pd
 import numpy as np
+import networkx as nx
 from vlinder.utils import check_numeric
 
 
@@ -156,12 +157,13 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
     @staticmethod
     def _apply_first_level_hierarchy_to_row(row: pd.Series, all_inputs: np.array) -> int:
         """
-        This function determines whether a dependency needs to be wait on other dependencies (hierarchy = 2) or can be
+        This function determines whether a dependency needs to wait on other dependencies (hierarchy = 2) or can be
         calculated from the provided inputs or numeric argument value. (hierarchy = 1)
         :param row: a single row from the dependencies table
-        :param all_inputs: an array containing all fixed, internal and external inputs
+        :param all_inputs: an array containing all fixed, internal, and external inputs
         :return: hierarchy level of either 1 or 2
         """
+
         args_with_known_value = sum(
             (row[arg] in all_inputs or check_numeric(row[arg])) for arg in ["argument_1", "argument_2"]
         )
@@ -179,6 +181,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         :param data: a dataframe containing (a subset of) dependencies
         :return: hierarchy level
         """
+
         # Hierarchy level 1 can be calculated always -- based on solely input values
         if row["hierarchy"] == 1:
             return row["hierarchy"]
@@ -194,6 +197,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         # apply a correction when argument & dependency are equal
         row["hierarchy"] -= sum(row[column] == row["destination"] for column in ["argument_1", "argument_2"])
         row["hierarchy"] = max(row["hierarchy"], hierarchy_start)
+
         return row["hierarchy"]
 
     def _convert_to_ordered_dependencies(self, data: pd.DataFrame) -> None:
@@ -201,7 +205,28 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         This function converts the dependency table into a sorted version, based on calculated hierarchies.
         The sorted arrays are stored in the input dictionary.
         :param data: dataframe containing a dependencies table
+
         """
+
+        # Step 0: check for loops in user-provided dependencies via networkx.
+        # Add destinations to graph as nodes (these are the candidates for loops)
+        destinations = set(data["destination"])
+        dependency_graph = nx.DiGraph()
+        dependency_graph.add_nodes_from(destinations)
+        # per destination, add incoming edges from arguments
+        for _, row in data.iterrows():
+            for argument in (row["argument_1"], row["argument_2"]):
+                # self-loops are OK, so ignore them here.
+                if argument in destinations and argument != row["destination"]:
+                    dependency_graph.add_edge(argument, row["destination"])
+        # Check for cycles (i.e. graph is not acyclic) and, if any, raise error
+        if not nx.is_directed_acyclic_graph(dependency_graph):
+            cycle = nx.find_cycle(dependency_graph)
+            cycle_path = [cycle[0][0]]
+            cycle_path.extend(target for _, target in cycle)
+            cycle_text = " -> ".join(str(node) for node in cycle_path)
+            raise TemplateError(f"Circular dependency detected: {cycle_text}")
+
         # step 1: collect all input where the value is known
         all_inputs = np.hstack(
             (
@@ -211,7 +236,7 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
             )
         ).ravel()
 
-        # STEP 2: determine hierarchies
+        # step 2: determine hierarchies
         # step 2A: first-level hierarchies | calculations that use solely input variables
         data["hierarchy"] = data.apply(self._apply_first_level_hierarchy_to_row, all_inputs=all_inputs, axis=1)
         subdata = data[data["hierarchy"] != 1]
