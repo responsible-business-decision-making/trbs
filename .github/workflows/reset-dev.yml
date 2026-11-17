@@ -1,0 +1,53 @@
+name: Reset dev to main
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reset-dev-to-main
+  cancel-in-progress: false
+
+jobs:
+  reset-dev:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Create branch sync token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.DEV_SYNC_APP_ID }}
+          private-key: ${{ secrets.DEV_SYNC_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-workflows: write
+
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Reset remote dev to latest main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            +refs/heads/main:refs/remotes/origin/main \
+            +refs/heads/dev:refs/remotes/origin/dev
+          main_sha=$(git rev-parse refs/remotes/origin/main)
+          dev_sha=$(git rev-parse refs/remotes/origin/dev)
+          if [[ "$main_sha" == "$dev_sha" ]]; then
+            echo "dev already matches main."
+            exit 0
+          fi
+          git push origin \
+            --force-with-lease="refs/heads/dev:$dev_sha" \
+            "$main_sha:refs/heads/dev"
+          echo "Reset dev from $dev_sha to $main_sha."

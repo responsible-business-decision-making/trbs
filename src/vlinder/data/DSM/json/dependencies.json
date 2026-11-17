@@ -178,7 +178,7 @@
         {
             "index":21,
             "destination":"Demand % RE partner",
-            "argument_1":"% RS partner",
+            "argument_1":"Demand % RS partner",
             "argument_2":"% REC partner total",
             "operator":"min"
         },
@@ -193,7 +193,7 @@
             "index":23,
             "destination":"Demand RS partner",
             "argument_1":"Energy demand",
-            "argument_2":"% RS partner",
+            "argument_2":"Demand % RS partner",
             "operator":"*"
         },
         {
@@ -485,7 +485,7 @@
         },
         {
             "index":65,
-            "destination":"Increase in Net Promotor Score",
+            "destination":"Increase in employee engagement score",
             "argument_1":"ICP condition",
             "argument_2":"Effect of using an internal carbon price on employee engagement",
             "operator":"*"
@@ -493,7 +493,7 @@
         {
             "index":66,
             "destination":"Increase in Net Promotor Score",
-            "argument_1":0,
+            "argument_1":"Increase in employee engagement score",
             "argument_2":"Effect of employee engagement on customer satisfaction",
             "operator":"*"
         }
