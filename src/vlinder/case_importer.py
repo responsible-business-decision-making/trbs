@@ -200,15 +200,10 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
 
         return row["hierarchy"]
 
-    def _convert_to_ordered_dependencies(self, data: pd.DataFrame) -> None:
-        """
-        This function converts the dependency table into a sorted version, based on calculated hierarchies.
-        The sorted arrays are stored in the input dictionary.
-        :param data: dataframe containing a dependencies table
+    @staticmethod
+    def _check_circular_dependencies(data: pd.DataFrame) -> None:
+        """Raise a TemplateError if the user-provided dependencies contain a loop."""
 
-        """
-
-        # Step 0: check for loops in user-provided dependencies via networkx.
         # Add destinations to graph as nodes (these are the candidates for loops)
         destinations = set(data["destination"])
         dependency_graph = nx.DiGraph()
@@ -227,6 +222,16 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
             cycle_text = " -> ".join(str(node) for node in cycle_path)
             raise TemplateError(f"Circular dependency detected: {cycle_text}")
 
+    def _convert_to_ordered_dependencies(self, data: pd.DataFrame) -> None:
+        """
+        This function converts the dependency table into a sorted version, based on calculated hierarchies.
+        The sorted arrays are stored in the input dictionary.
+        :param data: dataframe containing a dependencies table
+        """
+
+        # Step 0: check for loops in user-provided dependencies via networkx.
+        self._check_circular_dependencies(data)
+
         # step 1: collect all input where the value is known
         all_inputs = np.hstack(
             (
@@ -236,12 +241,27 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
             )
         ).ravel()
 
-        # step 2: determine hierarchies
+        # step 2: determine hierarchies.
         # step 2A: first-level hierarchies | calculations that use solely input variables
         data["hierarchy"] = data.apply(self._apply_first_level_hierarchy_to_row, all_inputs=all_inputs, axis=1)
         subdata = data[data["hierarchy"] != 1]
         steps = 1
-        # STEP 2B: higher-level hierarchies | calculation that depend on other destinations
+
+        # step 2B: check for repeated self-referencing destination rows. These may lead to
+        # infinite loops during hierarchy calculation.
+        # Check only unresolved rows; those based entirely on input variables are fine.
+        self_referencing_rows = subdata["argument_1"].eq(subdata["destination"]) | subdata["argument_2"].eq(
+            subdata["destination"]
+        )
+        repeated_destinations = subdata["destination"].duplicated(keep=False)
+        problematic = sorted(subdata.loc[self_referencing_rows & repeated_destinations, "destination"].unique())
+        if problematic:
+            raise TemplateError(
+                f"Repeated destinations with self-references for {problematic}. "
+                "Use distinct intermediate variables to express successive updates."
+            )
+
+        # STEP 2C: higher-level hierarchies | calculations that depend on other destinations
         # remove the lowest available hierarchy in each step, iterate until all dependencies have been removed
         while not subdata.empty:
             data["hierarchy"] = data.apply(self._apply_second_level_hierarchy_to_row, data=subdata, axis=1)
