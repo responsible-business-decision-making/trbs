@@ -301,7 +301,7 @@ def test_repeated_unresolved_self_references(import_beerwiser_json):
     with pytest.raises(TemplateError) as template_error:
         import_beerwiser_json._convert_to_ordered_dependencies(input_data)
 
-    expected_result = "Template Error: Repeated destinations with self-references"
+    expected_result = "Template Error: Multiple self-referencing dependencies for"
     assert str(template_error.value).startswith(expected_result)
 
 

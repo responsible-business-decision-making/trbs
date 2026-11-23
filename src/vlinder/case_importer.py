@@ -253,11 +253,13 @@ class CaseImporter:  # pylint: disable=too-few-public-methods
         self_referencing_rows = subdata["argument_1"].eq(subdata["destination"]) | subdata["argument_2"].eq(
             subdata["destination"]
         )
-        repeated_destinations = subdata["destination"].duplicated(keep=False)
-        problematic = sorted(subdata.loc[self_referencing_rows & repeated_destinations, "destination"].unique())
+        # A single self-update is fine once its destination is initialised by another row; two or more
+        # self-updates for one destination each wait on the other and never resolve.
+        self_reference_counts = subdata.loc[self_referencing_rows, "destination"].value_counts()
+        problematic = sorted(self_reference_counts[self_reference_counts > 1].index)
         if problematic:
             raise TemplateError(
-                f"Repeated destinations with self-references for {problematic}. "
+                f"Multiple self-referencing dependencies for {problematic}. "
                 "Use distinct intermediate variables to express successive updates."
             )
 
