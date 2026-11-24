@@ -252,6 +252,59 @@ def test_apply_second_level_hierarchy_to_row(import_beerwiser_json, row, expecte
     assert result == expected_output
 
 
+def test_cycles_in_dependency_graph(import_beerwiser_json):
+    """
+    This function tests that the _convert_to_ordered_dependencies function can handle circular dependencies.
+    Note: the file extension (here: json) is not relevant for this test, so only one needs to be tested
+    :param import_beerwiser_json: an CaseImporter class for the beerwiser case
+    """
+
+    import_beerwiser_json.input_dict = {
+        "fixed_inputs": [],
+        "internal_variable_inputs": [],
+        "external_variable_inputs": [],
+    }
+    input_data = pd.DataFrame(
+        {
+            "destination": ["A", "B", "C"],
+            "argument_1": ["B", "C", "A"],
+            "argument_2": ["0", "0", "0"],
+            "operator": ["+", "+", "+"],
+        }
+    )
+    with pytest.raises(TemplateError) as template_error:
+        import_beerwiser_json._convert_to_ordered_dependencies(input_data)
+
+    expected_result = "Template Error: Circular dependency detected:"
+    assert str(template_error.value).startswith(expected_result)
+
+
+def test_repeated_unresolved_self_references(import_beerwiser_json):
+    """This function tests that the _convert_to_ordered_dependencies function can handle
+    repeated unresolved dependencies that reference their own destination.
+    Note: the file extension (here: json) is not relevant for this test, so only one needs to be tested
+    :param import_beerwiser_json: an CaseImporter class for the beerwiser case
+    """
+    import_beerwiser_json.input_dict = {
+        "fixed_inputs": ["B"],
+        "internal_variable_inputs": [],
+        "external_variable_inputs": [],
+    }
+    input_data = pd.DataFrame(
+        {
+            "destination": ["A", "A", "A"],
+            "argument_1": [0, 8, 2],
+            "argument_2": ["B", "A", "A"],
+            "operator": ["+", "*", "*"],
+        }
+    )
+    with pytest.raises(TemplateError) as template_error:
+        import_beerwiser_json._convert_to_ordered_dependencies(input_data)
+
+    expected_result = "Template Error: Multiple self-referencing dependencies for"
+    assert str(template_error.value).startswith(expected_result)
+
+
 def test_convert_to_ordered_dependencies(import_beerwiser_json):
     """
     This function tests test_convert_to_ordered_dependencies to add the dependencies in the correct order to the
