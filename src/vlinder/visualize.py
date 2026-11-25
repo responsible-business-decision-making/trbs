@@ -13,6 +13,7 @@ from typing import Optional, Tuple
 import dataframe_image as dfi
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -41,6 +42,7 @@ class VisualizationError(Exception):
         return f"Visualization Error: {self.message}"
 
 
+# pylint: disable=too-many-instance-attributes
 class Visualize:
     """This class deals with the creation of all graphs and tables"""
 
@@ -79,6 +81,7 @@ class Visualize:
         # for visualization purposes two digits is sufficient
         self.input_dict = input_dict
         self.outcomes = round_all_dict_values(outcomes)
+        self.raw_outcomes = outcomes
         self.options = options
         self.appreciation_functions = appreciation_functions or {}
         self.colors = [
@@ -617,6 +620,46 @@ class Visualize:
         else:
             plt.show()
 
+    def _add_outcome_points(self, axis: mpl.axis, key: str) -> list:
+        """
+        This function adds one point per scenario x decision makers option to an appreciation graph. The x-value is
+        the key output value of that combination and the y-value is its appreciation. The color of a point shows the
+        decision makers option, the marker shape shows the scenario.
+        :param axis: a matplotlib axis object containing the appreciation function
+        :param key: name of the key output
+        :return: a list of legend handles (appreciation function, decision makers options and scenarios)
+        """
+        markers = ["o", "s", "^", "D", "v", "P", "X"]
+        dmo_colors = self.colors[2:]
+        scenarios = list(self.input_dict["scenarios"])
+        options = list(self.input_dict["decision_makers_options"])
+
+        for s_index, scenario in enumerate(scenarios):
+            for d_index, option in enumerate(options):
+                values = self.raw_outcomes[scenario][option]
+                axis.scatter(
+                    values["key_outputs"][key],
+                    values["appreciations"][key],
+                    color=dmo_colors[d_index % len(dmo_colors)],
+                    marker=markers[s_index % len(markers)],
+                    s=max(110 - 35 * s_index, 30),
+                    edgecolor="white",
+                    linewidth=1,
+                    zorder=3 + s_index,
+                    clip_on=False,
+                )
+
+        handles = [Line2D([0], [0], color=self.colors[0], label="appreciation function")]
+        handles += [
+            Line2D([0], [0], marker="o", linestyle="", color=dmo_colors[i % len(dmo_colors)], label=option)
+            for i, option in enumerate(options)
+        ]
+        handles += [
+            Line2D([0], [0], marker=markers[i % len(markers)], linestyle="", color="#555555", label=scenario)
+            for i, scenario in enumerate(scenarios)
+        ]
+        return handles
+
     def _create_appreciation_graph(self, key: str, **kwargs) -> None:
         """
         This function creates and shows a line chart of the appreciation function of a single key output: for every
@@ -646,7 +689,17 @@ class Visualize:
         axis.set_ylim(0, 100)
         axis.set_xlabel(key)
         axis.set_ylabel("Appreciation")
-        axis.set_title(f"Appreciation function of {self._str_snake_case_to_text(key)}", color="#777777", fontsize=12)
+        index = list(self.input_dict["key_outputs"]).index(key)
+        shape = "linear" if self.input_dict["key_output_linear"][index] else "non-linear"
+        direction = (
+            "smaller is better" if self.input_dict["key_output_smaller_the_better"][index] else "larger is better"
+        )
+        theme = self.input_dict["key_output_theme"][index]
+        axis.set_title(
+            f"Appreciation function of {self._str_snake_case_to_text(key)}\n{shape} | {direction} | theme: {theme}",
+            color="#777777",
+            fontsize=12,
+        )
         axis.grid(True, linestyle="--", alpha=0.4)
         # highlight the min and max key output value with a marker + label
         start_x, start_y = grid_data["key_output_value"][0], grid_data["appreciation"][0]
@@ -660,6 +713,9 @@ class Visualize:
                 textcoords="offset points",
                 fontsize=9,
             )
+
+        handles = self._add_outcome_points(axis, key)
+        axis.legend(handles=handles, loc="upper left", bbox_to_anchor=(1, 1), frameon=False)
 
         if "save" in kwargs:
             plt.savefig("images" + "/figure_appreciation_" + key + ".png", bbox_inches="tight")
